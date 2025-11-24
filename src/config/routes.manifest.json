@@ -1,0 +1,245 @@
+[
+  {
+    "path": "/about",
+    "label": "このサービスについて",
+    "order": 10,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(public)\\(footer-menu)\\about\\route.json"
+  },
+  {
+    "path": "/home",
+    "label": "ホーム",
+    "order": 10,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(auth)\\(menu)\\(1)\\home\\route.json"
+  },
+  {
+    "path": "/login",
+    "label": "ログイン",
+    "order": 10,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "feature",
+    "source": "src\\app\\(public)\\(feature)\\login\\route.json"
+  },
+  {
+    "path": "/register",
+    "label": "新規会員登録",
+    "order": 20,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "feature",
+    "source": "src\\app\\(public)\\(feature)\\register\\route.json"
+  },
+  {
+    "path": "/help",
+    "label": "説明 (Help)",
+    "order": 20,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(public)\\(footer-menu)\\help\\route.json"
+  },
+  {
+    "path": "/profiles",
+    "label": "千の仮面（プロフィール）",
+    "order": 20,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(auth)\\(menu)\\(2)\\profiles\\route.json"
+  },
+  {
+    "path": "/oasis",
+    "label": "オアシス宣言",
+    "order": 30,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(public)\\(footer-menu)\\oasis\\route.json"
+  },
+  {
+    "path": "/onboarding",
+    "label": "オンボーディング",
+    "order": 30,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "feature",
+    "source": "src\\app\\(public)\\(feature)\\onboarding\\route.json"
+  },
+  {
+    "path": "/matching",
+    "label": "マッチング",
+    "order": 30,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(auth)\\(menu)\\(6)\\matching\\route.json"
+  },
+  {
+    "path": "/tutorial",
+    "label": "チュートリアル",
+    "order": 40,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "feature",
+    "source": "src\\app\\(public)\\(feature)\\tutorial\\route.json"
+  },
+  {
+    "path": "/privacy",
+    "label": "プライバシー",
+    "order": 40,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(public)\\(footer-menu)\\privacy\\route.json"
+  },
+  {
+    "path": "/works",
+    "label": "作品",
+    "order": 40,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(auth)\\(menu)\\(5)\\works\\route.json"
+  },
+  {
+    "path": "/skills",
+    "label": "スキル",
+    "order": 50,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(auth)\\skills\\route.json"
+  },
+  {
+    "path": "/terms",
+    "label": "利用規約",
+    "order": 50,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(public)\\(footer-menu)\\terms\\route.json"
+  },
+  {
+    "path": "/contact",
+    "label": "お問い合わせ",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(public)\\(footer-menu)\\contact\\route.json"
+  },
+  {
+    "path": "/organizations",
+    "label": "組織",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(auth)\\(menu)\\(4)\\organizations\\route.json"
+  },
+  {
+    "path": "/nations",
+    "label": "国（トップダウン）",
+    "order": 70,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\(menu)\\(3)\\nations\\route.json"
+  },
+  {
+    "path": "/chain",
+    "label": "チェーン",
+    "order": 80,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\chain\\route.json"
+  },
+  {
+    "path": "/mandala",
+    "label": "マンダラチャート",
+    "order": 90,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\mandala\\route.json"
+  },
+  {
+    "path": "/achievements",
+    "label": "実績 / アチーブメント",
+    "order": 100,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\achievements\\route.json"
+  },
+  {
+    "path": "/notifications",
+    "label": "通知",
+    "order": 110,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\notifications\\route.json"
+  },
+  {
+    "path": "/messages",
+    "label": "メッセージ / ウォッチ",
+    "order": 120,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\messages\\route.json"
+  },
+  {
+    "path": "/activity",
+    "label": "アクティビティ / 履歴",
+    "order": 130,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\activity\\route.json"
+  },
+  {
+    "path": "/settings",
+    "label": "設定",
+    "order": 150,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\settings\\route.json"
+  },
+  {
+    "path": "/root-account",
+    "label": "ルートアカウント",
+    "order": 800,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\root-account\\route.json"
+  },
+  {
+    "path": "/root-account/create",
+    "label": "ルートアカウント作成",
+    "order": 810,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\root-account\\create\\route.json"
+  },
+  {
+    "path": "/root_accounts",
+    "label": "ルートアカウント（一覧）",
+    "order": 900,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(auth)\\(menu)\\(10)\\root_accounts\\route.json"
+  }
+]

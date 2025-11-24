@@ -1,0 +1,7 @@
+{
+    "label": "ホーム",
+    "order": 10,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main"
+}

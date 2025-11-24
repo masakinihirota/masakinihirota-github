@@ -1,0 +1,7 @@
+{
+    "label": "ルートアカウント作成",
+    "order": 810,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more"
+}

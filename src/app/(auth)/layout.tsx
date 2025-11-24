@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { authNav } from "@/config/nav";
+import Sidebar from "@/components/ui/Sidebar";
 
 export const metadata = {
     title: "masakinihirota - Authenticated",
@@ -33,7 +34,10 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
                     </div>
                 </header>
 
-                <main className="max-w-4xl mx-auto p-6">{children}</main>
+                <div className="flex">
+                    <Sidebar />
+                    <main className="flex-1 max-w-4xl mx-auto p-6">{children}</main>
+                </div>
 
                 <footer className="p-6 text-center text-sm text-zinc-400">© masakinihirota</footer>
             </body>

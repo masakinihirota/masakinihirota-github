@@ -1,0 +1,7 @@
+{
+    "label": "説明 (Help)",
+    "order": 20,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
+}

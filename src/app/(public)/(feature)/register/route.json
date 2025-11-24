@@ -1,0 +1,7 @@
+{
+    "label": "新規会員登録",
+    "order": 20,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "feature"
+}

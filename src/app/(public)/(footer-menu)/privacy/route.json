@@ -1,0 +1,7 @@
+{
+    "label": "プライバシー",
+    "order": 40,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
+}

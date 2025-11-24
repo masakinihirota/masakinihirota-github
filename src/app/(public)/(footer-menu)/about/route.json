@@ -1,0 +1,7 @@
+{
+    "label": "このサービスについて",
+    "order": 10,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
+}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { publicNav } from "@/config/nav";
+import { publicNav, footerNav } from "@/config/nav";
 
 export const metadata = {
     title: "masakinihirota - Public",
@@ -24,7 +24,16 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
                 <main className="max-w-4xl mx-auto p-6">{children}</main>
 
-                <footer className="p-6 text-center text-sm text-zinc-400">© masakinihirota</footer>
+                <footer className="p-6 text-center text-sm text-zinc-400">
+                    <div className="max-w-4xl mx-auto mb-3 flex gap-4 justify-center">
+                        {footerNav.map((item) => (
+                            <a key={item.href} href={item.href} className="text-sm text-zinc-500 hover:text-zinc-700">
+                                {item.label}
+                            </a>
+                        ))}
+                    </div>
+                    <div>© masakinihirota</div>
+                </footer>
             </body>
         </html>
     );

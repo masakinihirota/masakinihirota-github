@@ -1,0 +1,6 @@
+export { About as PublicAbout } from './About'
+export { Help as PublicHelp } from './Help'
+export { Oasis as PublicOasis } from './Oasis'
+export { Privacy as PublicPrivacy } from './Privacy'
+export { Terms as PublicTerms } from './Terms'
+export { Contact as PublicContact } from './Contact'

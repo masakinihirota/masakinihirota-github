@@ -1,0 +1,7 @@
+{
+    "label": "作品",
+    "order": 40,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main"
+}

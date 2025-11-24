@@ -1,0 +1,7 @@
+{
+    "label": "お問い合わせ",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
+}

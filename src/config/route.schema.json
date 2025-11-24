@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Route Metadata",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "label"
+    ],
+    "properties": {
+        "label": {
+            "type": "string"
+        },
+        "order": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "visibleInMenu": {
+            "type": "boolean"
+        },
+        "authRequired": {
+            "type": "boolean"
+        },
+        "group": {
+            "type": "string",
+            "enum": [
+                "main",
+                "more",
+                "footer",
+                "feature"
+            ]
+        },
+        "roles": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "i18nKey": {
+            "type": "string"
+        },
+        "featureFlag": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        }
+    }
+}

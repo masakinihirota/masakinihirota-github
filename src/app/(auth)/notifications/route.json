@@ -1,0 +1,7 @@
+{
+    "label": "通知",
+    "order": 110,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more"
+}

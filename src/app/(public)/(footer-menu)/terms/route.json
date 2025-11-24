@@ -1,0 +1,7 @@
+{
+    "label": "利用規約",
+    "order": 50,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
+}

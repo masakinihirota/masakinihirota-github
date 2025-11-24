@@ -1,0 +1,7 @@
+{
+    "label": "ログイン",
+    "order": 10,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "feature"
+}

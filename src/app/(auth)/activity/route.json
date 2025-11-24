@@ -1,0 +1,7 @@
+{
+    "label": "アクティビティ / 履歴",
+    "order": 130,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more"
+}

@@ -1,0 +1,7 @@
+{
+    "label": "オアシス宣言",
+    "order": 30,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
+}
