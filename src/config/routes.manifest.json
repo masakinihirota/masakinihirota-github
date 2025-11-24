@@ -67,9 +67,18 @@
     "label": "オンボーディング",
     "order": 30,
     "visibleInMenu": true,
+    "authRequired": true,
+    "group": "feature",
+    "source": "src\\app\\(protected)\\onboarding\\page.tsx"
+  },
+  {
+    "path": "/onboarding/guest",
+    "label": "オンボーディング（ゲスト）",
+    "order": 31,
+    "visibleInMenu": false,
     "authRequired": false,
     "group": "feature",
-    "source": "src\\app\\(public)\\(feature)\\onboarding\\route.json"
+    "source": "src\\app\\(public)\\onboarding\\guest\\route.json"
   },
   {
     "path": "/matching",
