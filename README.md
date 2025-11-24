@@ -66,3 +66,35 @@ npm run supabase:reset
 | `npm run supabase:restart` | 再起動 |
 | `npm run supabase:reset` | DBをリセットし、マイグレーション・シード・**Authトリガー**を再適用 |
 | `npm run supabase:gen-types` | DBスキーマからTypeScript型定義を生成 (`src/types/supabase.ts`) |
+
+## 開発ルール（短いガイド）
+
+以下はこのリポジトリで統一している重要な開発ルール／実務的な運用メモです。
+
+### テストの実行方法（重要）
+- `pnpm test` (または `npm run test`) は CI フレンドリーな "1回だけ実行して終了" を行うコマンドです。
+- ファイルの変更を監視しながらテストを継続実行したい場合は `pnpm test:watch` を使ってください。
+- 例: 特定テストだけを 1 回実行するには `pnpm test -- -t <testName>` を利用できます。
+
+理由: デフォルトのウォッチモードで止まってしまうと CI や自動化のワークフローで想定外の状態になるため、`pnpm test` は単発実行にしてあります。
+
+### コンポーネントとデータフェッチの分離（コロケーション）
+このプロジェクトでは、責務の分離とテスト容易性を高めるために以下の方針を採用しています。
+
+- ルーティング (ページ): `app/<route>/page.tsx` / `layout.tsx` は表示とコンポーネントの組み立てに専念させます。可能な限り副作用（データ取得）は持たせません。
+- フェッチ（データ取得）: 機能（feature）扱いとして各コンポーネント配下に `*.fetch.tsx` を置きます。副作用（API / DB 呼び出し）はここに集約します。
+- ロジック（純粋処理）: データ変換や純粋ロジックは `*.logic.tsx` に収めて、単体テストが可能な形にします。
+- エクスポート: コンポーネントは名前付きエクスポートを使用することを推奨します。ページ単位で `src/components/<route>/index.ts` に集約して `import * as route1 from '@/components/route1'` のように扱います。
+
+例: `src/components/route1/ComponentA` の構成
+```
+ComponentA.tsx         # UI（表示）
+ComponentA.logic.tsx   # 純粋ロジック
+ComponentA.fetch.tsx   # データ取得（副作用）
+ComponentA.test.tsx    # テスト
+```
+
+メリット: ルーティングは薄く保てるため可読性が向上し、機能ごとにフェッチとロジックを分離することでテスト・モック・再利用がしやすくなります。
+
+---
+

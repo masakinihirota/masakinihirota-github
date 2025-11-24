@@ -4,6 +4,17 @@ import { valueDefinitions, valueCategories } from './schema';
 import { ValueCategory } from './constants';
 import { eq } from 'drizzle-orm';
 
+// Only run DB integration tests if a real database is available/configured.
+// This prevents the test suite from failing on machines without a test DB.
+// Run DB integration tests only when explicitly enabled in the environment.
+// This avoids running DB tests on developer machines or CI that do not have a test Postgres instance.
+const SHOULD_RUN_DB_TESTS = (process.env.RUN_DB_TESTS === '1') || Boolean(process.env.DATABASE_URL);
+
+if (!SHOULD_RUN_DB_TESTS) {
+  // eslint-disable-next-line vitest/valid-describe
+  describe.skip('Value Definitions Schema Integrity (skipped — no DB)', () => {});
+} else {
+
 describe('Value Definitions Schema Integrity', () => {
   const testContent = 'Test Value Definition TDD';
 
@@ -42,3 +53,5 @@ describe('Value Definitions Schema Integrity', () => {
     await db.delete(valueDefinitions).where(eq(valueDefinitions.id, result[0].id));
   });
 });
+
+}
