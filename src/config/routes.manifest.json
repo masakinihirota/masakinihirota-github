@@ -15,7 +15,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(1)\\home\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\route.json"
   },
   {
     "path": "/login",
@@ -51,7 +51,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(2)\\profiles\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(2-profiles)\\profiles\\route.json"
   },
   {
     "path": "/oasis",
@@ -78,7 +78,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(6)\\matching\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(6-matching)\\matching\\route.json"
   },
   {
     "path": "/tutorial",
@@ -105,7 +105,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(5)\\works\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(5-works)\\works\\route.json"
   },
   {
     "path": "/skills",
@@ -141,7 +141,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(4)\\organizations\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(4-organizations)\\organizations\\route.json"
   },
   {
     "path": "/nations",
@@ -150,7 +150,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\(menu)\\(3)\\nations\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(3-nations)\\nations\\route.json"
   },
   {
     "path": "/chain",
@@ -231,7 +231,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\(menu)\\(10)\\root-accounts\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root-accounts\\route.json"
   },
   {
     "path": "/root-accounts",
@@ -240,6 +240,6 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\(menu)\\(10)\\root-accounts\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root-accounts\\route.json"
   }
 ]

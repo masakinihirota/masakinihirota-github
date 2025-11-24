@@ -32,7 +32,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                             </a>
                         ))}
                     </div>
-                    <div>© masakinihirota</div>
+                    <div>masakinihirota</div>
                 </footer>
             </body>
         </html>

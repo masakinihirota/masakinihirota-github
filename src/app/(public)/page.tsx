@@ -9,8 +9,19 @@ export default function LandingPage() {
 
                 <p className="text-sm text-zinc-500">上部ナビから次のページへ移動できます。</p>
 
+                {/* X.com へのリンク */}
+                <div className="mt-6">
+                    <Link
+                        href="https://x.com/masakinihirota"
+                        target="_blank"
+                        className="text-blue-600 hover:underline text-sm"
+                    >
+                        masakinihirota X.com
+                    </Link>
+                </div>
+
                 <footer className="mt-8 text-sm text-zinc-400">© masakinihirota</footer>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }
