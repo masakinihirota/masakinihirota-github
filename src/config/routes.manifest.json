@@ -15,7 +15,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(auth)\\(menu)\\(1)\\home\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(1)\\home\\route.json"
   },
   {
     "path": "/login",
@@ -51,7 +51,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(auth)\\(menu)\\(2)\\profiles\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(2)\\profiles\\route.json"
   },
   {
     "path": "/oasis",
@@ -78,7 +78,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(auth)\\(menu)\\(6)\\matching\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(6)\\matching\\route.json"
   },
   {
     "path": "/tutorial",
@@ -105,7 +105,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(auth)\\(menu)\\(5)\\works\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(5)\\works\\route.json"
   },
   {
     "path": "/skills",
@@ -114,7 +114,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(auth)\\skills\\route.json"
+    "source": "src\\app\\(protected)\\skills\\route.json"
   },
   {
     "path": "/terms",
@@ -141,7 +141,7 @@
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(auth)\\(menu)\\(4)\\organizations\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(4)\\organizations\\route.json"
   },
   {
     "path": "/nations",
@@ -150,7 +150,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\(menu)\\(3)\\nations\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(3)\\nations\\route.json"
   },
   {
     "path": "/chain",
@@ -159,7 +159,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\chain\\route.json"
+    "source": "src\\app\\(protected)\\chain\\route.json"
   },
   {
     "path": "/mandala",
@@ -168,7 +168,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\mandala\\route.json"
+    "source": "src\\app\\(protected)\\mandala\\route.json"
   },
   {
     "path": "/achievements",
@@ -177,7 +177,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\achievements\\route.json"
+    "source": "src\\app\\(protected)\\achievements\\route.json"
   },
   {
     "path": "/notifications",
@@ -186,7 +186,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\notifications\\route.json"
+    "source": "src\\app\\(protected)\\notifications\\route.json"
   },
   {
     "path": "/messages",
@@ -195,7 +195,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\messages\\route.json"
+    "source": "src\\app\\(protected)\\messages\\route.json"
   },
   {
     "path": "/activity",
@@ -204,7 +204,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\activity\\route.json"
+    "source": "src\\app\\(protected)\\activity\\route.json"
   },
   {
     "path": "/settings",
@@ -213,7 +213,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\settings\\route.json"
+    "source": "src\\app\\(protected)\\settings\\route.json"
   },
   {
     "path": "/root-accounts/create",
@@ -222,7 +222,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\root-accounts\\create\\route.json"
+    "source": "src\\app\\(protected)\\root-accounts\\create\\route.json"
   },
   {
     "path": "/root-accounts",
@@ -231,6 +231,15 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\(menu)\\(10)\\root-accounts\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(10)\\root-accounts\\route.json"
+  },
+  {
+    "path": "/root-accounts",
+    "label": "ルートアカウント（一覧）",
+    "order": 900,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(10)\\root-accounts\\route.json"
   }
 ]

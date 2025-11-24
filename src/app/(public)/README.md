@@ -12,5 +12,5 @@
 各ページは App Router の `Link` を用いて相互に遷移できる最小構成になっています。
 
 注意点:
-- 認証が必要なページ (HOME / オンボーディング / チュートリアル) は `(auth)` グループに移動しました。URL は変わらず `/home`, `/onboarding`, `/tutorial` のままです。
+- 認証が必要なページ (HOME / オンボーディング / チュートリアル) は `(protected)` グループに移動しました。URL は変わらず `/home`, `/onboarding`, `/tutorial` のままです。
 - リポジトリ全体の `npx tsc --noEmit` では既存コードに由来する TypeScript のエラーが検出されました。新しく追加した public ページのみをチェックする場合は、個別に `tsc --noEmit <ファイル>` を使うか、プロジェクトの `tsconfig.json` を参照してください。
