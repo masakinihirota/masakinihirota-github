@@ -35,6 +35,8 @@
 - [x] `src/db/schema.ts` の修正（Timestamp, Enums, Comments）
 - [x] マイグレーションの生成 (`0001_powerful_marvel_apes.sql`)
 - [x] DBレビュー指摘対応（ENUM廃止、初期データ投入、CASCADE設定、updated_at追加）
+- [x] Authユーザー同期トリガーの修正（自動マイグレーションからの除外、手動SQL作成）
+- [x] ローカル開発環境におけるAuthトリガー自動適用スクリプトの作成と設定
 
 ## 今後のステップ
 - アプリケーションロジックでのバリデーション実装（Zod スキーマなど）。

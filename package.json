@@ -8,7 +8,16 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "supabase:restart": "supabase stop && supabase start",
+    "supabase:reset": "supabase db reset && npm run db:apply-trigger",
+    "supabase:link": "supabase link",
+    "supabase:gen-types": "supabase gen types typescript --local > src/types/supabase.ts",
+    "supabase:migration:new": "supabase migration new",
+    "db:apply-trigger": "node scripts/apply-auth-trigger.js"
   },
   "dependencies": {
     "@libsql/client": "^0.15.15",
