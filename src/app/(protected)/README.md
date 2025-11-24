@@ -1,6 +1,6 @@
-# Authenticated pages (minimal set)
+# Protected pages (minimal set)
 
-このディレクトリは 認証済ユーザー向け の最小ページを置くためのルートグループ `(auth)` です。
+このディレクトリは 認証済ユーザー向け の最小ページを置くためのルートグループ `(protected)` です。
 
 配置したルート:
 
