@@ -74,7 +74,36 @@ npm run supabase:reset
 ### テストの実行方法（重要）
 - `pnpm test` (または `npm run test`) は CI フレンドリーな "1回だけ実行して終了" を行うコマンドです。
 - ファイルの変更を監視しながらテストを継続実行したい場合は `pnpm test:watch` を使ってください。
-- 例: 特定テストだけを 1 回実行するには `pnpm test -- -t <testName>` を利用できます。
+ - 例: 特定テストだけを 1 回実行するには `pnpm test -- -t <testName>` を利用できます。
+
+### 追加: テスト環境の詳細と DB テスト実行方法
+
+- テストは Vitest を使用しています。グローバルな jest-dom マッチャは `vitest.setup.ts` で読み込まれるため、各テストファイルで `import "@testing-library/jest-dom"` を個別に書く必要はありません。
+- DB 統合テストはデフォルトでスキップされます（ローカル / CI に Postgres が無い環境でもテストが失敗しないため）。DB 統合テストを実行するには、明示的に環境変数を設定してください。
+
+	例: Windows PowerShell (一時的に環境変数をセットしてテストを実行)
+
+```pwsh
+$env:RUN_DB_TESTS='1'; pnpm test
+```
+
+または DATABASE_URL を指す接続文字列を用意してからテストを実行します。
+
+例: 特定のテストだけを実行する
+
+```pwsh
+pnpm test -- -t CreateRootAccount
+```
+
+---
+
+### 注記: フェッチ実装の統合
+
+- `CreateRootAccount` のサーバーアクション（fetch）実装は一つのファイルに統合しました。
+	- 新しい実装ファイル: `src/components/root-accounts/CreateRootAccount/CreateRootAccount.fetch.ts`（この中に `createRootAccountAction` が含まれます）
+	- テストやコードベースは `CreateRootAccount.fetch` をインポートする形で参照できます（拡張子は不要です）。
+
+---
 
 理由: デフォルトのウォッチモードで止まってしまうと CI や自動化のワークフローで想定外の状態になるため、`pnpm test` は単発実行にしてあります。
 
