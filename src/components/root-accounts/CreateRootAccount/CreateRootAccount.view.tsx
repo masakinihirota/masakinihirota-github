@@ -11,7 +11,7 @@ export type CreateRootAccountViewProps = {
 
 export function CreateRootAccountView({ state, formAction, isPending }: CreateRootAccountViewProps) {
     return (
-        <form action={formAction} className="space-y-4 p-4 border rounded-lg shadow-md max-w-md mx-auto" data-testid="create-root-account-form">
+        <form action={formAction} className="space-y-4 p-4 border rounded-lg shadow-md max-w-md mx-auto" data-testid="create-root-accounts-form">
             <div>
                 <label htmlFor="displayName" className="block text-sm font-medium text-gray-700">
                     Display Name

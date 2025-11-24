@@ -216,21 +216,21 @@
     "source": "src\\app\\(auth)\\settings\\route.json"
   },
   {
-    "path": "/root_accounts/create",
+    "path": "/root-accounts/create",
     "label": "ルートアカウント作成",
     "order": 810,
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\root_accounts\\create\\route.json"
+    "source": "src\\app\\(auth)\\root-accounts\\create\\route.json"
   },
   {
-    "path": "/root_accounts",
+    "path": "/root-accounts",
     "label": "ルートアカウント（一覧）",
     "order": 900,
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(auth)\\(menu)\\(10)\\root_accounts\\route.json"
+    "source": "src\\app\\(auth)\\(menu)\\(10)\\root-accounts\\route.json"
   }
 ]

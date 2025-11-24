@@ -1,11 +1,5 @@
-import * as RootAccounts from '@/components/root-accounts';
+import { redirect } from 'next/navigation'
 
-export const metadata = { title: 'ルートアカウント作成 — masakinihirota' };
-
-export default function CreateRootAccountPage() {
-    return (
-        <div>
-            <RootAccounts.CreateRootAccount />
-        </div>
-    );
+export default function LegacyCreateRootAccountRedirect() {
+    redirect('/root-accounts/create')
 }

@@ -1,0 +1,7 @@
+{
+    "label": "ルートアカウント（一覧）",
+    "order": 900,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more"
+}
