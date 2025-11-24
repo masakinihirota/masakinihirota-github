@@ -45,8 +45,8 @@ export default function Sidebar() {
 
                             <div className="mt-4 border-t pt-3">
                                 <div className="text-sm text-zinc-500">ルートアカウント</div>
-                                <Link href="/root-account" className="block px-3 py-2 rounded hover:bg-zinc-100">ルートダッシュボード</Link>
-                                <Link href="/root-account/create" className="block px-3 py-2 rounded hover:bg-zinc-100">ルートアカウント作成</Link>
+                                <Link href="/root_accounts" className="block px-3 py-2 rounded hover:bg-zinc-100">ルートダッシュボード</Link>
+                                <Link href="/root_accounts/create" className="block px-3 py-2 rounded hover:bg-zinc-100">ルートアカウント作成</Link>
                             </div>
                         </div>
                     )}
