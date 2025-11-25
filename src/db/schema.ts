@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, index, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, index, primaryKey, integer, jsonb, boolean, smallint, numeric } from "drizzle-orm/pg-core";
 import { ValueCategory } from "./constants";
 
 
@@ -68,6 +68,14 @@ export const works = pgTable("works", {
   title: text("title").notNull(),
   categoryId: text("category_id").notNull().references(() => workCategories.id),
   description: text("description"),
+  authors: jsonb("authors"), // optional JSON list of authors
+  releaseYear: integer("release_year"),
+  genres: jsonb("genres"), // stored as json array of genres
+  introUrl: text("intro_url"),
+  affiliateUrl: text("affiliate_url"),
+  size: text("size"),
+  approved: boolean("approved").default(false),
+  createdBy: uuid("created_by").references(() => rootAccounts.id, { onDelete: "set null" }),
 }, (t) => ({
   categoryIdIdx: index("idx_works_category_id").on(t.categoryId),
 }));
@@ -97,6 +105,11 @@ export const profiles = pgTable("profiles", {
 export const profileWorks = pgTable("profile_works", {
   profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
   workId: uuid("work_id").notNull().references(() => works.id, { onDelete: "cascade" }),
+  status: text("status").default('now'), // 'now'|'life'|'future'
+  tier: smallint("tier"),
+  claps: integer("claps").default(0),
+  liked: boolean("liked").default(false),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
 }, (t) => ({
   pk: primaryKey({ columns: [t.profileId, t.workId] }),
   workIdx: index("idx_profile_works_work_id").on(t.workId),
@@ -157,4 +170,91 @@ export const nationMemberships = pgTable("nation_memberships", {
 }, (t) => ({
   pk: primaryKey({ columns: [t.nationId, t.organizationId] }),
   orgIdx: index("idx_nation_memberships_org_id").on(t.organizationId),
+}));
+
+// Points ledger
+export const rootAccountPoints = pgTable("root_account_points", {
+  rootAccountId: uuid("root_account_id").primaryKey().references(() => rootAccounts.id, { onDelete: "cascade" }),
+  balance: integer("balance").default(0),
+  lastUpdated: timestamp("last_updated", { withTimezone: true, mode: "date" }).defaultNow(),
+});
+
+export const pointTransactions = pgTable("point_transactions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  rootAccountId: uuid("root_account_id").references(() => rootAccounts.id, { onDelete: "cascade" }),
+  delta: integer("delta").notNull(),
+  reason: text("reason"),
+  relatedEntity: text("related_entity"),
+  relatedId: uuid("related_id"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  rootIdx: index("idx_point_transactions_root_account_id").on(t.rootAccountId),
+}));
+
+// Penalties
+export const penalties = pgTable("penalties", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  rootAccountId: uuid("root_account_id").references(() => rootAccounts.id, { onDelete: "cascade" }),
+  profileId: uuid("profile_id").references(() => profiles.id, { onDelete: "cascade" }),
+  type: text("type").notNull(),
+  description: text("description"),
+  appliedBy: uuid("applied_by"),
+  appliedAt: timestamp("applied_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }),
+}, (t) => ({
+  rootIdx: index("idx_penalties_root_account_id").on(t.rootAccountId),
+}));
+
+// Achievements
+export const achievements = pgTable("achievements", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  points: integer("points").default(0),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+});
+
+export const rootAccountAchievements = pgTable("root_account_achievements", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  rootAccountId: uuid("root_account_id").references(() => rootAccounts.id, { onDelete: "cascade" }),
+  achievementId: uuid("achievement_id").references(() => achievements.id, { onDelete: "cascade" }),
+  awardedAt: timestamp("awarded_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  rootIdx: index("idx_root_account_achievements_root_account_id").on(t.rootAccountId),
+}));
+
+// Skills
+export const skills = pgTable("skills", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+});
+
+export const profileSkills = pgTable("profile_skills", {
+  profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  skillId: uuid("skill_id").notNull().references(() => skills.id, { onDelete: "cascade" }),
+  level: smallint("level").default(0),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.profileId, t.skillId] }),
+  skillIdx: index("idx_profile_skills_skill_id").on(t.skillId),
+}));
+
+// Follows
+export const follows = pgTable("follows", {
+  followerProfileId: uuid("follower_profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  targetProfileId: uuid("target_profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.followerProfileId, t.targetProfileId] }),
+}));
+
+// Match history
+export const matchHistory = pgTable("match_history", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  matchedProfileId: uuid("matched_profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  score: numeric("score"),
+  matchedAt: timestamp("matched_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  profileIdx: index("idx_match_history_profile_id").on(t.profileId),
 }));
