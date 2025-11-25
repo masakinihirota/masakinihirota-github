@@ -1,4 +1,4 @@
-import * as Onboarding from './components';
+import * as Onboarding from '@/components/onboarding';
 
 export const metadata = { title: 'オンボーディング — masakinihirota' };
 

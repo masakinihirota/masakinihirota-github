@@ -6,4 +6,4 @@
  * ページ側では `import * as Onboarding from '@/components/onboarding'` として使用します。
  */
 
-export { Onboarding } from '../pages/feature/Onboarding/Onboarding';
+export { CreateRootAccountForm } from './CreateRootAccountForm/CreateRootAccountForm';
