@@ -22,11 +22,11 @@
     "supabase:link": "supabase link",
     "supabase:gen-types": "supabase gen types typescript --local > src/types/supabase.ts",
     "supabase:migration:new": "supabase migration new",
-    "supabase:seed": "supabase db seed --file ./supabase/seed/0001_initial_data.sql",
     "db:apply-trigger": "node scripts/apply-auth-trigger.js",
     "generate:routes": "node ./scripts/generate-route-manifest.js"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.15.15",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.84.0",
@@ -36,6 +36,7 @@
     "postgres": "^3.4.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.66.1",
     "zod": "^4.1.12"
   },
   "devDependencies": {
@@ -56,10 +57,10 @@
     "drizzle-kit": "^0.31.7",
     "eslint": "^9",
     "eslint-config-next": "^15.0.3",
+    "husky": "^8.0.0",
     "jsdom": "^27.2.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.0.13",
-    "husky": "^8.0.0"
+    "vitest": "^4.0.13"
   }
 }

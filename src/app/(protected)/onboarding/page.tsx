@@ -1,4 +1,4 @@
-import * as Onboarding from '@/components/onboarding';
+import * as Onboarding from './components';
 
 export const metadata = { title: 'オンボーディング — masakinihirota' };
 
@@ -10,8 +10,8 @@ export const metadata = { title: 'オンボーディング — masakinihirota' }
  */
 export default function OnboardingPage() {
     return (
-        <div>
-            <Onboarding.Onboarding />
+        <div className="container mx-auto py-10">
+            <Onboarding.CreateRootAccountForm />
         </div>
     );
 }

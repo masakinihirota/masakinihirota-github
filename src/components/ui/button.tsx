@@ -1,7 +1,12 @@
 import React from 'react'
 
-export const Button: React.FC<React.PropsWithChildren<{ variant?: string; size?: string; className?: string; disabled?: boolean }>> = ({ children, className }) => (
-    <button className={className} data-testid="button">{children}</button>
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: string;
+    size?: string;
+}
+
+export const Button: React.FC<ButtonProps> = ({ children, className, variant, size, ...props }) => (
+    <button className={className} data-testid="button" {...props}>{children}</button>
 )
 
 export default Button

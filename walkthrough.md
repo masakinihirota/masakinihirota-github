@@ -2,34 +2,34 @@
 
 ## 実施した変更
 
-1.  **スキーマの修正 (`src/db/schema.ts`)**
-    - `rootAccounts` テーブルの `userId` カラムに `.unique()` 制約を追加しました。
-    - これにより、`users` と `rootAccounts` の 1:1 関係がデータベースレベルで保証されます。
+### 1. 基盤整備 (Infrastructure)
+- **`.env` 更新**: Supabase のキー設定を最新化しました。
+- **DBマイグレーション**: `drizzle-kit migrate` を実行し、スキーマを適用しました。
+- **Auth Trigger**: `auth_trigger_manual.sql` を適用し、`auth.users` と `public.users` の同期を有効化しました。
 
-2.  **マイグレーションの生成 (`drizzle/0002_lovely_maria_hill.sql`)**
-    - `npm run db:generate` を実行し、ユニークインデックスを追加するマイグレーションファイルを生成しました。
+### 2. ルートアカウント作成機能 (Root Account Creation)
+- **TDD 実装**:
+    - `CreateRootAccountForm.fetch.ts`: Server Action の実装 (認証、バリデーション、DB登録)。
+    - `CreateRootAccountForm.test.ts`: ユニットテストの作成とパス確認 (RED -> GREEN)。
+- **UI 実装**:
+    - `CreateRootAccountForm.tsx`: React Hook Form + Zod を使用したフォームコンポーネント。
+    - `src/app/(protected)/onboarding/page.tsx`: 新しいフォームコンポーネントを使用するように更新。
+- **コンポーネント修正**:
+    - `src/components/ui/button.tsx`: 標準の HTML 属性 (`type`, `onClick` 等) を受け取れるように修正。
 
-## Supabase 設定について
+## 検証結果 (Verification)
 
-ご報告いただいた Supabase のキー変更について、以下の対応をお願いします。
+### 自動テスト
+`npm test` により、Server Action のロジックが正常に動作することを確認しました。
 
-`src/lib/supabase/client.ts` は環境変数 `NEXT_PUBLIC_SUPABASE_ANON_KEY` を参照しています。
-`supabase status` で表示された新しいキーを `.env` (または `.env.local`) ファイルに反映させてください。
-
-**`.env` ファイルの更新例:**
-
-```env
-# 既存の URL (変更がない場合)
-NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
-
-# 新しいキーに更新
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
-
-# 必要であればサービスロールキーも更新 (サーバーサイドで使用する場合)
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
+```bash
+✓ src/app/(protected)/onboarding/components/CreateRootAccountForm/CreateRootAccountForm.test.ts (3 tests)
+   ✓ createRootAccountAction (3)
+     ✓ should throw error if user is not authenticated
+     ✓ should create root account if input is valid and user is authenticated
+     ✓ should validate input length
 ```
 
-※ `sb_publishable_...` 形式のキーは、Supabase の新しいローカル開発環境や特定の構成で見られる形式ですが、役割としては従来の `ANON_KEY` と同じです。
-
 ## 次のステップ
-- `.env` ファイルを更新し、アプリケーションを再起動して接続を確認してください。
+- ログイン画面の実装 (Google Auth)
+- 実際にブラウザで動作確認 (ユーザー様側で実施推奨)
