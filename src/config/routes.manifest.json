@@ -67,18 +67,9 @@
     "label": "オンボーディング",
     "order": 30,
     "visibleInMenu": true,
-    "authRequired": true,
-    "group": "feature",
-    "source": "src\\app\\(protected)\\onboarding\\page.tsx"
-  },
-  {
-    "path": "/onboarding/guest",
-    "label": "オンボーディング（ゲスト）",
-    "order": 31,
-    "visibleInMenu": false,
     "authRequired": false,
     "group": "feature",
-    "source": "src\\app\\(public)\\onboarding\\guest\\route.json"
+    "source": "src\\app\\(public)\\(feature)\\onboarding\\route.json"
   },
   {
     "path": "/matching",
@@ -88,6 +79,15 @@
     "authRequired": true,
     "group": "main",
     "source": "src\\app\\(protected)\\(menu)\\(6-matching)\\matching\\route.json"
+  },
+  {
+    "path": "/onboarding/guest",
+    "label": "オンボーディング（ゲスト）",
+    "order": 31,
+    "visibleInMenu": false,
+    "authRequired": false,
+    "group": "feature",
+    "source": "src\\app\\(public)\\onboarding\\guest\\route.json"
   },
   {
     "path": "/tutorial",
@@ -225,13 +225,13 @@
     "source": "src\\app\\(protected)\\settings\\route.json"
   },
   {
-    "path": "/root-accounts/create",
+    "path": "/root_accounts/create",
     "label": "ルートアカウント作成",
     "order": 810,
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\root-accounts\\create\\route.json"
+    "source": "src\\app\\(protected)\\root_accounts\\create\\route.json"
   },
   {
     "path": "/root-accounts",
@@ -243,12 +243,12 @@
     "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root-accounts\\route.json"
   },
   {
-    "path": "/root-accounts",
+    "path": "/root_accounts",
     "label": "ルートアカウント（一覧）",
     "order": 900,
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root-accounts\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root_accounts\\route.json"
   }
 ]

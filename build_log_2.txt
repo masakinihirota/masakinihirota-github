@@ -1,0 +1,36 @@
+
+> masakinihirota@0.1.0 prebuild
+> pnpm run generate:routes
+
+
+> masakinihirota@0.1.0 generate:routes U:\2025src\___masakinihirota-antigravity\masakinihirota
+> node ./scripts/generate-route-manifest.js
+
+Wrote U:\2025src\___masakinihirota-antigravity\masakinihirota\src\config\routes.manifest.json with 28 entries
+
+> masakinihirota@0.1.0 build
+> next build
+
+   笆ｲ Next.js 15.5.2
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     笨・reactCompiler
+
+   Creating an optimized production build ...
+ 笨・Compiled successfully in 4.6s
+   Linting and checking validity of types ...
+ 筧ｯ ESLint: Cannot find module 'U:\2025src\___masakinihirota-antigravity\masakinihirota\node_modules\eslint-config-next\core-web-vitals' imported from U:\2025src\___masakinihirota-antigravity\masakinihirota\eslint.config.mjs Did you mean to import "eslint-config-next/core-web-vitals.js"?
+   Collecting page data ...
+   Generating static pages (0/36) ...
+   Generating static pages (9/36) 
+   Generating static pages (18/36) 
+   Generating static pages (27/36) 
+ 笨・Generating static pages (36/36)
+
+> Build error occurred
+[Error: ENOENT: no such file or directory, open 'U:\2025src\___masakinihirota-antigravity\masakinihirota\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'U:\\2025src\\___masakinihirota-antigravity\\masakinihirota\\.next\\server\\pages-manifest.json'
+}
