@@ -1,9 +1,36 @@
 #!/usr/bin/env sh
-# Minimal husky helper script used by hooks in this repo
-# Ensures hooks run from repository root and early exit if running in CI without Git
-export HUSKY=1
+if [ -z "$husky_skip_init" ]; then
+  debug () {
+    if [ "$HUSKY_DEBUG" = "1" ]; then
+      echo "husky (debug) - $1"
+    fi
+  }
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || printf '.')"
-cd "$REPO_ROOT" || exit 0
+  readonly hook_name="$(basename -- "$0")"
+  debug "starting $hook_name..."
 
-return 0
+  if [ "$HUSKY" = "0" ]; then
+    debug "HUSKY env variable is set to 0, skipping hook"
+    exit 0
+  fi
+
+  if [ -f ~/.huskyrc ]; then
+    debug "sourcing ~/.huskyrc"
+    . ~/.huskyrc
+  fi
+
+  readonly husky_skip_init=1
+  export husky_skip_init
+  sh -e "$0" "$@"
+  exitCode="$?"
+
+  if [ $exitCode != 0 ]; then
+    echo "husky - $hook_name hook exited with code $exitCode (error)"
+  fi
+
+  if [ $exitCode = 127 ]; then
+    echo "husky - command not found in PATH=$PATH"
+  fi
+
+  exit $exitCode
+fi

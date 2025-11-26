@@ -17,7 +17,7 @@ vi.mock('@/lib/supabase/client', () => ({
 }))
 
 describe('LoginForm', () => {
-    const originalLocation = window.location
+    const originalLocation: any = window.location
 
     beforeEach(() => {
         vi.clearAllMocks()
@@ -29,7 +29,8 @@ describe('LoginForm', () => {
     })
 
     afterEach(() => {
-        window.location = originalLocation
+        // restore original location
+        ; (window as any).location = originalLocation
     })
 
     it('renders login button', () => {
