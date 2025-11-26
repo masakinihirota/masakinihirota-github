@@ -1,7 +1,9 @@
 const fs = require('fs');
 const postgres = require('postgres');
 
-const sql = postgres('postgresql://postgres:postgres@127.0.0.1:54322/postgres');
+// Prefer DATABASE_URL or SUPABASE_DB_URL (useful when working locally with `supabase start` or env var)
+const connectionString = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL || 'postgresql://postgres:postgres@127.0.0.1:54322/postgres';
+const sql = postgres(connectionString, { ssl: false });
 
 async function main() {
     try {
@@ -13,6 +15,8 @@ async function main() {
         // However, for safety with DO blocks and DELIMITERs, simple execution is best.
         // The file contains comments and standard SQL.
 
+        // Apply SQL - this will create the function (if missing) and create the auth.users trigger when possible.
+        // Note: On hosted Supabase projects, creation of triggers on the `auth` schema may fail due to permission restrictions.
         await sql.unsafe(triggerSql);
         console.log('Auth trigger applied successfully.');
 

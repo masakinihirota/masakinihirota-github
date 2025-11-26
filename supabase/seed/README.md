@@ -93,6 +93,26 @@ Note: `gen_random_uuid()` が動かない場合は pgcrypto 拡張が無効に�
 
 Special notes
 - `auth.users` triggers: if your project requires synchronizing `auth.users` to `public.users` (the project uses trigger function `handle_new_user`), please ensure the trigger exists. Because of Supabase auth permissions this trigger often must be created manually via the Supabase Dashboard SQL editor; see `drizzle/auth_trigger_manual.sql` in the repo for the required statements.
+  
+Auth trigger — どうやって適用するか（手順）
+----------------------------------------
+- 推奨 (ホストされた Supabase / 本番): Supabase Dashboard の SQL Editor を開いて、リポジトリの `drizzle/auth_trigger_manual.sql` を丸ごと貼り付けて実行してください。`auth` スキーマへの権限制限があるため、ダッシュボード経由で実行するのが最も確実です。
+- ローカル開発で Supabase のローカルDB を使っている場合:
+	1. ローカルDB を起動: `supabase start`
+	2. スクリプトを使う（接続情報は環境変数 DATABASE_URL または SUPABASE_DB_URL を優先します）:
+
+```powershell
+# 接続先を上書きしたい場合（例）
+$env:DATABASE_URL = "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
+npm run db:apply-trigger
+```
+
+	3. 成功したか確認:
+```powershell
+psql $env:DATABASE_URL -c "SELECT trigger_name FROM information_schema.triggers WHERE event_object_schema = 'auth' AND trigger_name = 'on_auth_user_created';"
+```
+
+注意: ホストされた Supabase では `auth` スキーマの操作が制限されていて、CLI や通常マイグレーション経由では失敗することが多いです。ダッシュボードの SQL Editor での手動実行を推奨します。
 - RLS policies are not included in these seeds. You must add appropriate RLS policies before relying on seed data to validate access rules.
 
 References
