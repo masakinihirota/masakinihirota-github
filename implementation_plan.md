@@ -33,11 +33,12 @@
 - [x] 基本スキーマ定義 (`src/db/schema.ts`)
     - Users, RootAccounts, Profiles, Works, Values, Organizations, Nations
 
-### Phase 2: 認証とユーザー管理 (現在進行中)
+### Phase 2: 認証とユーザー管理 (完了)
 - [x] Supabase Auth クライアント/サーバー/ミドルウェア実装
 - [x] **DBマイグレーション実行 (Postgresへのスキーマ適用)**
 - [x] **Auth Trigger の適用 (`auth.users` -> `public.users` 同期)**
-- [ ] **ログイン画面の実装 (Google Auth)**
+- [x] **ログイン画面の実装 (Google Auth)**
+- [x] **ログイン後のダッシュボード実装 (Protected)**
 - [x] **ルートアカウント (Root Account) 作成機能 (TDD)**
     - 初回ログイン後のオンボーディングフロー
 
@@ -59,6 +60,4 @@
 
 ## 5. 次のステップ (Next Actions)
 
-1.  **DBマイグレーション**: Drizzle で生成したスキーマをローカルの Supabase DB に適用する。
-2.  **Auth Trigger 適用**: `supabase/auth_trigger_manual.sql` を実行し、ユーザー同期を有効化する。
-3.  **ルートアカウント実装**: TDD サイクルを回し、ログイン後のルートアカウント登録画面を作成する。
+1.  **Phase 3 開始**: プロフィール管理機能の実装に着手する。

@@ -1,0 +1,51 @@
+
+> masakinihirota@0.1.0 test
+> vitest --run src/components/oauth/oauth-google/google-login-form.test.tsx
+
+
+[1m[46m RUN [49m[22m [36mv4.0.13 [39m[90mU:/2025src/___masakinihirota-antigravity/masakinihirota[39m
+
+ [31m笶ｯ[39m src/components/oauth/oauth-google/google-login-form.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 9[2mms[22m[39m
+[31m     [31mﾃ・[31m renders login button[39m[32m 5[2mms[22m[39m
+[31m     [31mﾃ・[31m calls signInWithOAuth when button is clicked[39m[32m 1[2mms[22m[39m
+[31m     [31mﾃ・[31m shows loading state while connecting[39m[32m 1[2mms[22m[39m
+[31m     [31mﾃ・[31m handles error gracefully[39m[32m 1[2mms[22m[39m
+
+竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ Failed Tests 4 竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ
+
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > renders login button
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > calls signInWithOAuth when button is clicked
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > shows loading state while connecting
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > handles error gracefully
+ReferenceError: window is not defined
+ 笶ｯ src/components/oauth/oauth-google/google-login-form.test.tsx:23:9
+     21| 
+     22|     beforeEach(() => {
+     23|         originalLocation = window.location
+       |         ^
+     24|         vi.clearAllMocks()
+     25|         mockSignInWithOAuth.mockResolvedValue({ error: null })
+
+竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ[1/8]竡ｯ
+
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > renders login button
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > calls signInWithOAuth when button is clicked
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > shows loading state while connecting
+ FAIL  src/components/oauth/oauth-google/google-login-form.test.tsx > GoogleLoginForm > handles error gracefully
+ReferenceError: window is not defined
+ 笶ｯ src/components/oauth/oauth-google/google-login-form.test.tsx:33:9
+     31| 
+     32|     afterEach(() => {
+     33|         window.location = originalLocation
+       |         ^
+     34|     })
+     35| 
+
+竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ竡ｯ[2/8]竡ｯ
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[90m (4)[39m
+[2m   Start at [22m 08:10:50
+[2m   Duration [22m 965ms[2m (transform 147ms, setup 496ms, collect 178ms, tests 9ms, environment 0ms, prepare 12ms)[22m
+
