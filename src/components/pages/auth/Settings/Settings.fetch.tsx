@@ -1,1 +1,1 @@
-export const fetchUserSettings = async (userId: string) => Promise.resolve({ theme: 'dark' })
+export const getSettings = async (_userId: string) => Promise.resolve({ theme: 'dark' })

@@ -13,10 +13,10 @@ export function Header() {
                     </Link>
                     <nav className="hidden md:flex gap-6">
                         {publicNav.map(
-                            (item, index) =>
+                            (item) =>
                                 item.href && (
                                     <Link
-                                        key={index}
+                                        key={item.href}
                                         href={item.href}
                                         className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
                                     >

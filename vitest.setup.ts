@@ -9,3 +9,9 @@ if (matchers && typeof matchers === 'object') {
 }
 
 // You can add other global test setup here later (e.g., fetch polyfills)
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
+
+afterEach(() => {
+    cleanup();
+});

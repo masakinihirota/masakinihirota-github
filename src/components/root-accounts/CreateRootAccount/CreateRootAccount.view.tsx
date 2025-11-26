@@ -3,7 +3,7 @@ import type { CreateRootAccountState } from './CreateRootAccount.logic';
 
 export type CreateRootAccountViewProps = {
     // state shape is defined in CreateRootAccount.logic but can be partial/undefined
-    state: CreateRootAccountState | any;
+    state: CreateRootAccountState;
     // form action can be either a string (url) or a server action handler — keep loose typing
     formAction: string | ((formData: FormData) => void | Promise<void>) | undefined;
     isPending: boolean;
@@ -23,8 +23,8 @@ export function CreateRootAccountView({ state, formAction, isPending }: CreateRo
                     required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
                 />
-                {((state as any)?.errors?.displayName) && (
-                    <p className="text-red-500 text-xs mt-1">{(state as any).errors.displayName}</p>
+                {state.errors?.displayName && (
+                    <p className="text-red-500 text-xs mt-1">{state.errors.displayName[0]}</p>
                 )}
             </div>
 

@@ -1,0 +1,54 @@
+npm warn "src" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--dir". This will stop working in the next major version of npm.
+
+> masakinihirota@0.1.0 lint
+> eslint src
+
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\onboarding\CreateRootAccountForm\CreateRootAccountForm.test.ts
+  32:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Achievements\Achievements.fetch.tsx
+  1:41  error  'userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Activity\Activity.fetch.tsx
+  1:43  error  'userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Messages\Messages.fetch.tsx
+  1:44  error  'userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Notifications\Notifications.fetch.tsx
+  1:42  error  'userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Settings\Settings.fetch.tsx
+  1:41  error  'userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Skills\Skills.fetch.tsx
+  3:39  error  'userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\root-accounts\CreateRootAccount\CreateRootAccount.fetch.test.ts
+   4:10  error  'rootAccounts' is defined but never used         @typescript-eslint/no-unused-vars
+  46:63  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  64:63  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  67:11  error  'mockInsert' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  68:68  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\root-accounts\CreateRootAccount\CreateRootAccount.fetch.ts
+   7:10  error  'redirect' is defined but never used      @typescript-eslint/no-unused-vars
+  14:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\root-accounts\CreateRootAccount\CreateRootAccount.view.tsx
+   6:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:73  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\config\nav.ts
+  47:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\db\schema.test.ts
+  14:3  error  Definition for rule 'vitest/valid-describe' was not found  vitest/valid-describe
+
+笨・21 problems (20 errors, 1 warning)
+

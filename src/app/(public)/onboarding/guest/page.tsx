@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function GuestOnboarding() {
     const [loading, setLoading] = useState(false)
@@ -47,7 +48,9 @@ export default function GuestOnboarding() {
                         {loading ? '処理中…' : '匿名でオンボーディングを開始'}
                     </button>
 
-                    <a href="/" className="text-sm text-zinc-500">戻る</a>
+                    <Link href="/" className="text-sm text-muted-foreground hover:text-foreground flex items-center">
+                        トップページに戻る
+                    </Link>
                 </div>
             </main>
         </div>

@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createRootAccountAction } from './CreateRootAccount.fetch';
 import { db } from '@/lib/db';
-import { rootAccounts } from '@/db/schema';
 import { createClient } from '@/lib/supabase/server';
 
 // Mock dependencies
@@ -64,6 +63,7 @@ describe('createRootAccountAction', () => {
     vi.mocked(createClient).mockResolvedValue(mockSupabase as any);
 
     const mockValues = vi.fn().mockResolvedValue(undefined);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const mockInsert = vi.fn(() => ({ values: mockValues }));
     vi.mocked(db.insert).mockReturnValue({ values: mockValues } as any);
 

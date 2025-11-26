@@ -4,14 +4,13 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { db } from '@/lib/db';
 import { rootAccounts } from '@/db/schema';
-import { redirect } from 'next/navigation';
 
 const schema = z.object({
     displayName: z.string().min(1, 'Display Name is required'),
     location: z.string().optional(),
 });
 
-export async function createRootAccountAction(prevState: any, formData: FormData) {
+export async function createRootAccountAction(prevState: unknown, formData: FormData) {
     const validatedFields = schema.safeParse({
         displayName: formData.get('displayName') ?? undefined,
         location: formData.get('location') ?? undefined,

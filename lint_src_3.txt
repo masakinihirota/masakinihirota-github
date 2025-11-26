@@ -1,0 +1,43 @@
+npm warn "src" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--dir". This will stop working in the next major version of npm.
+
+> masakinihirota@0.1.0 lint
+> eslint src
+
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\onboarding\CreateRootAccountForm\CreateRootAccountForm.test.ts
+  32:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Achievements\Achievements.fetch.tsx
+  1:39  error  '_userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Activity\Activity.fetch.tsx
+  1:35  error  '_userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Messages\Messages.fetch.tsx
+  1:35  error  '_userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Notifications\Notifications.fetch.tsx
+  1:40  error  '_userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Settings\Settings.fetch.tsx
+  1:35  error  '_userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\pages\auth\Skills\Skills.fetch.tsx
+  3:33  error  '_userId' is defined but never used  @typescript-eslint/no-unused-vars
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\components\root-accounts\CreateRootAccount\CreateRootAccount.fetch.test.ts
+  45:63  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:63  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:68  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\config\nav.ts
+  47:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+U:\2025src\___masakinihirota-antigravity\masakinihirota\src\db\schema.test.ts
+  14:3  error  Definition for rule 'vitest/valid-describe' was not found  vitest/valid-describe
+
+笨・14 problems (13 errors, 1 warning)
+

@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
     const supabase = await createClient()
 
     // Create an anonymous session for the visitor
-    const { data, error } = await supabase.auth.signInAnonymously()
+    const { error } = await supabase.auth.signInAnonymously()
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 })

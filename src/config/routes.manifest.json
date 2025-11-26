@@ -18,15 +18,6 @@
     "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\route.json"
   },
   {
-    "path": "/login",
-    "label": "ログイン",
-    "order": 10,
-    "visibleInMenu": true,
-    "authRequired": false,
-    "group": "feature",
-    "source": "src\\app\\(public)\\(feature)\\login\\route.json"
-  },
-  {
     "path": "/register",
     "label": "新規会員登録",
     "order": 20,

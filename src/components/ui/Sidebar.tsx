@@ -3,12 +3,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { authNav } from '@/config/nav';
 // prefer generated manifest if available (build step creates src/config/routes.manifest.json)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let ROUTE_MANIFEST: any = null;
 try {
     // require used because this is a client component bundler will inline JSON
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     ROUTE_MANIFEST = require('@/config/routes.manifest.json');
-} catch (e) {
+} catch {
     // no manifest present, will fall back to authNav
     ROUTE_MANIFEST = null;
 }
@@ -17,6 +18,7 @@ export default function Sidebar() {
     const [expanded, setExpanded] = useState(false);
 
     // if manifest exists, derive main/more from it, otherwise use authNav
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const entries: any[] = Array.isArray(ROUTE_MANIFEST) ? ROUTE_MANIFEST : authNav;
     const main = entries.filter((i) => (i.group === 'main' || i.group === 'main')).map(e => ({ label: e.label, href: e.path || e.href }));
     const more = entries.filter((i) => i.group === 'more').map(e => ({ label: e.label, href: e.path || e.href }));

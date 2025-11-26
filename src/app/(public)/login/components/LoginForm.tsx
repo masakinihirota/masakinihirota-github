@@ -9,15 +9,20 @@ export function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
 
     const handleLogin = async () => {
+        console.log('handleLogin called')
         try {
             setIsLoading(true)
+            console.log('Calling createClient')
             const supabase = createClient()
+            console.log('supabase client created', supabase)
+            console.log('location.origin:', location.origin)
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
                     redirectTo: `${location.origin}/auth/callback`,
                 },
             })
+            console.log('signInWithOAuth result error:', error)
             if (error) throw error
         } catch (error) {
             console.error('Login error:', error)

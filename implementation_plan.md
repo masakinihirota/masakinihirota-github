@@ -35,10 +35,10 @@
 
 ### Phase 2: 認証とユーザー管理 (現在進行中)
 - [x] Supabase Auth クライアント/サーバー/ミドルウェア実装
-- [ ] **DBマイグレーション実行 (Postgresへのスキーマ適用)**
-- [ ] **Auth Trigger の適用 (`auth.users` -> `public.users` 同期)**
+- [x] **DBマイグレーション実行 (Postgresへのスキーマ適用)**
+- [x] **Auth Trigger の適用 (`auth.users` -> `public.users` 同期)**
 - [ ] **ログイン画面の実装 (Google Auth)**
-- [ ] **ルートアカウント (Root Account) 作成機能 (TDD)**
+- [x] **ルートアカウント (Root Account) 作成機能 (TDD)**
     - 初回ログイン後のオンボーディングフロー
 
 ### Phase 3: プロフィール管理

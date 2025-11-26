@@ -1,5 +1,15 @@
 // Pure logic for CreateRootAccount component — no side-effects here
-export const initialState = {
+export type CreateRootAccountState = {
+    success: boolean;
+    message: string;
+    errors?: {
+        displayName?: string[];
+        location?: string[];
+        [key: string]: string[] | undefined;
+    };
+};
+
+export const initialState: CreateRootAccountState = {
     success: false,
     message: '',
     errors: {},
@@ -14,5 +24,3 @@ export function transformFormData(formData: FormData) {
         location: formData.get('location') ? String(formData.get('location')) : undefined,
     };
 }
-
-export type CreateRootAccountState = typeof initialState;
