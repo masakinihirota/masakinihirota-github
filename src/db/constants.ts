@@ -19,8 +19,9 @@ export enum WorkCategory {
 }
 
 export enum ValueCategory {
-  Personal = "Personal",
-  Social = "Social",
-  Professional = "Professional",
+  Life = "life",
+  Work = "work",
+  Love = "love",
+  Hobby = "hobby",
   Uncategorized = "Uncategorized",
 }

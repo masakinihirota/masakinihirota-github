@@ -28,6 +28,8 @@ export const workCategories = pgTable("work_categories", {
 export const valueCategories = pgTable("value_categories", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  question: text("question"), // The question text displayed to users
+  description: text("description"), // Internal description
 });
 
 export const nationLevels = pgTable("nation_levels", {
