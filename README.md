@@ -73,6 +73,44 @@ npm run supabase:reset
 
 ### テストの実行方法（重要）
  `pnpm test` (または `npm run test`) はローカルでの単発実行を想定したコマンドです（このリポジトリではローカルSupabaseを使った開発が標準です）。
+
+#### ローカル開発チェックリスト（必ず確認）
+開発はローカルSupabase（Docker）で完結する前提です。次の順でローカルの動作確認を行ってください。
+
+1) Supabase の起動とステータス確認
+
+```pwsh
+pnpm run supabase:start
+pnpm run supabase:status
+```
+
+2) 環境変数 `DATABASE_URL` の確認（テスト/マイグレーション用）
+
+```pwsh
+# 例（ローカルSupabase）
+$env:DATABASE_URL = 'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
+```
+
+3) マイグレーション・Auth トリガ・シードの適用（必要なら）
+
+```pwsh
+pnpm run db:migrate
+node scripts/apply-auth-trigger.js   # 必要なら
+pnpm run db:seeds:drizzle
+```
+
+4) DB 統合テストを含めたテスト実行
+
+```pwsh
+$env:RUN_DB_TESTS = '1'
+pnpm test
+```
+
+5) 簡易チェック（自動化）を実行する
+
+```pwsh
+pnpm run dev:verify
+```
 - ファイルの変更を監視しながらテストを継続実行したい場合は `pnpm test:watch` を使ってください。
 - DB 統合テストはデフォルトでスキップされます。開発ワークフローは **ローカルSupabase（Docker）での完結**を前提としており、CI で自動的に DB 統合テストを実行する設定はプロジェクト方針上廃止されています。DB 統合テストを実行するには、ローカル環境で明示的に環境変数を設定してください。
 
