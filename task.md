@@ -13,3 +13,6 @@
         - [ ] Tier評価・状態保存
 - [ ] Phase 4: 組織管理
 - [ ] Phase 5: 国管理
+
+# Workflow Updates
+- [x] Review RSC Article and Update `nextjs-components.md`
