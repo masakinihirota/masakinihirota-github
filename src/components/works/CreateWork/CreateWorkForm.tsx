@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react'
 import { createWorkAction } from './CreateWorkForm.fetch'
 import MediaUploader from '../MediaUploader'
