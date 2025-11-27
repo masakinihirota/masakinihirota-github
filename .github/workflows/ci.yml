@@ -2,13 +2,27 @@ name: CI
 
 on:
   push:
-    branches: [ dev, main ]
+    branches: [dev, main]
   pull_request:
-    branches: [ dev, main ]
+    branches: [dev, main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres -h localhost -p 5432"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
 
     steps:
       - name: Checkout
@@ -17,8 +31,8 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
 
       - name: Enable PNPM
         run: |
@@ -28,8 +42,40 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install Postgres CLI and wait for Postgres
+        run: |
+          # Install small client tools (pg_isready/psql) so we can probe DB readiness
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          # ensure DB is ready before running migrations/seeds/tests
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 -U postgres && break || sleep 1
+          done
+
       - name: Run fetch-location check
         run: pnpm run check:fetch-location
 
-      - name: Run tests (single-run)
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        run: |
+          pnpm run db:migrate
+
+      - name: Apply auth trigger (if required)
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        run: node scripts/apply-auth-trigger.js || true
+
+      - name: Run DB seeds
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        run: pnpm run db:seeds:drizzle
+
+      - name: Run lint
+        run: pnpm run lint
+
+      - name: Run tests (single-run, DB tests enabled)
+        env:
+          RUN_DB_TESTS: "1"
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
         run: pnpm test
