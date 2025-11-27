@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { db } from '@/lib/db';
+import { sql } from 'drizzle-orm';
 import { valueDefinitions, valueCategories } from './schema';
 import { ValueCategory } from './constants';
 import { eq } from 'drizzle-orm';
@@ -11,7 +12,6 @@ import { eq } from 'drizzle-orm';
 const SHOULD_RUN_DB_TESTS = (process.env.RUN_DB_TESTS === '1') || Boolean(process.env.DATABASE_URL);
 
 if (!SHOULD_RUN_DB_TESTS) {
-  // eslint-disable-next-line vitest/valid-describe
   describe.skip('Value Definitions Schema Integrity (skipped — no DB)', () => {});
 } else {
 
@@ -34,11 +34,13 @@ describe('Value Definitions Schema Integrity', () => {
   });
 
   it('should successfully insert when "Uncategorized" category exists', async () => {
-    // 1. Insert "Uncategorized" into valueCategories
-    await db.insert(valueCategories).values({
-      id: ValueCategory.Uncategorized,
-      name: 'Uncategorized',
-    }).onConflictDoNothing();
+    // 1. Insert "Uncategorized" into valueCategories using SQL to avoid schema mismatch
+    try {
+      await db.execute(sql`INSERT INTO value_categories (id, name) VALUES (${ValueCategory.Uncategorized}, 'Uncategorized') ON CONFLICT DO NOTHING`)
+    } catch (e) {
+      // If insert fails because of missing columns or other schema mismatch, rethrow so test fails meaningfully
+      throw e
+    }
 
     // 2. Insert into valueDefinitions without categoryId
     const result = await db.insert(valueDefinitions).values({

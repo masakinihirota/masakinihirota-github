@@ -66,17 +66,91 @@ npm run supabase:reset
 | `npm run supabase:restart` | 再起動 |
 | `npm run supabase:reset` | DBをリセットし、マイグレーション・シード・**Authトリガー**を再適用 |
 | `npm run supabase:gen-types` | DBスキーマからTypeScript型定義を生成 (`src/types/supabase.ts`) |
+| `pnpm compute:aggregates` | ワーク（作品）評価の集計を実行するバッチスクリプト（DB 必須） |
 
 ## 開発ルール（短いガイド）
 
 以下はこのリポジトリで統一している重要な開発ルール／実務的な運用メモです。
 
 ### テストの実行方法（重要）
-- `pnpm test` (または `npm run test`) は CI フレンドリーな "1回だけ実行して終了" を行うコマンドです。
-- ファイルの変更を監視しながらテストを継続実行したい場合は `pnpm test:watch` を使ってください。
- - 例: 特定テストだけを 1 回実行するには `pnpm test -- -t <testName>` を利用できます。
+ `pnpm test` (または `npm run test`) はローカルでの単発実行を想定したコマンドです（このリポジトリではローカルSupabaseを使った開発が標準です）。
 
+#### ローカル開発チェックリスト（必ず確認）
+開発はローカルSupabase（Docker）で完結する前提です。次の順でローカルの動作確認を行ってください。
+
+1) Supabase の起動とステータス確認
+
+```pwsh
+pnpm run supabase:start
+pnpm run supabase:status
+```
+
+2) 環境変数 `DATABASE_URL` の確認（テスト/マイグレーション用）
+
+```pwsh
+# 例（ローカルSupabase）
+$env:DATABASE_URL = 'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
+```
+
+3) マイグレーション・Auth トリガ・シードの適用（必要なら）
+
+```pwsh
+pnpm run db:migrate
+node scripts/apply-auth-trigger.js   # 必要なら
+pnpm run db:seeds:drizzle
+```
+
+4) DB 統合テストを含めたテスト実行
+
+```pwsh
+$env:RUN_DB_TESTS = '1'
+pnpm test
+```
+
+5) 簡易チェック（自動化）を実行する
+
+```pwsh
+pnpm run dev:verify
+```
+
+##### dev:verify — 使い方 (詳細)
+`dev:verify` は PowerShell スクリプト `scripts/dev-verify.ps1` を呼び出し、ローカル開発環境 (Supabase Local) の簡易セルフチェックを行うための補助ツールです。危険な操作は行わず、以下の動作を行います。
+
+- 環境に `pnpm` があるかを確認
+- `pnpm run supabase:status` で Supabase の稼働状況を確認
+- 環境変数 `DATABASE_URL` がセットされていれば簡易SQLで接続を検査
+
+オプション引数:
+- `-RunAll` — マイグレーション・Auth トリガ・シードの実行を行います（ローカル DB が整っていることが前提です）。
+- `-RunTests` — `-RunAll` と併用すると DB 統合テストを含めてテストを実行します（内部で `RUN_DB_TESTS=1` を設定します）。
+
+実行例 (PowerShell):
+
+1) 簡易チェックだけ実行
+
+```pwsh
+pnpm run dev:verify
+```
+
+2) マイグレーションとシードまで実行
+
+```pwsh
+pwsh ./scripts/dev-verify.ps1 -RunAll
+```
+
+3) マイグレーションから DB 統合テストまでフルで実行
+
+```pwsh
+pwsh ./scripts/dev-verify.ps1 -RunAll -RunTests
+```
+
+注意: `dev:verify` はローカルSupabase を前提にした補助スクリプトです。実行前に `DATABASE_URL` やローカル Supabase のポート等が自分の環境と一致していることを確認してください。
+- ファイルの変更を監視しながらテストを継続実行したい場合は `pnpm test:watch` を使ってください。
+- DB 統合テストはデフォルトでスキップされます。開発ワークフローは **ローカルSupabase（Docker）での完結**を前提としており、CI で自動的に DB 統合テストを実行する設定はプロジェクト方針上廃止されています。DB 統合テストを実行するには、ローカル環境で明示的に環境変数を設定してください。
+
+または DATABASE_URL を指す接続文字列を用意してからテストを実行します。CI に依存せずローカルで検証することで開発コストと時間を削減してください。
 ### 追加: テスト環境の詳細と DB テスト実行方法
+理由: デフォルトのウォッチモードで止まってしまうと自動化やCIで想定外の状態になるため、`pnpm test` は単発実行にしてあります。なお、このプロジェクトのワークフローはローカル完結を標準とし、CI上でのDBテスト自動実行は行わない方針です。
 
 - テストは Vitest を使用しています。グローバルな jest-dom マッチャは `vitest.setup.ts` で読み込まれるため、各テストファイルで `import "@testing-library/jest-dom"` を個別に書く必要はありません。
 - DB 統合テストはデフォルトでスキップされます（ローカル / CI に Postgres が無い環境でもテストが失敗しないため）。DB 統合テストを実行するには、明示的に環境変数を設定してください。
@@ -94,6 +168,14 @@ $env:RUN_DB_TESTS='1'; pnpm test
 ```pwsh
 pnpm test -- -t CreateRootAccount
 ```
+
+### バッチ処理 / CI の仕組み
+
+このリポジトリには、作品評価の集計を行うバッチ実装と CI ワークフローが追加されています。
+
+- バッチスクリプト: `scripts/compute-work-aggregates.js` — Postgres に接続して `profile_works` を集計し `work_aggregates` テーブルに upsert します。
+- 実行方法: `pnpm compute:aggregates`（実行には DB への接続文字列 `DATABASE_URL` が必要です）
+- CI: `.github/workflows/compute-aggregates.yml` — push / PR に対して Postgres サービスを起動し、マイグレーション → 統合テスト → バッチ実行の流れを自動で実行するワークフローを追加済みです。
 
 ---
 

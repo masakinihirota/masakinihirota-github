@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+/** @vitest-environment jsdom */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { LoginForm } from './LoginForm'
-import * as supabaseClient from '@/lib/supabase/client'
 
 // Mock createClient
 const { mockSignInWithOAuth } = vi.hoisted(() => {
@@ -17,20 +17,26 @@ vi.mock('@/lib/supabase/client', () => ({
 }))
 
 describe('LoginForm', () => {
-    const originalLocation: any = window.location
+    const originalLocation = window.location
 
     beforeEach(() => {
         vi.clearAllMocks()
         mockSignInWithOAuth.mockResolvedValue({ error: null })
 
-        // Mock location.origin
-        delete (window as any).location
-        window.location = { ...originalLocation, origin: 'http://localhost:3000' } as any
+        // Mock location.origin (use defineProperty to avoid TS 'any' casts)
+        const newLocation = { ...originalLocation, origin: 'http://localhost:3000' } as unknown as Location
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: newLocation,
+        })
     })
 
     afterEach(() => {
         // restore original location
-        ; (window as any).location = originalLocation
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: originalLocation,
+        })
     })
 
     it('renders login button', () => {
