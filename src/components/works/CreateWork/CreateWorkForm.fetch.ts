@@ -1,7 +1,6 @@
 "use client"
 
-import { createWork } from '@/actions/createWork.fetch'
-
+// Client-side wrapper: POST to server API route to avoid importing server-side DB into client bundle
 export async function createWorkAction(_prevState: unknown, formData: FormData) {
   const title = formData.get('title')?.toString() ?? ''
   const categoryId = formData.get('categoryId')?.toString() ?? 'other'
@@ -17,8 +16,10 @@ export async function createWorkAction(_prevState: unknown, formData: FormData) 
 
   try {
     const payload = { title: title.trim(), categoryId, authors: authors ? authors.split(',').map((s) => s.trim()) : [], releaseYear, size, mediaUrl }
-    const result = await createWork(payload, { session: { user: { id: 'user-123' } } })
-    return { success: true, data: result }
+
+    const res = await fetch('/api/works', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
+    const json = await res.json()
+    return json
   } catch (err) {
     return { success: false, message: 'Server error', error: err }
   }
