@@ -12,7 +12,6 @@ import { eq } from 'drizzle-orm';
 const SHOULD_RUN_DB_TESTS = (process.env.RUN_DB_TESTS === '1') || Boolean(process.env.DATABASE_URL);
 
 if (!SHOULD_RUN_DB_TESTS) {
-  // eslint-disable-next-line vitest/valid-describe
   describe.skip('Value Definitions Schema Integrity (skipped — no DB)', () => {});
 } else {
 

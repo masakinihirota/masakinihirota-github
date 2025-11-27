@@ -87,7 +87,7 @@ export const RootAccountsDashboard: React.FC = () => {
 
 const UserProfilesSection: React.FC = () => (
 	<Card className='border-2 shadow-lg border-accent/20'>
-		<CardHeader className='bg-gradient-to-r from-accent/5 to-primary/5'>
+		<CardHeader className='bg-linear-to-r from-accent/5 to-primary/5'>
 			<CardTitle className='text-xl'>
 				<Users className='inline w-6 h-6 mr-2 text-accent' />
 				ユーザープロフィールリスト
@@ -233,7 +233,7 @@ const ProfileRow: React.FC<ProfileRowProps> = ({
 
 const NewProfileSection: React.FC = () => (
 	<Card className='border-2 border-green-200 shadow-md'>
-		<CardHeader className='bg-gradient-to-r from-green-50 to-emerald-50'>
+		<CardHeader className='bg-linear-to-r from-green-50 to-emerald-50'>
 			<CardTitle className='flex items-center space-x-2 text-xl'>
 				<span className='text-green-600'>+</span>
 				<span>新規ユーザープロフィール作成</span>

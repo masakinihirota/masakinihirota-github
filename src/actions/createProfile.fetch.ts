@@ -14,7 +14,7 @@ export async function createProfile(
   ctx?: { session?: { user?: { id: string } } } | null
 ) {
   // Validation first using logic layer
-  const validated = normalizeAndValidateProfile(payload as any)
+  const validated = normalizeAndValidateProfile(payload)
 
   // Authentication check
   if (!ctx?.session || !ctx.session.user) {

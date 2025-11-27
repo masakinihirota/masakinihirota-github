@@ -2,8 +2,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
-import { CreateProfileForm } from './CreateProfileForm'
-import * as fetchLogic from './CreateProfileForm.fetch'
+import { CreateProfileForm } from '@/components/profile/CreateProfileForm/CreateProfileForm'
+import * as fetchLogic from '@/components/profile/CreateProfileForm/CreateProfileForm.fetch'
 
 // Mock the server action wrapper
 vi.mock('./CreateProfileForm.fetch', () => ({
@@ -36,7 +36,7 @@ describe('CreateProfileForm (UI) - RED tests', () => {
     it('calls createProfileAction with correct data on valid submit', async () => {
         const user = userEvent.setup()
         const mockAction = vi.mocked(fetchLogic.createProfileAction)
-        mockAction.mockResolvedValue({ success: true })
+        mockAction.mockResolvedValue({ success: true, data: { success: true, profileId: 'test-profile-1', organizationId: null } })
 
         render(<CreateProfileForm />)
 
