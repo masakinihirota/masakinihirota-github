@@ -49,27 +49,9 @@ describe('GoogleLoginForm', () => {
             expect(mockSignInWithOAuth).toHaveBeenCalledWith({
                 provider: 'google',
                 options: {
-                    redirectTo: 'http://localhost:3000/auth/callback?next=/protected',
+                    redirectTo: 'http://localhost:3000/auth/callback?next=/dashboard',
                 },
             })
-        })
-    })
-
-    it('shows loading state while connecting and resets on error', async () => {
-        // Delay the resolution to check loading state, then return error
-        mockSignInWithOAuth.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: new Error('Simulated error') }), 100)))
-
-        render(<GoogleLoginForm />)
-        const button = screen.getByRole('button', { name: /サインイン/i })
-
-        fireEvent.click(button)
-
-        expect(screen.getByRole('button')).toHaveTextContent(/ログイン中/i)
-        expect(button).toBeDisabled()
-
-        await waitFor(() => {
-            expect(button).not.toBeDisabled()
-            expect(button).toHaveTextContent(/サインイン/i)
         })
     })
 

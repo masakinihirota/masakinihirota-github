@@ -23,6 +23,7 @@
     "db:apply-trigger": "node scripts/apply-auth-trigger.js",
     "generate:routes": "node ./scripts/generate-route-manifest.js",
     "db:seeds:drizzle": "tsx drizzle/seeds/seeds.ts",
+    "db:seed": "tsx src/db/seed.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",

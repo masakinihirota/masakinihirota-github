@@ -40,7 +40,7 @@ export function AnonymousLoginForm({
       if (error) throw error;
 
       // ログイン成功後にリダイレクト（保護されたルートへ）
-      router.push("/protected");
+      router.push("/dashboard");
     } catch (error: unknown) {
       setError(
         error instanceof Error

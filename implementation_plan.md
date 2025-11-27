@@ -38,18 +38,29 @@
 
 ### Phase 3: ユーザープロフィール管理 (現在)
 要件定義書 2.1.3 に基づき実装。
-- [ ] **マスタデータ整備**
-    - [ ] Works (作品) / Values (価値観) のシードデータ投入
-- [ ] **ユーザープロフィール作成機能 (TDD)**
-    - [ ] プロフィール基本情報入力 (千の仮面: 複数作成可)
-    - [ ] 役割選択 (リーダー/メンバー)
-    - [ ] 目的設定 (仕事, 遊び, 婚活等)
-    - [ ] 種類選択 (本人/インタビュー/他者視点)
-    - [ ] **組織自動作成処理** (リーダー選択時、自動的に1人組織を作成)
-- [ ] **作品登録・評価機能** (要件定義書 2.1.4 - 2.1.5)
-    - [ ] 作品検索・選択 UI
-    - [ ] 評価入力 (Tier 1-3, 普通/合わない)
-    - [ ] 状態入力 (今/人生/未来)
+
+#### 3.0 構造修正 (優先)
+- [ ] **ディレクトリ構成の適正化**
+    - [ ] `src/app/protected/page.tsx` を `src/app/(protected)/dashboard/page.tsx` に移動
+    - [ ] ログイン後のリダイレクト先を `/protected` から `/dashboard` に変更
+    - [ ] 関連するテスト (`google-login-form.test.tsx`) の修正
+
+#### 3.1 マスタデータ整備
+- [ ] **シードデータ作成**
+    - [ ] `src/db/seeds/works.ts` (作品データ)
+    - [ ] `src/db/seeds/values.ts` (価値観データ)
+    - [ ] `package.json` にシード実行コマンド追加 (`pnpm db:seed`)
+
+#### 3.2 ユーザープロフィール作成機能 (TDD)
+- [ ] **Server Action 実装** (`src/app/(protected)/(3-profile)/create/_actions/create-profile.ts`)
+    - [ ] [RED] テスト作成 (`create-profile.test.ts`)
+        - ケース: 未認証, バリデーションエラー, 正常系(組織自動作成含む)
+    - [ ] [GREEN] 実装
+    - [ ] [REFACTOR] リファクタリング
+- [ ] **UI 実装** (`src/app/(protected)/(3-profile)/create/page.tsx`)
+    - [ ] プロフィール基本情報入力フォーム
+    - [ ] 役割・目的・種類選択
+    - [ ] 組織自動作成の確認
 
 ### Phase 4: 組織 (Organization) 管理
 要件定義書 2.1.8 に基づき実装。
