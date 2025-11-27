@@ -1,4 +1,4 @@
--- 0004_add_user_features.sql
+-- 0005_add_user_features.sql
 -- Add additional tables and alter existing tables to support:
 --  - profile-level work ratings/status (tier/state/claps)
 --  - extended works metadata (authors, release_year, genres, URLs, approved)

@@ -42,6 +42,36 @@ export const organizationRoles = pgTable("organization_roles", {
   name: text("name").notNull(),
 });
 
+// --- RBAC Tables ---
+
+export const permissions = pgTable("permissions", {
+  id: text("id").primaryKey(), // e.g. 'org.create', 'user.ban'
+  description: text("description"),
+  category: text("category").notNull(), // 'system', 'organization', 'nation'
+});
+
+export const roles = pgTable("roles", {
+  id: text("id").primaryKey(), // e.g. 'admin', 'org_leader', 'nation_king'
+  name: text("name").notNull(),
+  scope: text("scope").notNull(), // 'system', 'organization', 'nation'
+  description: text("description"),
+});
+
+export const rolePermissions = pgTable("role_permissions", {
+  roleId: text("role_id").notNull().references(() => roles.id, { onDelete: "cascade" }),
+  permissionId: text("permission_id").notNull().references(() => permissions.id, { onDelete: "cascade" }),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.roleId, t.permissionId] }),
+}));
+
+export const userSystemRoles = pgTable("user_system_roles", {
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  roleId: text("role_id").notNull().references(() => roles.id, { onDelete: "cascade" }),
+  assignedAt: timestamp("assigned_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.userId, t.roleId] }),
+}));
+
 // --- Main Tables ---
 
 // Users table (Synced with Supabase Auth)
@@ -160,12 +190,23 @@ export const organizations = pgTable("organizations", {
 export const organizationMembers = pgTable("organization_members", {
   organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
   profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
-  roleId: text("role_id").notNull().default('member').references(() => organizationRoles.id),
+  roleId: text("role_id").notNull().default('member').references(() => roles.id),
   joinedAt: timestamp("joined_at", { withTimezone: true, mode: "date" }).defaultNow(),
 }, (t) => ({
   pk: primaryKey({ columns: [t.organizationId, t.profileId] }),
   profileIdx: index("idx_org_members_profile_id").on(t.profileId),
   roleIdIdx: index("idx_org_members_role_id").on(t.roleId),
+}));
+
+// Nation Profile Roles (e.g. King, Minister)
+export const nationProfileRoles = pgTable("nation_profile_roles", {
+  nationId: uuid("nation_id").notNull().references(() => nations.id, { onDelete: "cascade" }),
+  profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  roleId: text("role_id").notNull().references(() => roles.id),
+  assignedAt: timestamp("assigned_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.nationId, t.profileId, t.roleId] }),
+  profileIdx: index("idx_nation_profile_roles_profile_id").on(t.profileId),
 }));
 
 // Nations

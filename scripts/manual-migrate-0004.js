@@ -5,7 +5,7 @@ const sql = postgres('postgresql://postgres:postgres@127.0.0.1:54322/postgres');
 
 async function main() {
     try {
-        const migrationSql = fs.readFileSync('drizzle/0004_add_user_features.sql', 'utf8');
+        const migrationSql = fs.readFileSync('drizzle/0005_add_user_features.sql', 'utf8');
         console.log('Applying migration 0004...');
 
         // Check version - REMOVED to avoid noise

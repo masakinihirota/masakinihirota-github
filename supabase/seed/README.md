@@ -37,8 +37,8 @@ How to run
 # ensure you're linked to the right supabase project
 supabase link
 
-# run all seed files using the master entrypoint
-supabase db seed --file ./supabase/seed.sql
+# run migrations then execute the master seed entrypoint (seed.sql is run automatically)
+supabase db reset --yes
 ```
 
 2) Using psql (when DATABASE_URL is set or when you connect to PG directly):
@@ -62,7 +62,7 @@ supabase start
 
 # master シードを実行（ドメイン分割ファイルを順番に適用）
 supabase start
-supabase db seed --file ./supabase/seed.sql
+supabase db reset --yes
 Note: `supabase reset` also runs migration+seed in one go for your linked project.
 
 ```

@@ -22,7 +22,7 @@
     "supabase:migration:new": "supabase migration new",
     "db:apply-trigger": "node scripts/apply-auth-trigger.js",
     "generate:routes": "node ./scripts/generate-route-manifest.js",
-    "db:seed": "supabase db seed --file ./supabase/seed.sql",
+    "db:seed": "supabase db reset --yes",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
