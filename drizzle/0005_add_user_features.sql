@@ -1,4 +1,4 @@
--- 0004_add_user_features.sql
+-- 0005_add_user_features.sql
 -- Add additional tables and alter existing tables to support:
 --  - profile-level work ratings/status (tier/state/claps)
 --  - extended works metadata (authors, release_year, genres, URLs, approved)
@@ -28,7 +28,7 @@ ALTER TABLE works
   ADD COLUMN IF NOT EXISTS created_by uuid;
 
 ALTER TABLE works
-  ADD CONSTRAINT IF NOT EXISTS works_created_by_root_account_fk FOREIGN KEY (created_by) REFERENCES public.root_accounts(id) ON DELETE SET NULL;
+  ADD CONSTRAINT works_created_by_root_account_fk FOREIGN KEY (created_by) REFERENCES public.root_accounts(id) ON DELETE SET NULL;
 
 -- 3) points ledger tables
 CREATE TABLE IF NOT EXISTS root_account_points (

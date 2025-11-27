@@ -16,14 +16,13 @@
     "supabase:stop": "supabase stop",
     "supabase:status": "supabase status",
     "supabase:restart": "supabase stop && supabase start",
-    "supabase:reset": "supabase db reset && npm run db:apply-trigger",
+    "supabase:reset": "supabase db reset --no-seed --yes && npm run db:apply-trigger",
     "supabase:link": "supabase link",
     "supabase:gen-types": "supabase gen types typescript --local > src/types/supabase.ts",
     "supabase:migration:new": "supabase migration new",
     "db:apply-trigger": "node scripts/apply-auth-trigger.js",
     "generate:routes": "node ./scripts/generate-route-manifest.js",
-    "db:seeds:drizzle": "tsx drizzle/seeds/seeds.ts",
-    "db:seed": "tsx src/db/seed.ts",
+    "db:seed": "pnpm run supabase:reset -- --no-seed --yes && node ./scripts/apply-drizzle-sql.mjs && node scripts/apply-auth-trigger.js && (cd supabase && psql -h 127.0.0.1 -U postgres -p 54322 -d postgres -f seed.sql)",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -33,8 +32,10 @@
     "check": "biome check --write ./src",
     "coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
+    "test:integration": "pwsh ./scripts/dev-verify.ps1 -RunAll -RunTests",
     "dev:verify": "pwsh ./scripts/dev-verify.ps1",
-    "compute:aggregates": "node ./scripts/compute-work-aggregates.js"
+    "compute:aggregates": "node ./scripts/compute-work-aggregates.js",
+    "check:client-imports": "node ./scripts/check-client-imports.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

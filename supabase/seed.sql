@@ -1,7 +1,7 @@
 -- Seed file (supabase/seed.sql)
 -- This file contains idempotent seed SQL suitable for use with the Supabase CLI
 -- (https://supabase.com/docs/guides/local-development/seeding-your-database).
--- Execute with: supabase db seed --file ./supabase/seed.sql
+-- Execute with: supabase db reset --yes  # reset runs migrations then executes the master seed (supabase/seed.sql)
 
 \echo 'Seeding: 01_reference.sql'
 \i ./seed/01_reference.sql

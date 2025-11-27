@@ -21,8 +21,8 @@ Files (split by domain)
 - `09_relations.sql` — follows + match_history
 
 注意事項
-- カテゴリ ID: `work_categories` の `id` は内部キー（例: `Book`, `Movie`, `Game`）です。
-	`04_works.sql` では `category_id` に内部キーを使う必要があります（表示名の日本語ではなくIDを指定してください）。
+- カテゴリ ID: `work_categories` の `id` は内部キーです。アプリケーションやテストで利用しているIDは次のとおりです: `novel`, `manga`, `anime`, `movie`, `game`, `drama`, `book`, `music`, `other`。
+	`04_works.sql` では `category_id` にこの内部キーを使う必要があります（表示名の日本語ではなくIDを指定してください）。
 - 古いファイル `0001_initial_data.sql` は英語で書かれた旧式の一括シードで、現在は運用上の混乱を避けるためマスター `seed.sql` に含めていません。必要であれば手動で利用できますが、基本はドメイン分割済み (`01_...`〜`09_...`) のシードを使ってください。
 - ほとんどのINSERTは `ON CONFLICT` が使われていますが、環境やユニーク制約変更によって動作が変わる可能性があるため、繰り返し実行する前に目視で確認してください。
 
@@ -37,8 +37,8 @@ How to run
 # ensure you're linked to the right supabase project
 supabase link
 
-# run all seed files using the master entrypoint
-supabase db seed --file ./supabase/seed.sql
+# run migrations then execute the master seed entrypoint (seed.sql is run automatically)
+supabase db reset --yes
 ```
 
 2) Using psql (when DATABASE_URL is set or when you connect to PG directly):
@@ -62,8 +62,8 @@ supabase start
 
 # master シードを実行（ドメイン分割ファイルを順番に適用）
 supabase start
-supabase reset
-シードファイルは👆️この2つのコマンドで一緒に読み込まれます。
+supabase db reset --yes
+Note: `supabase reset` also runs migration+seed in one go for your linked project.
 
 ```
 
@@ -93,7 +93,7 @@ Note: `gen_random_uuid()` が動かない場合は pgcrypto 拡張が無効に�
 
 Special notes
 - `auth.users` triggers: if your project requires synchronizing `auth.users` to `public.users` (the project uses trigger function `handle_new_user`), please ensure the trigger exists. Because of Supabase auth permissions this trigger often must be created manually via the Supabase Dashboard SQL editor; see `drizzle/auth_trigger_manual.sql` in the repo for the required statements.
-  
+
 Auth trigger — どうやって適用するか（手順）
 ----------------------------------------
 - 推奨 (ホストされた Supabase / 本番): Supabase Dashboard の SQL Editor を開いて、リポジトリの `drizzle/auth_trigger_manual.sql` を丸ごと貼り付けて実行してください。`auth` スキーマへの権限制限があるため、ダッシュボード経由で実行するのが最も確実です。

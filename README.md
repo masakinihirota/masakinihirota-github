@@ -76,7 +76,12 @@ npm run supabase:reset
  `pnpm test` (または `npm run test`) はローカルでの単発実行を想定したコマンドです（このリポジトリではローカルSupabaseを使った開発が標準です）。
 
 #### ローカル開発チェックリスト（必ず確認）
+# NOTE: TypeScript/Drizzle seeding has been migrated to Supabase SQL and is deprecated.
+# Use the canonical Supabase SQL seed runner:
+pnpm run db:seed
+```
 開発はローカルSupabase（Docker）で完結する前提です。次の順でローカルの動作確認を行ってください。
+	(deprecated — TypeScript/Drizzle seeds migrated to `supabase/seed/*.sql`. Original TypeScript/Drizzle seed sources were archived and have now been permanently removed.)
 
 1) Supabase の起動とステータス確認
 
@@ -95,9 +100,10 @@ $env:DATABASE_URL = 'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
 3) マイグレーション・Auth トリガ・シードの適用（必要なら）
 
 ```pwsh
-pnpm run db:migrate
-node scripts/apply-auth-trigger.js   # 必要なら
-pnpm run db:seeds:drizzle
+	pnpm run db:migrate
+	node scripts/apply-auth-trigger.js   # 必要なら
+	# Use the canonical Supabase SQL seed runner
+	pnpm run db:seed
 ```
 
 4) DB 統合テストを含めたテスト実行
@@ -176,6 +182,27 @@ pnpm test -- -t CreateRootAccount
 - バッチスクリプト: `scripts/compute-work-aggregates.js` — Postgres に接続して `profile_works` を集計し `work_aggregates` テーブルに upsert します。
 - 実行方法: `pnpm compute:aggregates`（実行には DB への接続文字列 `DATABASE_URL` が必要です）
 - CI: `.github/workflows/compute-aggregates.yml` — push / PR に対して Postgres サービスを起動し、マイグレーション → 統合テスト → バッチ実行の流れを自動で実行するワークフローを追加済みです。
+
+## クライアント/サーバ境界のガイドライン（MVPルール）
+
+このプロジェクトではクライアント側のバンドルにサーバ専用モジュール（例: `@/lib/db`, `drizzle-orm`, `postgres`, `@/db/schema` 等）が含まれないように徹底します。MVPとしてまずは以下を守ってください：
+
+- クライアントコンポーネント（`"use client"` を含むファイル）はサーバ専用モジュールを import しない。
+- クライアント側でサーバ処理が必要な場合は、Server Action を呼ぶのではなく、`/api/*` のサーバ API エンドポイント（`next/server` runtime）を経由して HTTP POST/GET で呼ぶ。
+- コンポーネント内の `*.fetch.ts` は副作用をまとめる場所ですが、`use client` ファイルにはサーバ専用 import を置かないこと。
+
+自動チェック:
+
+- 既にスクリプト `scripts/check-client-imports.js` を追加しています。クライアント側ファイルに `use client` が含まれるファイル内で、上記の server-only module を import していないかを検出します。CIに組み込むことで、間違った import が PR で混入しにくくなります。
+
+実行方法:
+
+```bash
+pnpm run check:client-imports
+```
+
+CI ルールの例: PR のビルド中にこのチェックを実行し、違反があればビルドを失敗させることを推奨します。
+
 
 ---
 

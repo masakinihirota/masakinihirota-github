@@ -48,9 +48,18 @@ if (-not $env:DATABASE_URL) {
 if ($RunAll) {
   Write-Host "\nRunning migrations, applying auth trigger, and seeding DB..." -ForegroundColor Cyan
   $env:DATABASE_URL = $env:DATABASE_URL -or 'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
-  pnpm run db:migrate
+  # Reset supabase local DB and re-apply Drizzle migrations, triggers and canonical SQL seeds
+  # Reset without running the supabase built-in seeder (we will run our drizzle migrations + custom seed afterwards)
+  pnpm run supabase:reset -- --no-seed --yes
+  # Apply Drizzle SQL files in order (ensures columns/tables are created as expected)
+  node ./scripts/apply-drizzle-sql.mjs
   node scripts/apply-auth-trigger.js || Write-Warning 'apply-auth-trigger.js failed (may be permission related).'
-  pnpm run db:seeds:drizzle
+  # Finally run the SQL seed entrypoint directly in the supabase directory
+  Push-Location supabase
+  $env:PGPASSWORD = $env:PGPASSWORD -or 'postgres'
+  $env:PGCLIENTENCODING = 'UTF8'
+  pnpm exec -- psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -f seed.sql
+  Pop-Location
   if ($RunTests) {
     Write-Host "\nRunning tests including DB integration tests..." -ForegroundColor Cyan
     $env:RUN_DB_TESTS = '1'
