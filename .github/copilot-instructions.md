@@ -37,6 +37,8 @@ implementation_plan.md
 - **Testing**: Vitest + React Testing Library (TDD)
 - **Deployment**: Vercel (予定)
 
+shell は Windows11 の powershell を利用します。
+
 ## 3. 開発方針
 
 - **テスト駆動開発 (TDD)**: RED -> GREEN -> REFACTOR のサイクルを徹底する。
