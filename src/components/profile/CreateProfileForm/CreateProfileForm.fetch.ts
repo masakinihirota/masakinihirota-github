@@ -1,23 +1,31 @@
-"use server"
+"use client"
 
-import { createProfile } from '@/actions/createProfile.fetch'
-
+// Client wrapper for CreateProfileForm — posts to server API route to avoid bundling server-only modules.
 export async function createProfileAction(_prevState: unknown, formData: FormData) {
   const name = formData.get('name')?.toString() ?? ''
   const role = formData.get('role')?.toString() ?? 'member'
   const type = formData.get('type')?.toString() ?? 'self'
 
-  // Minimal validation — keep consistent with logic layer
   if (!name || name.trim().length === 0) {
     return { success: false, errors: { name: ['name is required'] }, message: 'Validation failed' }
   }
 
   try {
-    // Call central action — in prod this should ensure session exists
-    const result = await createProfile({ rootAccountId: 'root_1', name: name.trim(), role, type }, { session: { user: { id: 'user-123' } } })
-    return { success: true, data: result }
+    const res = await fetch('/api/profiles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rootAccountId: 'root_1', name: name.trim(), role, type }),
+    })
+
+    if (!res.ok) {
+      const errText = await res.text()
+      return { success: false, error: errText }
+    }
+
+    const json = await res.json()
+    return json
   } catch (err) {
-    return { success: false, message: 'Server error', error: err }
+    return { success: false, error: err }
   }
 }
 

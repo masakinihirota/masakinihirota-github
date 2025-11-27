@@ -1,7 +1,7 @@
 "use client"
 
-import { upsertProfileWork } from '@/actions/upsertProfileWork.fetch'
-
+// Client wrapper that uses server API route to perform upsertProfileWork.
+// Avoids importing server-only modules from the client bundle.
 export async function upsertProfileWorkAction(_prevState: unknown, formData: FormData) {
   const profileId = formData.get('profileId')?.toString() ?? ''
   const workId = formData.get('workId')?.toString() ?? ''
@@ -13,8 +13,19 @@ export async function upsertProfileWorkAction(_prevState: unknown, formData: For
   const liked = formData.get('liked') === 'true'
 
   try {
-    const result = await upsertProfileWork({ profileId, workId, status, tier, claps, liked })
-    return { success: true, data: result }
+    const res = await fetch('/api/profile-works', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profileId, workId, status, tier, claps, liked }),
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      return { success: false, error: errorText }
+    }
+
+    const payload = await res.json()
+    return payload
   } catch (err) {
     return { success: false, error: err }
   }

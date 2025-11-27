@@ -50,7 +50,8 @@ if ($RunAll) {
   $env:DATABASE_URL = $env:DATABASE_URL -or 'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
   pnpm run db:migrate
   node scripts/apply-auth-trigger.js || Write-Warning 'apply-auth-trigger.js failed (may be permission related).'
-  pnpm run db:seeds:drizzle
+  # Use canonical Supabase SQL seed runner for consistent local seeding
+  pnpm run db:seed
   if ($RunTests) {
     Write-Host "\nRunning tests including DB integration tests..." -ForegroundColor Cyan
     $env:RUN_DB_TESTS = '1'

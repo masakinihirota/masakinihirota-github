@@ -41,15 +41,16 @@
 
 #### 3.0 構造修正 (優先)
 - [ ] **ディレクトリ構成の適正化**
-    - [ ] `src/app/protected/page.tsx` を `src/app/(protected)/dashboard/page.tsx` に移動
-    - [ ] ログイン後のリダイレクト先を `/protected` から `/dashboard` に変更
-    - [ ] 関連するテスト (`google-login-form.test.tsx`) の修正
+    - [x] `src/app/protected/page.tsx` を `src/app/(protected)/dashboard/page.tsx` に移動
+    - [x] ログイン後のリダイレクト先を `/protected` から `/dashboard` に変更
+    - [x] 関連するテスト (`google-login-form.test.tsx`) の修正
 
 #### 3.1 マスタデータ整備
-- [ ] **シードデータ作成**
-    - [ ] `src/db/seeds/works.ts` (作品データ)
-    - [ ] `src/db/seeds/values.ts` (価値観データ)
-    - [ ] `package.json` にシード実行コマンド追加 (`pnpm db:seed`)
+- [x] **シードデータ作成 & 統合**
+    - [x] `src/db/seeds/works.ts` (作品データ) — データを `supabase/seed/04_works.sql` に統合
+    - [x] `src/db/seeds/values.ts` (価値観データ) — データを `supabase/seed/01_reference.sql` に統合
+    - [x] `package.json` にシード実行コマンド追加 (`pnpm db:seed`) — TypeScript/Drizzle 版を廃止
+    - [x] TypeScript/Drizzle シードは `supabase/seed/legacy/` にアーカイブし、コード上では非推奨化（プレースホルダ）しました。
 
 #### 3.2 ユーザープロフィール作成機能 (TDD)
 - [ ] **Server Action 実装** (`src/app/(protected)/(3-profile)/create/_actions/create-profile.ts`)
@@ -82,3 +83,35 @@
 
 ## 5. 次のステップ
 Phase 3 のマスタデータ整備とユーザープロフィール作成機能の実装に着手します。
+
+---
+
+## MVP 実装チェックリスト (最小限)
+以下は MVP の最小実装項目で、段階的に完了させるためのチェックリストです。
+
+1. 基盤と安全策（完了）
+    - [x] CI に production build を通す仕組みを持たせる
+    - [x] クライアント側でサーバ専用 import をしてしまうミスを検知するチェックスクリプト (`scripts/check-client-imports.js`) を追加
+    - [x] README に境界ルールとスクリプトの実行方法を追記
+
+2. 作品 & プロフィール 操作（完了）
+    - [x] Work 作成サーバアクション + CreateWork UI + tests
+    - [x] Work 検索アクション + client wrapper + tests
+    - [x] Profile 作成 + 選択作品の upsert (ProfileWork) + tests
+
+3. 評価集計・ジョブ（完了）
+    - [x] `computeWorkAggregates` 集計ロジック、テーブル、バッチスクリプト を実装
+    - [x] 集計の統合テストと CI ワークフローを追加
+
+4. マッチング（MVP実装）
+    - [x] 最小限のマッチングロジック (`computeMatchesForProfile`) を実装（pure logic + unit tests）
+    - [x] サーバアクション (`computeMatches`) を追加し、integration test を用意
+    - [x] CI で matching の integration test を実行するようにワークフローを更新
+
+5. 検証とリリース準備
+    - [x] 全テスト（unit/ui）と production build を実行し合格
+    - [ ] ドキュメント整理とリリースノート作成（本タスク: 残り）
+
+---
+
+現状: 上記の MVP チェックリスト 1-4 は完了しました。次は最終ドキュメント整理／PR／リリースノート作成を進め、MVP を正式にまとめます。

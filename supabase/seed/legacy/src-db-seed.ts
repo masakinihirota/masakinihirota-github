@@ -1,3 +1,5 @@
+// Archived application-local TypeScript seeder (src/db/seed.ts)
+
 import { db } from "@/lib/db";
 import { workCategories, valueCategories, works, valueDefinitions } from "@/db/schema";
 import { workCategoriesData } from "./seeds/data/work-categories";
