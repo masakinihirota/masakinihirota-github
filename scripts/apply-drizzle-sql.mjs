@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
 
-const DRIZZLE_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'drizzle');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DRIZZLE_DIR = path.join(__dirname, '..', 'drizzle');
 
 function getDbArgs() {
   const url = process.env.DATABASE_URL || 'postgresql://postgres:postgres@127.0.0.1:54322/postgres';
