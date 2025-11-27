@@ -13,9 +13,12 @@ export async function generateStaticParams() {
     return available.map((slug) => ({ slug }));
 }
 
-export default function SamplePage({ params }: { params: { slug: string } }) {
-    const { slug } = params;
-    const Component = componentsMap[slug];
+export default function SamplePage(props: unknown) {
+    // relax the incoming props typing because Next.js generated type checks
+    // can be strict; we handle params dynamically here but avoid `any`.
+    const { params } = (props as { params?: { slug?: string } }) ?? {};
+    const slug = params?.slug;
+    const Component = typeof slug === 'string' ? componentsMap[slug] : undefined;
     if (!Component) {
         return (
             <div className="min-h-screen bg-white">
