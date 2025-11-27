@@ -50,7 +50,7 @@
     - [x] `src/db/seeds/works.ts` (作品データ) — データを `supabase/seed/04_works.sql` に統合
     - [x] `src/db/seeds/values.ts` (価値観データ) — データを `supabase/seed/01_reference.sql` に統合
     - [x] `package.json` にシード実行コマンド追加 (`pnpm db:seed`) — TypeScript/Drizzle 版を廃止
-    - [x] TypeScript/Drizzle シードは `supabase/seed/legacy/` にアーカイブし、コード上では非推奨化（プレースホルダ）しました。
+    - [x] TypeScript/Drizzle シードは `supabase/seed/*.sql` に統合しました。旧シードのアーカイブは行われましたが、最終的に `supabase/seed/legacy/` の内容は恒久削除しました。
 
 #### 3.2 ユーザープロフィール作成機能 (TDD)
 - [ ] **Server Action 実装** (`src/app/(protected)/(3-profile)/create/_actions/create-profile.ts`)

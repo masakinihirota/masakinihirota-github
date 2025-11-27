@@ -52,7 +52,7 @@ if ($RunAll) {
   # Reset without running the supabase built-in seeder (we will run our drizzle migrations + custom seed afterwards)
   pnpm run supabase:reset -- --no-seed --yes
   # Apply Drizzle SQL files in order (ensures columns/tables are created as expected)
-  node ./scripts/apply-drizzle-sql.js
+  node ./scripts/apply-drizzle-sql.mjs
   node scripts/apply-auth-trigger.js || Write-Warning 'apply-auth-trigger.js failed (may be permission related).'
   # Finally run the SQL seed entrypoint directly in the supabase directory
   Push-Location supabase

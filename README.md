@@ -81,7 +81,7 @@ npm run supabase:reset
 pnpm run db:seed
 ```
 開発はローカルSupabase（Docker）で完結する前提です。次の順でローカルの動作確認を行ってください。
-	(deprecated — TypeScript/Drizzle seeds migrated to `supabase/seed/*.sql`. Original TS seeds archived in `supabase/seed/legacy/`.)
+	(deprecated — TypeScript/Drizzle seeds migrated to `supabase/seed/*.sql`. Original TypeScript/Drizzle seed sources were archived and have now been permanently removed.)
 
 1) Supabase の起動とステータス確認
 

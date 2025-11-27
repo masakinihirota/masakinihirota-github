@@ -22,7 +22,7 @@
     "supabase:migration:new": "supabase migration new",
     "db:apply-trigger": "node scripts/apply-auth-trigger.js",
     "generate:routes": "node ./scripts/generate-route-manifest.js",
-    "db:seed": "pnpm run supabase:reset -- --no-seed --yes && node ./scripts/apply-drizzle-sql.js && node scripts/apply-auth-trigger.js && (cd supabase && psql -h 127.0.0.1 -U postgres -p 54322 -d postgres -f seed.sql)",
+    "db:seed": "pnpm run supabase:reset -- --no-seed --yes && node ./scripts/apply-drizzle-sql.mjs && node scripts/apply-auth-trigger.js && (cd supabase && psql -h 127.0.0.1 -U postgres -p 54322 -d postgres -f seed.sql)",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
