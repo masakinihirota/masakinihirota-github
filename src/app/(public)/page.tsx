@@ -27,6 +27,11 @@ export default function LandingPage() {
                     <Link href="/onboarding/guest">
                         <Button variant="outline" size="lg">匿名で試す</Button>
                     </Link>
+                    {/* sampleページへのリンク */}
+                    <Link href="/sample">
+                        <Button variant="ghost" size="lg">UI サンプルを見る</Button>
+                    </Link>
+
                 </div>
             </div>
         </section>

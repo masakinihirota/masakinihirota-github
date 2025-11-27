@@ -55,41 +55,106 @@
 #### 3.2 ユーザープロフィール作成機能 (TDD)
 - [ ] **Server Action 実装** (`src/app/(protected)/(3-profile)/create/_actions/create-profile.ts`)
     - [ ] [RED] テスト作成 (`create-profile.test.ts`)
-        - ケース: 未認証, バリデーションエラー, 正常系(組織自動作成含む)
+        - ケース: 未認証, 入力バリデーション, 正常系(組織自動作成含む)
     - [ ] [GREEN] 実装
     - [ ] [REFACTOR] リファクタリング
-- [ ] **UI 実装** (`src/app/(protected)/(3-profile)/create/page.tsx`)
-    - [ ] プロフィール基本情報入力フォーム
-    - [ ] 役割・目的・種類選択
-    - [ ] 組織自動作成の確認
+- [ ] **基本情報 UI** (`src/app/(protected)/(3-profile)/create/page.tsx`)
+    - [ ] 役割・目的・種類フォームと複数目的選択
+    - [ ] サーバーアクション連携とエラーハンドリング
+    - [ ] リーダー選択時の自動組織生成確認モーダル
+- [ ] **価値観回答フロー**
+    - [ ] 質問マスタ読み込みと表示
+    - [ ] 回答入力バリデーションとサーバー保存
+    - [ ] 未完了時のガード処理
+- [ ] **スキル・チャート & 目標設定**
+    - [ ] スキル入力フォームと要求スキルの管理
+    - [ ] マンダラチャート（最小構成）の入力データ保存
+- [ ] **外部連携・連絡先**
+    - [ ] 外部SNSリンク追加・削除 UI
+    - [ ] URL バリデーションと保存ロジック
+- [ ] **公開形式 / 表示切替**
+    - [ ] 名刺・履歴書・フル表示の切替 UI
+    - [ ] 表示モードごとのデータ整形ロジック
+- [ ] **プロフィール数制限**
+    - [ ] 無料/有料プラン別上限チェック
+    - [ ] ルートアカウント単位の作成ガード
+
+#### 3.3 作品登録・評価機能 (TDD)
+- [ ] **作品カタログ登録**
+    - [ ] [RED] カタログ登録テスト（公式登録・ユーザー登録）
+    - [ ] [GREEN] 登録アクションと承認待ちステータス実装
+    - [ ] [REFACTOR] 管理者権限の抽象化
+- [ ] **作品基本情報管理**
+    - [ ] タイトル・作者・年代・カテゴリ/ジャンル入力
+    - [ ] アフィリエイトURL・紹介URLの検証
+- [ ] **プロフィールへの作品追加**
+    - [ ] 作品検索・選択 UI
+    - [ ] プロフィールとの紐付けサーバーアクション
+- [ ] **状態・Tier 評価**
+    - [ ] 今/人生/未来 ステータス変更テストと実装
+    - [ ] Tier1-3 / 普通 / 合わない 評価ロジック
+- [ ] **拍手機能の最小実装**
+    - [ ] スキ（自分用）と拍手（公開）のポイント処理
+    - [ ] 拍手時のポイント減算テスト
 
 ### Phase 3.5: アクセス権限管理 (RBAC) システム構築 (新規)
-要件定義書 0012-01, 0014-01, 0016-01, 0022-01 に基づき実装。
+要件定義書／設計書: 0012-01, 0012-03, 0014-01, 0014-02, 0016-01, 0016-02, 0022-01 に基づき TDD で実装する。
 
-#### 3.5.1 スキーマ拡張
-- [ ] **RBAC用テーブル作成**
-    - [ ] `permissions`: 権限マスタ (ID, コード, カテゴリ, 説明)
-    - [ ] `roles`: ロールマスタ (ID, 名前, スコープ[System/Org/Nation], 説明)
-    - [ ] `role_permissions`: ロール-権限中間テーブル
-    - [ ] `user_system_roles`: ユーザー-システムロール割り当て (R1-R7)
-- [ ] **既存テーブル調整**
-    - [ ] `organization_members`: `role_id` を `roles` テーブル参照に変更 (または整合性確認)
-    - [ ] `nation_memberships`: 役職カラム等の追加検討
+#### 3.5.1 スキーマ拡張 (Drizzle + Supabase)
+- [ ] **RBAC コアテーブル定義**
+    - [ ] [RED] `acl_permissions`, `acl_roles`, `acl_role_permissions` のマイグレーションテスト作成 (権限コード一意, スコープ enum)
+    - [ ] [GREEN] Drizzle スキーマ & SQL マイグレーション実装
+    - [ ] [REFACTOR] インデックス／コメント整備
+- [ ] **階層・割当テーブル定義**
+    - [ ] `acl_groups`, `acl_group_closure`, `acl_group_role_assignments` のマイグレーション TDD (階層整合性制約, 調停者フラグ)
+    - [ ] `acl_nation_role_assignments`, `acl_exception_grants`, `user_authorization_permissions` (マテビュー) の追加
+- [ ] **既存テーブル連携**
+    - [ ] `organization_members`, `topdown_nation_memberships` への外部キー/列追加テスト
+    - [ ] JWT claims で利用する enum/型を `drizzle/schema/root_accounts/enums.ts` へ統合
 
-#### 3.5.2 シードデータ投入
-- [ ] **権限カタログ (Permission Catalog)**
-    - [ ] システム管理権限, 組織管理権限, 国管理権限 の定義
-- [ ] **初期ロール定義**
-    - [ ] システムロール: Super Admin(R1) 〜 一般ユーザー(R7)
-    - [ ] 組織ロール: Leader, Sub-leader, Member
-    - [ ] 国ロール: 元首, 閣僚, 国民
+#### 3.5.2 シードデータ & マスタ投入
+- [ ] **権限カタログ (AC Catalogue)**
+    - [ ] [RED] `supabase/seed/05_acl_permissions.sql` の期待行数テスト (R1〜R7 スコープ別)
+    - [ ] [GREEN] 権限コード実データ投入 (システム / 組織 / 国 / 監査 / Ledger)
+    - [ ] [REFACTOR] コメント・カテゴリ整理
+- [ ] **ロール初期値**
+    - [ ] システムロール: R1 (Super Admin)〜R7 (一般ユーザー)
+    - [ ] 組織ロール: Leader/SubLeader/Member, 調停者任務テンプレート
+    - [ ] 国ロール: Head/Minister/Citizen, temporary/resident を区別
+- [ ] **紐付けデータ**
+    - [ ] `acl_role_permissions` のペアリング確認 (AC-U-001 を満たす権限セット)
+    - [ ] `user_system_roles` / `acl_group_role_assignments` の初期割当シード (開発用)
 
-#### 3.5.3 アクセス制御ロジック (Logic/Service)
-- [ ] **権限判定ユーティリティ** (`src/lib/auth/rbac.ts`)
-    - [ ] `hasPermission(userId, action, resource, contextId?)`
-    - [ ] `requirePermission(...)` (Server Action用ガード)
-- [ ] **RLS ポリシー適用** (Supabase)
-    - [ ] `organizations`, `nations` 等への Row Level Security 設定
+#### 3.5.3 RBAC サービス実装 (App Layer)
+- [ ] **RBAC 合成サービス (`src/lib/auth/rbac-service.ts`)**
+    - [ ] [RED] AC-U-001-01〜04: 基本ロール許可集合 (Vitest)
+    - [ ] [RED] AC-U-004/005/016: 否定優先 & 優先度ロジック
+    - [ ] [GREEN] `mergeSystemRoles`, `applyDenyRules`
+    - [ ] [RED] AC-U-002/003/008/009: 論理ロール & コンテキストフィルタ
+    - [ ] [GREEN] `mergeLogicRoles`, `filterByContext`
+- [ ] **例外承認フロー (`src/lib/auth/exception-grants.ts`)**
+    - [ ] AC-U-006/007, AC-U-019〜023: 例外付与/承認/失効のテスト→実装
+    - [ ] AC-B-001: 自動失効ジョブのテストダブル & 実装
+- [ ] **キャッシュ/マテビュー管理**
+    - [ ] AC-U-010〜015, AC-I-001〜004: `user_authorization_permissions` の再計算ロジック
+    - [ ] 配布キャッシュの TTL / invalidation API
+- [ ] **公開 API & Server Actions**
+    - [ ] `hasPermission`, `requirePermission` の TDD (AC-I-005〜008)
+    - [ ] Ledger 操作前ガード (AC-U-024〜028)
+- [ ] **監査ログ & トレーサビリティ**
+    - [ ] AC-U-018-02, AC-U-029〜031: 認可結果ログ, denied_sources 記録
+
+#### 3.5.4 Supabase RLS & Policy
+- [ ] `acl_*` テーブルの RLS ポリシー作成 (AC-DB-001〜005)
+- [ ] `organizations`, `works`, `nations` など既存テーブルへの RLS 拡張 (コンテキスト一致テスト)
+- [ ] JWT claims マッピング用 Edge Function / SQL ファンクション実装
+- [ ] `tests/access-control/rls/*.spec.ts` で AC-I-009 を含む統合テストを RED→GREEN
+
+#### 3.5.5 モニタリング & RBAC マトリクス管理
+- [ ] RBAC マトリクス UI/API の最小実装 (`/admin/rbac-matrix`)
+- [ ] `rbac_capabilities` / `rbac_matrix_snapshots` マイグレーション & テスト
+- [ ] AC-B-002/003, AC-P-001〜003, AC-S-001〜004: バッチ・性能・セキュリティテスト整備
+- [ ] 月次棚卸しスナップショット生成 & レポート出力 TDD
 
 ### Phase 4: 組織 (Organization) 管理
 要件定義書 2.1.8 および RBAC要件に基づき実装。
