@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+/** @vitest-environment jsdom */
 import { describe, it, expect, vi } from 'vitest';
 import { CreateRootAccount } from './CreateRootAccount';
 import * as fetchLogic from './CreateRootAccount.fetch';

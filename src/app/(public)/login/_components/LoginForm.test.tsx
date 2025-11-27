@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+/** @vitest-environment jsdom */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { LoginForm } from './LoginForm'
 import * as supabaseClient from '@/lib/supabase/client'
