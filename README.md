@@ -111,6 +111,39 @@ pnpm test
 ```pwsh
 pnpm run dev:verify
 ```
+
+##### dev:verify — 使い方 (詳細)
+`dev:verify` は PowerShell スクリプト `scripts/dev-verify.ps1` を呼び出し、ローカル開発環境 (Supabase Local) の簡易セルフチェックを行うための補助ツールです。危険な操作は行わず、以下の動作を行います。
+
+- 環境に `pnpm` があるかを確認
+- `pnpm run supabase:status` で Supabase の稼働状況を確認
+- 環境変数 `DATABASE_URL` がセットされていれば簡易SQLで接続を検査
+
+オプション引数:
+- `-RunAll` — マイグレーション・Auth トリガ・シードの実行を行います（ローカル DB が整っていることが前提です）。
+- `-RunTests` — `-RunAll` と併用すると DB 統合テストを含めてテストを実行します（内部で `RUN_DB_TESTS=1` を設定します）。
+
+実行例 (PowerShell):
+
+1) 簡易チェックだけ実行
+
+```pwsh
+pnpm run dev:verify
+```
+
+2) マイグレーションとシードまで実行
+
+```pwsh
+pwsh ./scripts/dev-verify.ps1 -RunAll
+```
+
+3) マイグレーションから DB 統合テストまでフルで実行
+
+```pwsh
+pwsh ./scripts/dev-verify.ps1 -RunAll -RunTests
+```
+
+注意: `dev:verify` はローカルSupabase を前提にした補助スクリプトです。実行前に `DATABASE_URL` やローカル Supabase のポート等が自分の環境と一致していることを確認してください。
 - ファイルの変更を監視しながらテストを継続実行したい場合は `pnpm test:watch` を使ってください。
 - DB 統合テストはデフォルトでスキップされます。開発ワークフローは **ローカルSupabase（Docker）での完結**を前提としており、CI で自動的に DB 統合テストを実行する設定はプロジェクト方針上廃止されています。DB 統合テストを実行するには、ローカル環境で明示的に環境変数を設定してください。
 
