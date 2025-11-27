@@ -1,0 +1,55 @@
+name: Compute Aggregates Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compute-aggregates:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Wait for Postgres
+        run: |
+          for i in `seq 1 20`; do
+            pg_isready -h 127.0.0.1 -p 5432 -U postgres && break || sleep 1
+          done
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/postgres
+        run: pnpm db:migrate
+
+      - name: Run computeWorkAggregates integration test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/postgres
+          RUN_DB_TESTS: "1"
+        run: pnpm test -- src/actions/computeWorkAggregates.integration.test.ts
+
+      - name: Run compute script (job)
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/postgres
+        run: pnpm compute:aggregates

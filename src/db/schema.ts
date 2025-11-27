@@ -103,6 +103,24 @@ export const profiles = pgTable("profiles", {
   rootAccountIdIdx: index("idx_profiles_root_account_id").on(t.rootAccountId),
 }));
 
+  // Aggregates computed by batch job
+  export const workAggregates = pgTable("work_aggregates", {
+    workId: uuid("work_id").primaryKey().references(() => works.id, { onDelete: "cascade" }),
+    avgScore: numeric("avg_score").default('0'),
+    totalRatings: integer("total_ratings").default(0),
+    totalScore: numeric("total_score").default('0'),
+    clapsTotal: integer("claps_total").default(0),
+    likesCount: integer("likes_count").default(0),
+    tier1Count: integer("tier1_count").default(0),
+    tier2Count: integer("tier2_count").default(0),
+    tier3Count: integer("tier3_count").default(0),
+    normalCount: integer("normal_count").default(0),
+    notForMeCount: integer("not_for_me_count").default(0),
+    computedRank: integer("computed_rank"),
+    lastScoredAt: timestamp("last_scored_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  }, (t) => ({
+    avgIdx: index("idx_work_aggregates_avg_score").on(t.avgScore),
+  }));
 // Profile Works (Many-to-Many)
 export const profileWorks = pgTable("profile_works", {
   profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),

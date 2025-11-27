@@ -66,6 +66,7 @@ npm run supabase:reset
 | `npm run supabase:restart` | 再起動 |
 | `npm run supabase:reset` | DBをリセットし、マイグレーション・シード・**Authトリガー**を再適用 |
 | `npm run supabase:gen-types` | DBスキーマからTypeScript型定義を生成 (`src/types/supabase.ts`) |
+| `pnpm compute:aggregates` | ワーク（作品）評価の集計を実行するバッチスクリプト（DB 必須） |
 
 ## 開発ルール（短いガイド）
 
@@ -167,6 +168,14 @@ $env:RUN_DB_TESTS='1'; pnpm test
 ```pwsh
 pnpm test -- -t CreateRootAccount
 ```
+
+### バッチ処理 / CI の仕組み
+
+このリポジトリには、作品評価の集計を行うバッチ実装と CI ワークフローが追加されています。
+
+- バッチスクリプト: `scripts/compute-work-aggregates.js` — Postgres に接続して `profile_works` を集計し `work_aggregates` テーブルに upsert します。
+- 実行方法: `pnpm compute:aggregates`（実行には DB への接続文字列 `DATABASE_URL` が必要です）
+- CI: `.github/workflows/compute-aggregates.yml` — push / PR に対して Postgres サービスを起動し、マイグレーション → 統合テスト → バッチ実行の流れを自動で実行するワークフローを追加済みです。
 
 ---
 

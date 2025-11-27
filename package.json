@@ -32,7 +32,8 @@
     "check": "biome check --write ./src",
     "coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "dev:verify": "pwsh ./scripts/dev-verify.ps1"
+    "dev:verify": "pwsh ./scripts/dev-verify.ps1",
+    "compute:aggregates": "node ./scripts/compute-work-aggregates.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
