@@ -41,3 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 drizzle/meta/
+
+# local run logs — keep them out of the repo (move logs into `logs/`)
+logs/
+build_log*.txt
+lint_log.txt
+lint_src*.txt
+test_output*.txt
