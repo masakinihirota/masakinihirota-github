@@ -7,24 +7,64 @@
 - Adapted `src/app/(public)/login/page.tsx` to use the provided legacy code.
 - Implemented `GoogleLoginForm` and `GitHubLoginForm` with correct Supabase auth logic and redirect URLs (`/auth/callback?next=/dashboard`).
 - Verified `GoogleLoginForm` with unit tests.
+# Walkthrough - Login Page Adaptation & Protected Dashboard
+
+## Changes
+
+### Login Page Adaptation
+- Adapted `src/app/(public)/login/page.tsx` to use the provided legacy code.
+- Implemented `GoogleLoginForm` and `GitHubLoginForm` with correct Supabase auth logic and redirect URLs (`/auth/callback?next=/dashboard`).
+- Verified `GoogleLoginForm` with unit tests.
 
 ### Protected Dashboard
 - Fixed `src/app/(protected)/layout.tsx` to correctly use Supabase auth (`getUser`) and remove invalid `html`/`body` tags.
-- Created `src/app/(protected)/dashboard/page.tsx` to serve as a simple dashboard for authenticated users, preventing 404 errors.
-- Added a compatibility redirect at `src/app/protected/page.tsx` so old `/protected` links redirect to `/dashboard`.
-
-### Home Page Demo (Playground)
-- Created a standalone demo for the Home screen at `src/app/playground/home-demo/`.
-- Implemented `layout.tsx` with Sidebar, Header, and Footer based on the design document.
-- Implemented `page.tsx` with Welcome Message, Quick Actions, Recent Activity, and Recommendations.
-- Created `data.ts` with dummy data to mock Supabase responses.
-- Components are located in `src/app/playground/home-demo/components/`.
-
-## Verification Results
-
-### Automated Tests
-- `npm test "src/components/oauth/oauth-google/google-login-form.test.tsx"`: PASSED
 - `npm run lint`: PASSED
+
+### Nation List Demo (Playground)
+- Created `src/app/playground/nation-list-demo/` directory.
+- Implemented `data.ts` with dummy nation data.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` with search, filter, sort functionality, and a list of nation cards.
+
+### Matching Settings Demo (Playground)
+- Created `src/app/playground/matching-settings-demo/` directory.
+- Implemented `data.ts` with dummy data for values, genres, skills, regions, and generations.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` with a form for setting matching preferences (sliders, checkboxes, dropdowns).
+
+### Search Screen Demo (Playground)
+- Created `src/app/playground/search-demo/` directory.
+- Implemented `data.ts` with dummy data for works, users, values, skills, lists, and chains.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` with search bar, category tabs, and results list.
+
+### Settings Screen Demo (Playground)
+- Created `src/app/playground/settings-demo/` directory.
+- Implemented `data.ts` with dummy data for user settings.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` with tabs for Account, Privacy, Security, Connections, and Payment settings.
+
+### Oasis Declaration Page Demo (Playground)
+- Created `src/app/playground/oasis-demo/` directory.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` displaying the full text of the Oasis Declaration with a "Agree and Register" button.
+
+### Terms of Service Page Demo (Playground)
+- Created `src/app/playground/terms-demo/` directory.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` displaying the full text of the Terms of Service with a "Agree and Register" button.
+
+### Privacy Policy Page Demo (Playground)
+- Created `src/app/playground/privacy-demo/` directory.
+- Created `Sidebar.tsx` and `Header.tsx` components.
+- Implemented `layout.tsx` integrating Sidebar and Header.
+- Implemented `page.tsx` displaying the full text of the Privacy Policy with a "Agree and Register" button.
 
 ### Manual Verification
 - Login page should render correctly with Google, GitHub, and Anonymous login options.

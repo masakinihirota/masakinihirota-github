@@ -7,26 +7,26 @@
     - [x] マスタデータ整備 (Works, Values)
     - [ ] ユーザープロフィール作成機能 (TDD)
         - [x] ページ: Create Profile のレンダリング（テスト修正済）
-        - [x] createProfile サーバーアクション RED/GREEN/REFACTOR (unit + app action tests added/passing)
-        - [x] 基本情報フォーム (役割・目的・種類・組織確認) — role/type fields とリーダー時の組織名入力 UI を追加、対応する UI テスト追加
-        - [x] 価値観回答ステップ — 価値観チェックボックス UI とサーバー保存の初期実装（TDD）
-        - [x] スキル・チャート / 目標設定 — 基本スキル選択 UI とサーバー保存の初期実装（TDD）
-        - [ ] 外部リンク・連絡先入力
-            - [x] URL バリデーション (src/lib/profile/createProfile.logic.ts)
-            - [x] UI: 入力フォームの実装
-            - [x] UI: 複数リンクの追加/削除
-            - [x] UI: クライアント側 URL バリデーション
-            - [x] DB: 永続化（profile_links）
-            - [x] DB Migration: drizzle/0005_profile_links.sql
-        - [ ] 公開形式切替 & プロフィール上限ガード
-    - [ ] 作品登録・評価機能 (TDD)
-        - [ ] 作品カタログ登録（公式/ユーザー）
-        - [ ] 作品基本情報（カテゴリ・URL 検証）
-        - [ ] プロフィールへの作品追加
-        - [ ] 状態 (今/人生/未来)・Tier 評価
-        - [ ] 拍手/スキ最小実装
-- [ ] Phase 3.5: アクセス権限管理 (RBAC)
-    - [ ] スキーマ拡張 TDD
+        - [x] サーバーアクション: createProfile に root アカウントあたりのプロファイル上限チェックを追加 (MAX_PROFILES_PER_ROOT=3) — `src/actions/createProfile.fetch.test.ts` / `src/actions/createProfile.fetch.ts`
+        - [x] UI: CreateProfileForm のリンク入力処理を修正 (初期リンクの表示・複数追加・空ラベル省略のシリアライズ) — `src/components/profile/CreateProfileForm/CreateProfileForm.tsx` / `src/components/profile/CreateProfileForm/CreateProfileForm.test.tsx`
+        - [ ] `acl_permissions` / `acl_roles` / `acl_role_permissions` マイグレーション RED→GREEN
+        - [ ] `acl_groups` / `acl_group_closure` / `acl_group_role_assignments`
+        - [ ] `acl_exception_grants` / `acl_nation_role_assignments` / `user_authorization_permissions`
+        - [ ] 既存テーブル連携 (organization_members, topdown_nation_memberships, enums)
+    - [ ] シードデータ & 初期ロール
+        - [ ] 権限カタログ SQL (R1〜R7, 組織/国カテゴリ) TDD
+        - [ ] 初期ロール定義 (system / organization / nation)
+        - [ ] 役割紐付け & 開発用割当シード
+```
+# タスクリスト
+
+- [x] Phase 1: 環境構築と基盤
+- [x] Phase 2: 認証とユーザー管理
+- [/] Phase 3: ユーザープロフィール管理
+    - [x] 構造修正: `/protected` の配置修正
+    - [x] マスタデータ整備 (Works, Values)
+    - [ ] ユーザープロフィール作成機能 (TDD)
+        - [x] ページ: Create Profile のレンダリング（テスト修正済）
         - [ ] `acl_permissions` / `acl_roles` / `acl_role_permissions` マイグレーション RED→GREEN
         - [ ] `acl_groups` / `acl_group_closure` / `acl_group_role_assignments`
         - [ ] `acl_exception_grants` / `acl_nation_role_assignments` / `user_authorization_permissions`
@@ -44,31 +44,25 @@
         - [ ] 監査ログ (AC-U-018-02, AC-U-029〜031)
     - [ ] Supabase RLS & ポリシー
         - [ ] `acl_*` RLS AC-DB-001〜005
-        - [ ] 既存テーブル RLS 拡張 & AC-I-009
-        - [ ] JWT claims マッピング (Edge Function)
-    - [ ] モニタリング / マトリクス
-        - [ ] `/admin/rbac-matrix` 最小 UI & Server Actions
-        - [ ] `rbac_capabilities` / `rbac_matrix_snapshots` マイグレーション
-        - [ ] バッチ/性能/セキュリティ (AC-B-001〜003, AC-P-001〜003, AC-S-001〜004)
-- [ ] Phase 4: 組織管理
-- [ ] Phase 5: 国管理
-    - [x] 国名バリデーション helper + unit test
-    - [x] 国名最大長チェック (<=50) + unit test
-    - [x] 国名に制御文字を含めない検証 + unit test
-    - [x] 国作成時のポイント消費検証 (unit)
-    - [x] 国作成 server action: ポイント検証 unit + server-action test
-    - [x] 建国時の課金（point_transactions登録） + server-action test
-    - [x] 建国時の残高更新（root_account_points の引き落とし） + server-action test
-    - [x] 建国者に元首（sovereign）ロールを付与 + server-action test
-    - [x] 建国処理をトランザクション化（BEGIN/COMMIT/ROLLBACK） + server-action test
-    - [x] Nation レコード作成（nations テーブルへの挿入） + server-action test
-
-    - [x] Add RED test: nation join requires invitation (RED)
-    - [x] Implement nation join invitation check (GREEN)
-        - [x] Nation 入国: 招待トークン有効期限チェック + server-action test
         - [x] Nation 招待発行: デフォルト有効期限(7日) + server-action test
         - [x] Nation 招待発行: トークン自動生成 (UUID v4) を返す + server-action test
+- [x] UI Prototype (Playground)
+    - [x] Home Page Demo
+    - [x] Root Account Screen Demo
+    - [x] User Profile Screen Demo
+    - [x] Works List Screen Demo
+    - [x] Work Detail Screen Demo
+    - [x] Work Registration Screen Demo
+    - [x] Organization List Screen Demo
+    - [x] Nation List Screen Demo
+    - [x] Matching Settings Screen Demo
+    - [x] Search Screen Demo
+    - [x] Settings Screen Demo
+    - [x] Oasis Declaration Page Demo
+    - [x] Terms of Service Page Demo
+    - [x] Privacy Policy Page Demo
 # Workflow Updates
     - [ ] Run integration tests locally and verify (REFACTOR)
     - [x] CI workflow: manual integration-db-tests.yml added
 - [x] Review RSC Article and Update `nextjs-components.md`
+```
