@@ -55,6 +55,14 @@ export async function createProfile(
     }
   }
 
+  // persist external links (profile_links) if provided
+  if (validated.links && Array.isArray(validated.links) && validated.links.length > 0) {
+    for (const l of validated.links) {
+      // insert each link entry with label and url
+      await db.insert((await import('@/db/schema')).profileLinks).values({ profileId, label: l.label ?? null, url: l.url })
+    }
+  }
+
   return { success: true, profileId, organizationId: createdOrgId }
 }
 

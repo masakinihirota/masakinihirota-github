@@ -203,4 +203,36 @@ describe('CreateProfileForm (UI) - RED tests', () => {
             expect(skills).toEqual(expect.arrayContaining(['s-a', 's-b']))
         })
     })
+
+    // RED: UI for external contact links (Add Link input/button) does not exist yet.
+    it('allows adding external contact links and includes them in submitted form data', async () => {
+        const user = userEvent.setup()
+        const mockAction = vi.mocked(fetchLogic.createProfileAction)
+        mockAction.mockResolvedValue({ success: true, data: { success: true, profileId: 'profile-links-client', organizationId: null } })
+
+        render(<CreateProfileForm />)
+
+        // Expect there to be a way to add a contact/link (UI not implemented yet)
+        // This should fail initially (RED) until the UI and wiring are implemented.
+        const addLinkButton = screen.getByRole('button', { name: /Add Link/i })
+        await user.click(addLinkButton)
+
+        // after clicking add, expect UI inputs for link details
+        const urlInput = screen.getByLabelText(/Link URL/i)
+        await user.type(urlInput, 'https://example.com')
+
+        const nameInput = screen.getByLabelText(/Profile Name/i)
+        await user.type(nameInput, 'With Links')
+
+        await user.click(screen.getByRole('button', { name: /Create Profile/i }))
+
+        await waitFor(() => {
+            expect(mockAction).toHaveBeenCalled()
+            const args = mockAction.mock.calls[0]
+            const fd = args[1] as FormData
+            expect(fd.get('links')).not.toBeNull()
+            const links = JSON.parse(fd.get('links') as string)
+            expect(links).toEqual([{ url: 'https://example.com', label: undefined }])
+        })
+    })
 })

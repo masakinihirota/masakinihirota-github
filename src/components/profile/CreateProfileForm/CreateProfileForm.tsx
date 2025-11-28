@@ -12,6 +12,7 @@ export function CreateProfileForm() {
     const [organizationName, setOrganizationName] = useState('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
     const [selectedSkills, setSelectedSkills] = useState<string[]>([])
+    const [links, setLinks] = useState<Array<{ url: string; label?: string }>>([])
     const [error, setError] = useState<string | null>(null)
     const [selectedWorks, setSelectedWorks] = useState<Array<{ id: string; title: string; tier?: number | null; claps?: number; liked?: boolean; status?: string }>>([])
 
@@ -33,6 +34,18 @@ export function CreateProfileForm() {
         if (selectedValues.length > 0) formData.append('values', JSON.stringify(selectedValues))
         if (selectedSkills.length > 0) formData.append('skills', JSON.stringify(selectedSkills))
 
+        // attach links if present (ensure sent to server)
+        if (links.length > 0) {
+            formData.append(
+                'links',
+                JSON.stringify(
+                    links
+                        .filter(Boolean)
+                        .map((l) => ({ url: l.url?.trim(), label: l.label?.trim() ? l.label.trim() : undefined }))
+                )
+            )
+        }
+
         // Call server action wrapper — in tests this will be mocked
         const result = await createProfileAction({}, formData)
 
@@ -50,6 +63,7 @@ export function CreateProfileForm() {
                 await upsertProfileWorkAction({}, fd)
             }
         }
+        // links already sent as part of createProfileAction formData
     }
 
     function addWork(w: { id: string; title: string }) {
@@ -59,6 +73,14 @@ export function CreateProfileForm() {
 
     function removeWork(id: string) {
         setSelectedWorks((s) => s.filter((x) => x.id !== id))
+    }
+
+    function addContactLink() {
+        setLinks((s) => [...s, { url: '', label: '' }])
+    }
+
+    function updateLink(index: number, patch: Partial<{ url: string; label?: string }>) {
+        setLinks((s) => s.map((l, i) => (i === index ? { ...l, ...patch } : l)))
     }
 
     return (
@@ -106,6 +128,23 @@ export function CreateProfileForm() {
             <div style={{ marginTop: 20 }}>
                 <h3>Add works to this profile</h3>
                 <WorkSearch onSelect={addWork} />
+
+                <div style={{ marginTop: 12 }}>
+                    <h4>Contact / External Links</h4>
+                    <button type="button" onClick={addContactLink}>Add Link</button>
+                    <ul>
+                        {links.map((l, idx) => (
+                            <li key={idx}>
+                                <label>Link URL
+                                    <input aria-label="Link URL" value={l.url} onChange={(e) => updateLink(idx, { url: e.target.value })} />
+                                </label>
+                                <label>Link Label
+                                    <input aria-label="Link Label" value={l.label ?? ''} onChange={(e) => updateLink(idx, { label: e.target.value })} />
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
                 <ul>
                     {selectedWorks.map((w) => (

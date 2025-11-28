@@ -222,6 +222,17 @@ export const profileValues = pgTable("profile_values", {
   valueIdx: index("idx_profile_values_value_id").on(t.valueId),
 }));
 
+// Profile Links (external contact / link entries for a profile)
+export const profileLinks = pgTable("profile_links", {
+  profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  label: text("label"),
+  url: text("url").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.profileId, t.url] }),
+  profileIdx: index("idx_profile_links_profile_id").on(t.profileId),
+}));
+
 // Organizations
 export const organizations = pgTable("organizations", {
   id: uuid("id").defaultRandom().primaryKey(),
