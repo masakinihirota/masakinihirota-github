@@ -10,7 +10,7 @@ import { eq } from 'drizzle-orm'
  */
 export async function joinNation(payload: { nationId: string; organizationId: string; requesterProfileId: string }, ctx?: any) {
   // Query for invitation existence (tests will mock db.select().from().where())
-  const inv = await db.select().from({}).where(eq('nation_id', payload.nationId)) // shape doesn't matter for mocks
+  const inv = await db.select().from({} as any).where(eq('nation_id' as any, payload.nationId as any)) // shape doesn't matter for mocks
   if (!inv || (Array.isArray(inv) && inv.length === 0)) {
     throw { code: 403, name: 'Forbidden', message: 'no invitation found' }
   }

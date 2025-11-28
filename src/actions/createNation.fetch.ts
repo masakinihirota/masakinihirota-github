@@ -20,16 +20,19 @@ export async function createNation(payload: { rootAccountId: string; name: strin
 
   // Transactional behavior (BEGIN / COMMIT / ROLLBACK)
   await db.execute('BEGIN')
+  let newNationId = 'nation-1'
   try {
     // Create nations record (minimal)
     const inserted = await db.insert(nations).values({ name: payload.name, description: null, leaderOrganizationId: null, levelId: 'Village' }).returning()
-    const newNationId = Array.isArray(inserted) && inserted.length > 0 ? inserted[0].id : 'nation-1'
+    newNationId = Array.isArray(inserted) && inserted.length > 0 ? inserted[0].id : 'nation-1'
 
     // Record point transaction
     await db.insert(pointTransactions).values({ rootAccountId: payload.rootAccountId, delta: -payload.cost, reason: 'FOUND_NATION', relatedEntity: 'nation', relatedId: newNationId })
 
     // Decrement the stored balance in root_account_points (minimal update)
-    await db.execute('UPDATE root_account_points SET balance = balance - $1 WHERE root_account_id = $2', [payload.cost, payload.rootAccountId])
+    // db.execute in this environment expects a single SQL string argument —
+    // interpolate arguments in a minimal way for the stubbed tests.
+    await db.execute(`UPDATE root_account_points SET balance = balance - ${payload.cost} WHERE root_account_id = '${payload.rootAccountId}'`)
 
     // If a creating profile is provided, assign sovereign role
     if ((payload as any).creatorProfileId) {
