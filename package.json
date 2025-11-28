@@ -35,6 +35,7 @@
     "test:integration": "pwsh ./scripts/dev-verify.ps1 -RunAll -RunTests",
     "dev:verify": "pwsh ./scripts/dev-verify.ps1",
     "compute:aggregates": "node ./scripts/compute-work-aggregates.js",
+    "check:route-naming": "node ./scripts/check-route-naming.js",
     "check:client-imports": "node ./scripts/check-client-imports.js"
   },
   "dependencies": {

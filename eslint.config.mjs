@@ -10,6 +10,8 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // ignore common build/output directories so lint doesn't scan generated files
+  { ignores: [".next/**", "dist/**", "node_modules/**", ".vercel/**"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 
