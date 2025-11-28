@@ -1,6 +1,6 @@
 
 import { profile, works, values, skills, organizations } from './data';
-import { Edit, UserPlus, Briefcase, Smile, Shield, MapPin, Link as LinkIcon, Star, Heart, Zap, Building2 } from 'lucide-react';
+import { Edit, UserPlus, User, Briefcase, Smile, Shield, MapPin, Link as LinkIcon, Star, Heart, Zap, Building2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ProfileDemoPage() {
@@ -87,8 +87,8 @@ export default function ProfileDemoPage() {
                                     <div className="p-4">
                                         <div className="flex justify-between items-start mb-2">
                                             <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${work.status === '今' ? 'bg-green-100 text-green-800' :
-                                                    work.status === '未来' ? 'bg-blue-100 text-blue-800' :
-                                                        'bg-gray-100 text-gray-800'
+                                                work.status === '未来' ? 'bg-blue-100 text-blue-800' :
+                                                    'bg-gray-100 text-gray-800'
                                                 }`}>
                                                 {work.status}
                                             </span>

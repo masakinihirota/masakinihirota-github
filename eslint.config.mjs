@@ -1,3 +1,5 @@
+// Ensure module resolution patch runs from the project root before ESLint loads
+import '@rushstack/eslint-patch/modern-module-resolution';
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
