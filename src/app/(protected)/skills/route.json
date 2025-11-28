@@ -1,7 +1,7 @@
 {
     "label": "スキル",
-    "order": 50,
-    "visibleInMenu": true,
+    "order": 60,
+    "visibleInMenu": false,
     "authRequired": true,
     "group": "main"
 }
