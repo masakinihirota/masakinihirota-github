@@ -17,24 +17,6 @@
         - [ ] 権限カタログ SQL (R1〜R7, 組織/国カテゴリ) TDD
         - [ ] 初期ロール定義 (system / organization / nation)
         - [ ] 役割紐付け & 開発用割当シード
-```
-# タスクリスト
-
-- [x] Phase 1: 環境構築と基盤
-- [x] Phase 2: 認証とユーザー管理
-- [/] Phase 3: ユーザープロフィール管理
-    - [x] 構造修正: `/protected` の配置修正
-    - [x] マスタデータ整備 (Works, Values)
-    - [ ] ユーザープロフィール作成機能 (TDD)
-        - [x] ページ: Create Profile のレンダリング（テスト修正済）
-        - [ ] `acl_permissions` / `acl_roles` / `acl_role_permissions` マイグレーション RED→GREEN
-        - [ ] `acl_groups` / `acl_group_closure` / `acl_group_role_assignments`
-        - [ ] `acl_exception_grants` / `acl_nation_role_assignments` / `user_authorization_permissions`
-        - [ ] 既存テーブル連携 (organization_members, topdown_nation_memberships, enums)
-    - [ ] シードデータ & 初期ロール
-        - [ ] 権限カタログ SQL (R1〜R7, 組織/国カテゴリ) TDD
-        - [ ] 初期ロール定義 (system / organization / nation)
-        - [ ] 役割紐付け & 開発用割当シード
     - [ ] RBAC サービス実装 (Vitest)
         - [ ] AC-U-001〜005/016: 基本ロール合成 & 否定優先
         - [ ] AC-U-002/003/008/009: 論理ロール & コンテキスト
@@ -61,6 +43,8 @@
     - [x] Oasis Declaration Page Demo
     - [x] Terms of Service Page Demo
     - [x] Privacy Policy Page Demo
+- [x] Documentation Refinement
+    - [x] Refine Requirements Documents (Gamification & Menu)
 # Workflow Updates
     - [ ] Run integration tests locally and verify (REFACTOR)
     - [x] CI workflow: manual integration-db-tests.yml added

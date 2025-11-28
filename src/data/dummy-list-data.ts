@@ -1,0 +1,98 @@
+export const dummyCases = [
+  {
+    id: 'c1',
+    title: '【急募】React/Next.js エンジニア募集',
+    author: { name: 'TechLead_A', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix' },
+    priority: 'High',
+    deadline: '2025-12-31',
+    status: 'Open',
+    candidates: 3,
+  },
+  {
+    id: 'c2',
+    title: 'UIデザインリニューアル案件',
+    author: { name: 'Designer_B', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka' },
+    priority: 'Medium',
+    deadline: '2026-01-15',
+    status: 'In Progress',
+    candidates: 1,
+  },
+  {
+    id: 'c3',
+    title: 'レガシーシステム移行コンサル',
+    author: { name: 'Consultant_C', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bob' },
+    priority: 'Low',
+    deadline: '2026-02-28',
+    status: 'Closed',
+    candidates: 0,
+  },
+];
+
+export const dummyMatching = [
+  {
+    id: 'm1',
+    user: { name: 'Alice', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alice' },
+    valuesSummary: '価値観: 9/10 (平和主義, 創造性)',
+    worksSummary: ['攻殻機動隊', 'AKIRA'],
+    score: 95,
+    lv: 12,
+    status: 'New',
+  },
+  {
+    id: 'm2',
+    user: { name: 'Bob', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bob' },
+    valuesSummary: '価値観: 7/10 (挑戦, 自由)',
+    worksSummary: ['ONE PIECE', 'NARUTO'],
+    score: 78,
+    lv: 5,
+    status: 'Viewed',
+  },
+  {
+    id: 'm3',
+    user: { name: 'Charlie', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie' },
+    valuesSummary: '価値観: 5/10 (安定, 協調)',
+    worksSummary: ['サザエさん', 'ドラえもん'],
+    score: 50,
+    lv: 2,
+    status: 'Skipped',
+  },
+];
+
+export const dummyWorks = [
+  {
+    id: 'w1',
+    title: '銀河鉄道の夜',
+    author: '宮沢賢治',
+    period: 'Life',
+    tier: 'Tier 1',
+    lv: 50,
+    status: 'Published',
+  },
+  {
+    id: 'w2',
+    title: '人間失格',
+    author: '太宰治',
+    period: 'Life',
+    tier: 'Tier 2',
+    lv: 45,
+    status: 'Published',
+  },
+  {
+    id: 'w3',
+    title: 'こころ',
+    author: '夏目漱石',
+    period: 'Past',
+    tier: 'Tier 3',
+    lv: 30,
+    status: 'Pending',
+  },
+  {
+    id: 'w4',
+    title: '100年後の未来予測',
+    author: '未来 太郎',
+    period: 'Future',
+    tier: '-',
+    lv: 1,
+    status: 'Draft',
+  },
+];
