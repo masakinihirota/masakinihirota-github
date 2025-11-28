@@ -20,10 +20,11 @@ export async function createNation(payload: { rootAccountId: string; name: strin
 
   // Transactional behavior (BEGIN / COMMIT / ROLLBACK)
   await db.execute('BEGIN')
+  let newNationId = 'nation-1'
   try {
     // Create nations record (minimal)
     const inserted = await db.insert(nations).values({ name: payload.name, description: null, leaderOrganizationId: null, levelId: 'Village' }).returning()
-    const newNationId = Array.isArray(inserted) && inserted.length > 0 ? inserted[0].id : 'nation-1'
+    newNationId = Array.isArray(inserted) && inserted.length > 0 ? inserted[0].id : 'nation-1'
 
     // Record point transaction
     await db.insert(pointTransactions).values({ rootAccountId: payload.rootAccountId, delta: -payload.cost, reason: 'FOUND_NATION', relatedEntity: 'nation', relatedId: newNationId })
