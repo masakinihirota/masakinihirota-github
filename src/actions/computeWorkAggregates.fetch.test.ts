@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { setupDbMock } from '@/tests/setup/mockDb'
 
 // sample rows — two for w1, one for w2
 const SAMPLE_ROWS = [
@@ -13,7 +14,11 @@ const selectMock = vi.fn(() => ({ from: fromMock }))
 const onConflictMock = vi.fn().mockResolvedValue(undefined)
 const valuesMock = vi.fn(() => ({ onConflictDoUpdate: onConflictMock }))
 
-vi.mock('@/lib/db', () => ({ db: { select: selectMock, insert: vi.fn(() => ({ values: valuesMock })) } }))
+// Use central mocked DB helper so test files don't open real DB connections
+const { select: selectMockFn, insert: insertMockFn } = setupDbMock({
+  select: selectMock,
+  insert: () => ({ values: valuesMock }),
+})
 
 describe('computeWorkAggregates (server action)', () => {
   beforeEach(() => {

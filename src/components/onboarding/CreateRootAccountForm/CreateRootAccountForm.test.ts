@@ -1,23 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { setupDbMock } from '@/tests/setup/mockDb'
+
+// Prepare a DB mock before importing the module which references db
+const { insert } = setupDbMock({ insert: () => ({ values: vi.fn(() => ({ returning: vi.fn() })) }), select: () => ({ from: () => ({ where: vi.fn() }) }) })
 import { createRootAccountAction } from './CreateRootAccountForm.fetch';
 import { db } from '@/lib/db';
 import { createClient } from '@/lib/supabase/server';
-
-// Mock dependencies
-vi.mock('@/lib/db', () => ({
-  db: {
-    insert: vi.fn(() => ({
-      values: vi.fn(() => ({
-        returning: vi.fn(),
-      })),
-    })),
-    query: {
-      rootAccounts: {
-        findFirst: vi.fn(),
-      },
-    },
-  },
-}));
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(),

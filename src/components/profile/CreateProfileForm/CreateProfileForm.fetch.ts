@@ -5,6 +5,8 @@ export async function createProfileAction(_prevState: unknown, formData: FormDat
   const name = formData.get('name')?.toString() ?? ''
   const role = formData.get('role')?.toString() ?? 'member'
   const type = formData.get('type')?.toString() ?? 'self'
+  const valuesStr = formData.get('values')?.toString()
+  const values = valuesStr ? JSON.parse(valuesStr) : undefined
 
   if (!name || name.trim().length === 0) {
     return { success: false, errors: { name: ['name is required'] }, message: 'Validation failed' }
@@ -14,7 +16,7 @@ export async function createProfileAction(_prevState: unknown, formData: FormDat
     const res = await fetch('/api/profiles', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rootAccountId: 'root_1', name: name.trim(), role, type }),
+      body: JSON.stringify({ rootAccountId: 'root_1', name: name.trim(), role, type, values }),
     })
 
     if (!res.ok) {

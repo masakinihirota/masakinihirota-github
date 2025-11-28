@@ -6,11 +6,15 @@
     - [x] 構造修正: `/protected` の配置修正
     - [x] マスタデータ整備 (Works, Values)
     - [ ] ユーザープロフィール作成機能 (TDD)
-        - [ ] createProfile サーバーアクション RED/GREEN/REFACTOR
-        - [ ] 基本情報フォーム (役割・目的・種類・組織確認)
-        - [ ] 価値観回答ステップ
-        - [ ] スキル・チャート / 目標設定
+        - [x] ページ: Create Profile のレンダリング（テスト修正済）
+        - [x] createProfile サーバーアクション RED/GREEN/REFACTOR (unit + app action tests added/passing)
+        - [x] 基本情報フォーム (役割・目的・種類・組織確認) — role/type fields とリーダー時の組織名入力 UI を追加、対応する UI テスト追加
+        - [x] 価値観回答ステップ — 価値観チェックボックス UI とサーバー保存の初期実装（TDD）
+        - [x] スキル・チャート / 目標設定 — 基本スキル選択 UI とサーバー保存の初期実装（TDD）
         - [ ] 外部リンク・連絡先入力
+            - [x] URL バリデーション (src/lib/profile/createProfile.logic.ts)
+            - [ ] UI: 入力フォームの実装
+            - [ ] DB: 永続化（profile_links）
         - [ ] 公開形式切替 & プロフィール上限ガード
     - [ ] 作品登録・評価機能 (TDD)
         - [ ] 作品カタログ登録（公式/ユーザー）

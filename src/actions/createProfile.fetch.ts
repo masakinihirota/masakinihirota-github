@@ -5,7 +5,7 @@
  * - Returns a minimal success payload when valid
  */
 import { db } from '@/lib/db'
-import { profiles, organizations, organizationMembers, rootAccounts } from '@/db/schema'
+import { profiles, organizations, organizationMembers, rootAccounts, profileValues, profileSkills } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { normalizeAndValidateProfile, type CreateProfilePayload } from '@/lib/profile/createProfile.logic'
 
@@ -38,6 +38,21 @@ export async function createProfile(
     createdOrgId = orgs[0].id
     // Add as organization member with role 'leader'
     await db.insert(organizationMembers).values({ organizationId: createdOrgId, profileId, roleId: 'leader' })
+  }
+
+  // persist selected values (profile_values) if provided
+  if (validated.values && Array.isArray(validated.values) && validated.values.length > 0) {
+    // insert each value association
+    for (const v of validated.values) {
+      await db.insert(profileValues).values({ profileId, valueId: v })
+    }
+  }
+
+  // persist selected skills (profile_skills) if provided
+  if (validated.skills && Array.isArray(validated.skills) && validated.skills.length > 0) {
+    for (const s of validated.skills) {
+      await db.insert(profileSkills).values({ profileId, skillId: s })
+    }
   }
 
   return { success: true, profileId, organizationId: createdOrgId }

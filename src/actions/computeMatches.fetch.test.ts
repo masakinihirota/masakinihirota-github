@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { setupDbMock } from '@/tests/setup/mockDb'
 
 const sampleRows = [
   { profile_id: 'target', work_id: 'w1', tier: 1, claps: 0, liked: false },
@@ -6,11 +7,8 @@ const sampleRows = [
   { profile_id: 'b', work_id: 'w2', tier: 2, claps: 0, liked: false },
 ]
 
-vi.mock('@/lib/db', () => ({
-  db: {
-    select: vi.fn(() => ({ from: vi.fn().mockResolvedValue(sampleRows) })),
-  },
-}))
+// Setup a shared DB mock for this test
+const { select } = setupDbMock({ select: () => ({ from: vi.fn().mockResolvedValue(sampleRows) }) })
 
 import { computeMatches } from './computeMatches.fetch'
 

@@ -1,3 +1,6 @@
+// Ensure module resolution patch runs from the project root before ESLint loads
+// For ESM resolution require the explicit .js entry so Node can find the file
+import '@rushstack/eslint-patch/modern-module-resolution.js';
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";

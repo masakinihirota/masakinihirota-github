@@ -71,13 +71,20 @@
     - [ ] マンダラチャート（最小構成）の入力データ保存
 - [ ] **外部連携・連絡先**
     - [ ] 外部SNSリンク追加・削除 UI
-    - [ ] URL バリデーションと保存ロジック
+    - [x] URL バリデーション
+    - [ ] 保存ロジック (DB 永続化)
 - [ ] **公開形式 / 表示切替**
     - [ ] 名刺・履歴書・フル表示の切替 UI
     - [ ] 表示モードごとのデータ整形ロジック
 - [ ] **プロフィール数制限**
     - [ ] 無料/有料プラン別上限チェック
     - [ ] ルートアカウント単位の作成ガード
+
+#### 3.2.5 UI Prototype (Playground)
+- [x] **Home Page Demo** (`src/app/playground/home-demo/`)
+    - [x] Layout (Sidebar, Header, Footer)
+    - [x] Page Component (Welcome, Quick Actions, Activity, Recommendations)
+    - [x] Dummy Data Integration
 
 #### 3.3 作品登録・評価機能 (TDD)
 - [ ] **作品カタログ登録**
