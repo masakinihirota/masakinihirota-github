@@ -20,4 +20,10 @@ describe('normalizeAndValidateProfile', () => {
     const payload: CreateProfilePayload = { rootAccountId: 'r1', name: long }
     expect(() => normalizeAndValidateProfile(payload)).toThrow()
   })
+
+  // RED: Add validation for external links (invalid URL should cause ValidationError)
+  it('throws ValidationError when links contain invalid url', () => {
+    const payload: any = { rootAccountId: 'r1', name: 'Alice', links: [{ label: 'bad', url: 'not-a-valid-url' }] }
+    expect(() => normalizeAndValidateProfile(payload)).toThrow()
+  })
 })
