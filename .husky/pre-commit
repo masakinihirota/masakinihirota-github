@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint on commit; fail commit if lint fails
+pnpm -s run lint || {
+  echo "eslint found issues — commit aborted"
+  exit 1
+}

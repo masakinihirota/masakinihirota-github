@@ -10,9 +10,9 @@ const dbUrl = process.env.DATABASE_URL;
 const authToken = process.env.AUTH_TOKEN;
 
 console.log('--- 環境変数チェック ---');
-if (tursoUrl) console.log('TURSO_DATABASE_URL: 設定済み');
+if (tursoUrl) console.log('TURSO_DATABASE_URL: 設定済み (' + tursoUrl.split(':')[0] + ')');
 if (tursoToken) console.log('TURSO_AUTH_TOKEN: 設定済み');
-if (dbUrl) console.log('DATABASE_URL: 設定済み');
+if (dbUrl) console.log('DATABASE_URL: 設定済み (' + dbUrl.split(':')[0] + ')');
 if (authToken) console.log('AUTH_TOKEN: 設定済み');
 
 if (!tursoUrl && !dbUrl) {

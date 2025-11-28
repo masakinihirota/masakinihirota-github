@@ -1,0 +1,7 @@
+{
+    "label": "実績 / アチーブメント",
+    "order": 100,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more"
+}

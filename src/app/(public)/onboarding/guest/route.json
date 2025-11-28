@@ -1,0 +1,7 @@
+{
+    "label": "オンボーディング（ゲスト）",
+    "order": 31,
+    "visibleInMenu": false,
+    "authRequired": false,
+    "group": "feature"
+}

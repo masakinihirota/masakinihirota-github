@@ -1,0 +1,7 @@
+{
+    "label": "マッチング",
+    "order": 3,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main"
+}

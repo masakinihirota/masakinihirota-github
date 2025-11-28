@@ -1,0 +1,50 @@
+# タスクリスト
+
+- [x] Phase 1: 環境構築と基盤
+- [x] Phase 2: 認証とユーザー管理
+- [/] Phase 3: ユーザープロフィール管理
+    - [x] 構造修正: `/protected` の配置修正
+    - [x] マスタデータ整備 (Works, Values)
+    - [ ] ユーザープロフィール作成機能 (TDD)
+        - [ ] createProfile サーバーアクション RED/GREEN/REFACTOR
+        - [ ] 基本情報フォーム (役割・目的・種類・組織確認)
+        - [ ] 価値観回答ステップ
+        - [ ] スキル・チャート / 目標設定
+        - [ ] 外部リンク・連絡先入力
+        - [ ] 公開形式切替 & プロフィール上限ガード
+    - [ ] 作品登録・評価機能 (TDD)
+        - [ ] 作品カタログ登録（公式/ユーザー）
+        - [ ] 作品基本情報（カテゴリ・URL 検証）
+        - [ ] プロフィールへの作品追加
+        - [ ] 状態 (今/人生/未来)・Tier 評価
+        - [ ] 拍手/スキ最小実装
+- [ ] Phase 3.5: アクセス権限管理 (RBAC)
+    - [ ] スキーマ拡張 TDD
+        - [ ] `acl_permissions` / `acl_roles` / `acl_role_permissions` マイグレーション RED→GREEN
+        - [ ] `acl_groups` / `acl_group_closure` / `acl_group_role_assignments`
+        - [ ] `acl_exception_grants` / `acl_nation_role_assignments` / `user_authorization_permissions`
+        - [ ] 既存テーブル連携 (organization_members, topdown_nation_memberships, enums)
+    - [ ] シードデータ & 初期ロール
+        - [ ] 権限カタログ SQL (R1〜R7, 組織/国カテゴリ) TDD
+        - [ ] 初期ロール定義 (system / organization / nation)
+        - [ ] 役割紐付け & 開発用割当シード
+    - [ ] RBAC サービス実装 (Vitest)
+        - [ ] AC-U-001〜005/016: 基本ロール合成 & 否定優先
+        - [ ] AC-U-002/003/008/009: 論理ロール & コンテキスト
+        - [ ] AC-U-006/007/019〜023: 例外承認ライフサイクル
+        - [ ] AC-U-010〜015, AC-I-001〜004: キャッシュ・マテビュー
+        - [ ] hasPermission/requirePermission & Ledger ガード (AC-I-005〜008, AC-U-024〜028)
+        - [ ] 監査ログ (AC-U-018-02, AC-U-029〜031)
+    - [ ] Supabase RLS & ポリシー
+        - [ ] `acl_*` RLS AC-DB-001〜005
+        - [ ] 既存テーブル RLS 拡張 & AC-I-009
+        - [ ] JWT claims マッピング (Edge Function)
+    - [ ] モニタリング / マトリクス
+        - [ ] `/admin/rbac-matrix` 最小 UI & Server Actions
+        - [ ] `rbac_capabilities` / `rbac_matrix_snapshots` マイグレーション
+        - [ ] バッチ/性能/セキュリティ (AC-B-001〜003, AC-P-001〜003, AC-S-001〜004)
+- [ ] Phase 4: 組織管理
+- [ ] Phase 5: 国管理
+
+# Workflow Updates
+- [x] Review RSC Article and Update `nextjs-components.md`

@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Build before push — if the build fails, abort the push.
+echo "Running build check before push..."
+pnpm -s run build || {
+  echo "Build failed — aborting push"
+  exit 1
+}

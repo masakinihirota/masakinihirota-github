@@ -1,0 +1,7 @@
+{
+    "label": "メッセージ / ウォッチ",
+    "order": 120,
+    "visibleInMenu": false,
+    "authRequired": true,
+    "group": "more"
+}
