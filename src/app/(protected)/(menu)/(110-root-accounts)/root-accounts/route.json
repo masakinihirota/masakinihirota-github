@@ -1,6 +1,6 @@
 {
-    "label": "作品",
-    "order": 40,
+    "label": "ルートアカウント（一覧）",
+    "order": 110,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main"

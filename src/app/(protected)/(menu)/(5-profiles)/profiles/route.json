@@ -1,6 +1,6 @@
 {
-    "label": "マッチング",
-    "order": 30,
+    "label": "千の仮面（プロフィール）",
+    "order": 5,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main"

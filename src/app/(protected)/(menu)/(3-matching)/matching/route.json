@@ -1,6 +1,6 @@
 {
-    "label": "組織",
-    "order": 60,
+    "label": "マッチング",
+    "order": 3,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main"

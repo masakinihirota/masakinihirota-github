@@ -1,7 +1,7 @@
 {
     "label": "マンダラチャート",
-    "order": 90,
+    "order": 70,
     "visibleInMenu": false,
     "authRequired": true,
-    "group": "more"
+    "group": "main"
 }

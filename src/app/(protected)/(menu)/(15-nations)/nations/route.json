@@ -1,7 +1,7 @@
 {
     "label": "国（トップダウン）",
-    "order": 70,
-    "visibleInMenu": false,
+    "order": 15,
+    "visibleInMenu": true,
     "authRequired": true,
-    "group": "more"
+    "group": "main"
 }
