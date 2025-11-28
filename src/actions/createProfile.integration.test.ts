@@ -71,6 +71,28 @@ describe('createProfile integration (leader -> auto-create organization)', () =>
     await db.delete(organizations).where(eq(organizations.id, orgId))
     await db.delete(profiles).where(eq(profiles.id, profileId))
   })
+
+  it('creates profile and persists provided links in profile_links', async () => {
+    const { createProfile } = await import('./createProfile.fetch')
+
+    const ctx = { session: { user: { id: userId } } }
+
+    const payload = { rootAccountId, name: 'Links Integration', role: 'member', type: 'self', links: [{ label: 'site', url: 'https://example.com' }, { label: 'blog', url: 'https://blog.example.com' }] }
+
+    const result = await createProfile(payload as any, ctx as any)
+
+    expect(result).toHaveProperty('success', true)
+    expect(result).toHaveProperty('profileId')
+    const profileId = result.profileId
+
+    // Check profile_links contains inserted rows
+    const rows = await db.select().from((await import('@/db/schema')).profileLinks).where(eq((await import('@/db/schema')).profileLinks.profileId, profileId))
+    expect(rows.length).toBeGreaterThanOrEqual(2)
+
+    // cleanup: remove profile_links and profile
+    await db.delete((await import('@/db/schema')).profileLinks).where(eq((await import('@/db/schema')).profileLinks.profileId, profileId))
+    await db.delete(profiles).where(eq(profiles.id, profileId))
+  })
 })
 
 }

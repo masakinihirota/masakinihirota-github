@@ -13,8 +13,11 @@
         - [x] スキル・チャート / 目標設定 — 基本スキル選択 UI とサーバー保存の初期実装（TDD）
         - [ ] 外部リンク・連絡先入力
             - [x] URL バリデーション (src/lib/profile/createProfile.logic.ts)
-            - [ ] UI: 入力フォームの実装
-            - [ ] DB: 永続化（profile_links）
+            - [x] UI: 入力フォームの実装
+            - [x] UI: 複数リンクの追加/削除
+            - [x] UI: クライアント側 URL バリデーション
+            - [x] DB: 永続化（profile_links）
+            - [x] DB Migration: drizzle/0005_profile_links.sql
         - [ ] 公開形式切替 & プロフィール上限ガード
     - [ ] 作品登録・評価機能 (TDD)
         - [ ] 作品カタログ登録（公式/ユーザー）
@@ -47,8 +50,8 @@
         - [ ] `/admin/rbac-matrix` 最小 UI & Server Actions
         - [ ] `rbac_capabilities` / `rbac_matrix_snapshots` マイグレーション
         - [ ] バッチ/性能/セキュリティ (AC-B-001〜003, AC-P-001〜003, AC-S-001〜004)
-- [ ] Phase 4: 組織管理
-- [ ] Phase 5: 国管理
 
 # Workflow Updates
+    - [ ] Run integration tests locally and verify (REFACTOR)
+    - [x] CI workflow: manual integration-db-tests.yml added
 - [x] Review RSC Article and Update `nextjs-components.md`

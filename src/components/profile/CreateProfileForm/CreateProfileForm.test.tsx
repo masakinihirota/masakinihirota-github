@@ -203,4 +203,92 @@ describe('CreateProfileForm (UI) - RED tests', () => {
             expect(skills).toEqual(expect.arrayContaining(['s-a', 's-b']))
         })
     })
+
+    // RED: Expect link input UI and that submitted formData includes links JSON
+    it('renders link inputs and includes links in submitted form data', async () => {
+        const user = userEvent.setup()
+        const mockAction = vi.mocked(fetchLogic.createProfileAction)
+        mockAction.mockResolvedValue({ success: true, data: { success: true, profileId: 'profile-links-client', organizationId: null } })
+
+        render(<CreateProfileForm />)
+
+        // Expect a Link URL input to be present (component currently doesn't render this)
+        expect(screen.getByLabelText(/Link URL/i)).not.toBeNull()
+
+        // Fill in link inputs and submit — expecting createProfileAction to receive 'links' in FormData
+        await user.type(screen.getByLabelText(/Profile Name/i), 'With Link')
+        await user.type(screen.getByLabelText(/Link URL/i), 'https://example.com')
+        await user.click(screen.getByRole('button', { name: /Create Profile/i }))
+
+        await waitFor(() => {
+            expect(mockAction).toHaveBeenCalled()
+            const args = mockAction.mock.calls[0]
+            const fd = args[1] as FormData
+            const linksJson = fd.get('links') as string
+            expect(linksJson).not.toBeNull()
+            const links = JSON.parse(linksJson)
+            expect(links).toEqual(expect.arrayContaining([{ url: 'https://example.com' }]))
+        })
+    })
+
+    // RED: expect ability to add multiple links (UI currently only handles single link)
+    it('allows adding multiple links and includes them in submitted form data', async () => {
+        const user = userEvent.setup()
+        const mockAction = vi.mocked(fetchLogic.createProfileAction)
+        mockAction.mockResolvedValue({ success: true, data: { success: true, profileId: 'profile-multi-links-client', organizationId: null } })
+
+        render(<CreateProfileForm />)
+
+        // Should have an Add Link button (not implemented yet)
+        expect(screen.getByRole('button', { name: /Add Link/i })).not.toBeNull()
+
+        // Add two links via the UI and submit
+        await user.click(screen.getByRole('button', { name: /Add Link/i }))
+        await user.click(screen.getByRole('button', { name: /Add Link/i }))
+
+        const linkInputs = screen.getAllByLabelText(/Link URL/i)
+        expect(linkInputs.length).toBeGreaterThanOrEqual(2)
+
+        await user.type(linkInputs[0], 'https://first.example')
+        await user.type(linkInputs[1], 'https://second.example')
+
+        await user.type(screen.getByLabelText(/Profile Name/i), 'Multi Link Profile')
+        await user.click(screen.getByRole('button', { name: /Create Profile/i }))
+
+        await waitFor(() => {
+            expect(mockAction).toHaveBeenCalled()
+            const args = mockAction.mock.calls[0]
+            const fd = args[1] as FormData
+            const linksJson = fd.get('links') as string
+            expect(linksJson).not.toBeNull()
+            const links = JSON.parse(linksJson)
+            expect(links).toEqual(expect.arrayContaining([{ url: 'https://first.example' }, { url: 'https://second.example' }]))
+        })
+    })
+
+    // RED: client-side validation — invalid link URL should prevent submit and show error
+    it('shows validation error and does not call server action when a link URL is invalid', async () => {
+        const user = userEvent.setup()
+        const mockAction = vi.mocked(fetchLogic.createProfileAction)
+
+        render(<CreateProfileForm />)
+
+        // Add one link input
+        await user.click(screen.getByRole('button', { name: /Add Link/i }))
+
+        const linkInputs = screen.getAllByLabelText(/Link URL/i)
+        expect(linkInputs.length).toBeGreaterThanOrEqual(1)
+
+        // Enter invalid URL
+        await user.type(linkInputs[0], 'not-a-valid-url')
+
+        await user.type(screen.getByLabelText(/Profile Name/i), 'Invalid Link Profile')
+        await user.click(screen.getByRole('button', { name: /Create Profile/i }))
+
+        // We expect a validation error to appear and action NOT to be called
+        await waitFor(() => {
+            expect(screen.getByText(/invalid link url/i)).toBeInTheDocument()
+            expect(mockAction).not.toHaveBeenCalled()
+        })
+    })
 })

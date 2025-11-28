@@ -12,6 +12,7 @@ export function CreateProfileForm() {
     const [organizationName, setOrganizationName] = useState('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
     const [selectedSkills, setSelectedSkills] = useState<string[]>([])
+    const [links, setLinks] = useState<Array<{ url: string; label?: string }>>([])
     const [error, setError] = useState<string | null>(null)
     const [selectedWorks, setSelectedWorks] = useState<Array<{ id: string; title: string; tier?: number | null; claps?: number; liked?: boolean; status?: string }>>([])
 
@@ -32,6 +33,25 @@ export function CreateProfileForm() {
         if (role === 'leader') formData.append('organizationName', organizationName)
         if (selectedValues.length > 0) formData.append('values', JSON.stringify(selectedValues))
         if (selectedSkills.length > 0) formData.append('skills', JSON.stringify(selectedSkills))
+
+        if (Array.isArray(links) && links.length > 0) {
+            // client-side validation: ensure all provided link URLs are valid absolute URLs
+            for (const l of links) {
+                if (!l?.url || l.url.trim().length === 0) continue
+                try {
+                    new URL(l.url)
+                } catch (err) {
+                    setError('invalid link url')
+                    return
+                }
+            }
+
+            const normalized = links
+                .filter((l) => l?.url && l.url.trim().length > 0)
+                .map((l) => ({ url: l.url.trim(), label: l.label?.trim() ?? undefined }))
+
+            if (normalized.length > 0) formData.append('links', JSON.stringify(normalized))
+        }
 
         // Call server action wrapper — in tests this will be mocked
         const result = await createProfileAction({}, formData)
@@ -100,6 +120,28 @@ export function CreateProfileForm() {
                     <label>
                         <input type="checkbox" aria-label="Skill B" checked={selectedSkills.includes('s-b')} onChange={(e) => setSelectedSkills((s) => e.target.checked ? [...s, 's-b'] : s.filter(x => x !== 's-b'))} /> Skill B
                     </label>
+                </div>
+                <div style={{ marginTop: 8 }}>
+                    <h4>External Links</h4>
+                    <div>
+                        <button type="button" onClick={() => setLinks((s) => [...s, { url: '', label: '' }])}>Add Link</button>
+                    </div>
+                    {links.length === 0 && (
+                        <div style={{ marginTop: 8 }}>
+                            <small>No links added</small>
+                        </div>
+                    )}
+                    <ul>
+                        {links.map((l, idx) => (
+                            <li key={idx}>
+                                <label>Link URL</label>
+                                <input aria-label="Link URL" value={l.url} onChange={(e) => setLinks((s) => s.map((x, i) => i === idx ? { ...x, url: e.target.value } : x))} />
+                                <label>Label</label>
+                                <input aria-label="Link Label" value={l.label} onChange={(e) => setLinks((s) => s.map((x, i) => i === idx ? { ...x, label: e.target.value } : x))} />
+                                <button type="button" onClick={() => setLinks((s) => s.filter((_, i) => i !== idx))}>Remove</button>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
 
