@@ -49,9 +49,10 @@
      ```
    - テスト & lint の確認: `pnpm run lint && pnpm test`
 
-2. `root_accounts` と `root-accounts` の統合
+2. `root_accounts` と `root-accounts` の統合 (完了)
    - canonical: `src/app/(protected)/root-accounts`
-   - まず `root_accounts` のソースを `root-accounts` に移し、作成ページ (`create`) などが重複していればマージ
+  - 実施: `root_accounts` 側の UI 実装は `root-accounts` を canonical とし、`root_accounts` の重複 (components/route.json) を削除しました。互換性のため、`next.config.ts` にリダイレクトを追加して `/root_accounts*` → `/root-accounts*` を保っています。
+  - 実行結果: 2025-11-28 に `src/app/(protected)/(menu)/(10-root-accounts)/root_accounts` を削除し、`src/app/(protected)/root_accounts` (互換用リダイレクト) を削除・`next.config.ts` に転送ルールを追加しました。routes manifest を再生成済み (25 エントリ)。
 
 ### フェーズ C — 機能ディレクトリの番号付き化（段階的適用）
 目的: インパクトを分割し、作業が小さなコミット単位で安全にロールアウトできるようにする。
