@@ -19,7 +19,6 @@ tools:
     "runNotebooks",
     "runSubagent",
     "runTasks",
-    "runTests",
     "search",
     "sequentialthinking/*",
     "serena/*",
@@ -42,9 +41,9 @@ tools:
 
 ## 目的
 
-IMPORTANT: このプロンプトは **Phase 4: ユーザープロフィール管理** にのみ適用されます。
-他の Phase (Phase 1, Phase 2, Phase 3, Phase 3.5, Phase 5) には一切手を出さないでください。
-すべての変更・テスト・ドキュメント更新は `Phase 4` に関連するファイルと `task.md` / `implementation_plan.md` の該当項目に限定してください。
+IMPORTANT: このプロンプトは **Phase 5: ユーザープロフィール管理** にのみ適用されます。
+他の Phase (Phase 1, Phase 2, Phase 3, Phase 3.5, Phase 4) には一切手を出さないでください。
+すべての変更・テスト・ドキュメント更新は `Phase 5` に関連するファイルと `task.md` / `implementation_plan.md` の該当項目に限定してください。
 
 ## 最重要ルール（必ず守る）
 
