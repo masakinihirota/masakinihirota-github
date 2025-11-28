@@ -70,6 +70,7 @@ export function CreateProfileForm() {
                 await upsertProfileWorkAction({}, fd)
             }
         }
+        // links already sent as part of createProfileAction formData
     }
 
     function addWork(w: { id: string; title: string }) {
@@ -79,6 +80,14 @@ export function CreateProfileForm() {
 
     function removeWork(id: string) {
         setSelectedWorks((s) => s.filter((x) => x.id !== id))
+    }
+
+    function addContactLink() {
+        setLinks((s) => [...s, { url: '', label: '' }])
+    }
+
+    function updateLink(index: number, patch: Partial<{ url: string; label?: string }>) {
+        setLinks((s) => s.map((l, i) => (i === index ? { ...l, ...patch } : l)))
     }
 
     return (
@@ -148,6 +157,23 @@ export function CreateProfileForm() {
             <div style={{ marginTop: 20 }}>
                 <h3>Add works to this profile</h3>
                 <WorkSearch onSelect={addWork} />
+
+                <div style={{ marginTop: 12 }}>
+                    <h4>Contact / External Links</h4>
+                    <button type="button" onClick={addContactLink}>Add Link</button>
+                    <ul>
+                        {links.map((l, idx) => (
+                            <li key={idx}>
+                                <label>Link URL
+                                    <input aria-label="Link URL" value={l.url} onChange={(e) => updateLink(idx, { url: e.target.value })} />
+                                </label>
+                                <label>Link Label
+                                    <input aria-label="Link Label" value={l.label ?? ''} onChange={(e) => updateLink(idx, { label: e.target.value })} />
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
                 <ul>
                     {selectedWorks.map((w) => (

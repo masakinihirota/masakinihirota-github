@@ -45,7 +45,7 @@ export function setupDbMock(mocks: DbMocks = {}) {
   select.mockReset()
   insert.mockReset()
 
-  return { execute, select, insert }
+  return { execute: executeSpy, select: selectSpy, insert: insertSpy }
 }
 
 export default setupDbMock
