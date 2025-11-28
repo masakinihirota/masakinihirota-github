@@ -232,14 +232,5 @@
     "authRequired": true,
     "group": "more",
     "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root-accounts\\route.json"
-  },
-  {
-    "path": "/root_accounts",
-    "label": "ルートアカウント（一覧）",
-    "order": 900,
-    "visibleInMenu": false,
-    "authRequired": true,
-    "group": "more",
-    "source": "src\\app\\(protected)\\(menu)\\(10-root-accounts)\\root_accounts\\route.json"
   }
 ]

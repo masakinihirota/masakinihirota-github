@@ -38,7 +38,7 @@
 目的: 重複するディレクトリを統合して混乱を防ぐ
 
 1. `protected` の重複を解消 (完了)
-  - Move/copy contents of `src/app/protected` into `src/app/(protected)` (or vice-versa—canonical is `(protected)`) 
+  - Move/copy contents of `src/app/protected` into `src/app/(protected)` (or vice-versa—canonical is `(protected)`)
   - コマンド例 (PowerShell):
      ```pwsh
      git checkout -b fix/routes/merge-protected
