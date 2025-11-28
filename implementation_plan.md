@@ -177,9 +177,23 @@
 要件定義書 2.1.9 および RBAC要件に基づき実装。
 - [ ] **建国機能**
     - [ ] 国作成フロー (ポイント消費, 建国者への元首ロール付与)
+    - [x] 国作成 server action: ポイント検証 (unit + server action test)
+    - [x] 建国時の課金（point_transactions登録） + server-action test
+    - [x] 建国時の残高更新（root_account_points の引き落とし） + server-action test
+    - [x] 建国者に元首（sovereign）ロールを付与 + server-action test
+    - [x] 建国処理をトランザクション化（BEGIN/COMMIT/ROLLBACK） + server-action test
+    - [x] Nation レコード作成（nations テーブルへの挿入） + server-action test
+    - [x] 国作成時のポイント消費検証 (unit)
     - [ ] ルール (憲法/法律) 設定
+    - [x] 国名バリデーション helper + unit test
+    - [x] 国名最大長チェック (<=50) + unit test
+    - [x] 国名に制御文字を含めない検証 + unit test
 - [ ] **国への参加・運営**
     - [ ] 入国 (一時参加) / 常駐 (定住) フロー
+    - [x] Nation 参加: 招待必須の検証 + server-action test
+    - [x] Nation 入国: 招待トークン有効期限チェック + server-action test
+    - [x] Nation 招待発行: デフォルト有効期限(7日) + server-action test
+    - [x] Nation 招待発行: トークン自動生成 (UUID v4) を返す + server-action test
     - [ ] 役職任命 (元首による閣僚任命など)
     - [ ] ポイント徴収・維持費管理 (国庫)
 

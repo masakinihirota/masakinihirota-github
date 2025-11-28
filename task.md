@@ -49,6 +49,21 @@
         - [ ] バッチ/性能/セキュリティ (AC-B-001〜003, AC-P-001〜003, AC-S-001〜004)
 - [ ] Phase 4: 組織管理
 - [ ] Phase 5: 国管理
+    - [x] 国名バリデーション helper + unit test
+    - [x] 国名最大長チェック (<=50) + unit test
+    - [x] 国名に制御文字を含めない検証 + unit test
+    - [x] 国作成時のポイント消費検証 (unit)
+    - [x] 国作成 server action: ポイント検証 unit + server-action test
+    - [x] 建国時の課金（point_transactions登録） + server-action test
+    - [x] 建国時の残高更新（root_account_points の引き落とし） + server-action test
+    - [x] 建国者に元首（sovereign）ロールを付与 + server-action test
+    - [x] 建国処理をトランザクション化（BEGIN/COMMIT/ROLLBACK） + server-action test
+    - [x] Nation レコード作成（nations テーブルへの挿入） + server-action test
 
+    - [x] Add RED test: nation join requires invitation (RED)
+    - [x] Implement nation join invitation check (GREEN)
+        - [x] Nation 入国: 招待トークン有効期限チェック + server-action test
+        - [x] Nation 招待発行: デフォルト有効期限(7日) + server-action test
+        - [x] Nation 招待発行: トークン自動生成 (UUID v4) を返す + server-action test
 # Workflow Updates
 - [x] Review RSC Article and Update `nextjs-components.md`

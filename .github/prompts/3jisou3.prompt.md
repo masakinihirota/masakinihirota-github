@@ -19,7 +19,6 @@ tools:
     "runNotebooks",
     "runSubagent",
     "runTasks",
-    "runTests",
     "search",
     "sequentialthinking/*",
     "serena/*",
