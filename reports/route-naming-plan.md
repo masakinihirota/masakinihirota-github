@@ -37,13 +37,15 @@
 ### フェーズ B — 重複解消（最小インパクト、推奨順: high）
 目的: 重複するディレクトリを統合して混乱を防ぐ
 
-1. `protected` の重複を解消
-   - Move/copy contents of `src/app/protected` into `src/app/(protected)` (or vice-versa—canonical is `(protected)`)
-   - コマンド例 (PowerShell):
+1. `protected` の重複を解消 (完了)
+  - Move/copy contents of `src/app/protected` into `src/app/(protected)` (or vice-versa—canonical is `(protected)`) 
+  - コマンド例 (PowerShell):
      ```pwsh
      git checkout -b fix/routes/merge-protected
      git mv src/app/protected/* src/app/(protected)/ || (move-item -Path src/app/protected/* -Destination src/app/(protected) -Force)
      git commit -m "merge: remove duplicate src/app/protected -> use src/app/(protected)"
+
+   - 実行結果: 2025-11-28 に `src/app/protected/page.tsx` を `src/app/(protected)/protected/page.tsx` に移動し、重複を解消しました (branch: chore/merge-protected-into-parenthesized)。
      ```
    - テスト & lint の確認: `pnpm run lint && pnpm test`
 

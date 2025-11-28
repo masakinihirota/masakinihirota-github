@@ -49,6 +49,12 @@
       "suggestion": "(10-onboarding)"
     },
     {
+      "path": "src\\app\\(protected)\\protected",
+      "name": "protected",
+      "reason": "child of group (protected) should be numbered or parenthesized",
+      "suggestion": "(10-protected)"
+    },
+    {
       "path": "src\\app\\(protected)\\root-accounts",
       "name": "root-accounts",
       "reason": "child of group (protected) should be numbered or parenthesized",
@@ -107,21 +113,15 @@
       "name": "auth",
       "reason": "top-level route should be parenthesized and numbered (e.g., (10-feature))",
       "suggestion": "(10-auth)"
-    },
-    {
-      "path": "src\\app\\protected",
-      "name": "protected",
-      "reason": "top-level route should be parenthesized and numbered (e.g., (10-feature))",
-      "suggestion": "(10-protected)"
     }
   ],
-  "checked": 6,
+  "checked": 5,
   "duplicates": [
     {
       "normalized": "protected",
       "instances": [
         "src\\app\\(protected)",
-        "src\\app\\protected"
+        "src\\app\\(protected)\\protected"
       ],
       "canonical": "src\\app\\(protected)"
     },
