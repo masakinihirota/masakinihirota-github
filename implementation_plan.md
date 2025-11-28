@@ -79,6 +79,12 @@
     - [ ] 無料/有料プラン別上限チェック
     - [ ] ルートアカウント単位の作成ガード
 
+#### 3.2.5 UI Prototype (Playground)
+- [x] **Home Page Demo** (`src/app/playground/home-demo/`)
+    - [x] Layout (Sidebar, Header, Footer)
+    - [x] Page Component (Welcome, Quick Actions, Activity, Recommendations)
+    - [x] Dummy Data Integration
+
 #### 3.3 作品登録・評価機能 (TDD)
 - [ ] **作品カタログ登録**
     - [ ] [RED] カタログ登録テスト（公式登録・ユーザー登録）

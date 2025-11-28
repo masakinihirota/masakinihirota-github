@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react'
 import { createProfileAction } from './CreateProfileForm.fetch'
 import { WorkSearch } from '@/components/works/WorkSearch/WorkSearch'
@@ -5,6 +7,11 @@ import { upsertProfileWorkAction } from '@/components/profile/ProfileWorkForm/Pr
 
 export function CreateProfileForm() {
     const [name, setName] = useState('')
+    const [role, setRole] = useState<'member' | 'leader'>('member')
+    const [type, setType] = useState<'self' | 'organization'>('self')
+    const [organizationName, setOrganizationName] = useState('')
+    const [selectedValues, setSelectedValues] = useState<string[]>([])
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([])
     const [error, setError] = useState<string | null>(null)
     const [selectedWorks, setSelectedWorks] = useState<Array<{ id: string; title: string; tier?: number | null; claps?: number; liked?: boolean; status?: string }>>([])
 
@@ -20,8 +27,11 @@ export function CreateProfileForm() {
         // Create FormData like other components do
         const formData = new FormData()
         formData.append('name', name.trim())
-        formData.append('role', 'member')
-        formData.append('type', 'self')
+        formData.append('role', role)
+        formData.append('type', type)
+        if (role === 'leader') formData.append('organizationName', organizationName)
+        if (selectedValues.length > 0) formData.append('values', JSON.stringify(selectedValues))
+        if (selectedSkills.length > 0) formData.append('skills', JSON.stringify(selectedSkills))
 
         // Call server action wrapper — in tests this will be mocked
         const result = await createProfileAction({}, formData)
@@ -54,8 +64,45 @@ export function CreateProfileForm() {
     return (
         <form onSubmit={handleSubmit}>
             <label htmlFor="profile-name">Profile Name</label>
+            <label htmlFor="profile-role">Role</label>
+            <select id="profile-role" aria-label="Role" value={role} onChange={(e) => setRole(e.target.value as any)}>
+                <option value="member">Member</option>
+                <option value="leader">Leader</option>
+            </select>
+
+            <label htmlFor="profile-type">Type</label>
+            <select id="profile-type" aria-label="Type" value={type} onChange={(e) => setType(e.target.value as any)}>
+                <option value="self">Self</option>
+                <option value="organization">Organization</option>
+            </select>
             <input id="profile-name" aria-label="Profile Name" value={name} onChange={(e) => setName(e.target.value)} />
             {error && <div role="alert">{error}</div>}
+            {role === 'leader' && (
+                <div style={{ marginTop: 8 }}>
+                    <label htmlFor="organization-name">Organization Name</label>
+                    <input id="organization-name" aria-label="Organization Name" value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} />
+                </div>
+            )}
+
+            <div style={{ marginTop: 8 }}>
+                <h4>Values</h4>
+                <label>
+                    <input type="checkbox" aria-label="Value A" checked={selectedValues.includes('v-a')} onChange={(e) => setSelectedValues((s) => e.target.checked ? [...s, 'v-a'] : s.filter(x => x !== 'v-a'))} /> Value A
+                </label>
+                <label>
+                    <input type="checkbox" aria-label="Value B" checked={selectedValues.includes('v-b')} onChange={(e) => setSelectedValues((s) => e.target.checked ? [...s, 'v-b'] : s.filter(x => x !== 'v-b'))} /> Value B
+                </label>
+                <div style={{ marginTop: 8 }}>
+                    <h4>Skills</h4>
+                    <label>
+                        <input type="checkbox" aria-label="Skill A" checked={selectedSkills.includes('s-a')} onChange={(e) => setSelectedSkills((s) => e.target.checked ? [...s, 's-a'] : s.filter(x => x !== 's-a'))} /> Skill A
+                    </label>
+                    <label>
+                        <input type="checkbox" aria-label="Skill B" checked={selectedSkills.includes('s-b')} onChange={(e) => setSelectedSkills((s) => e.target.checked ? [...s, 's-b'] : s.filter(x => x !== 's-b'))} /> Skill B
+                    </label>
+                </div>
+            </div>
+
             <div style={{ marginTop: 20 }}>
                 <h3>Add works to this profile</h3>
                 <WorkSearch onSelect={addWork} />
@@ -85,6 +132,7 @@ export function CreateProfileForm() {
 
                 <button type="submit">Create Profile</button>
             </div>
+
         </form>
     )
 }

@@ -6,10 +6,11 @@
     - [x] 構造修正: `/protected` の配置修正
     - [x] マスタデータ整備 (Works, Values)
     - [ ] ユーザープロフィール作成機能 (TDD)
-        - [ ] createProfile サーバーアクション RED/GREEN/REFACTOR
-        - [ ] 基本情報フォーム (役割・目的・種類・組織確認)
-        - [ ] 価値観回答ステップ
-        - [ ] スキル・チャート / 目標設定
+        - [x] ページ: Create Profile のレンダリング（テスト修正済）
+        - [x] createProfile サーバーアクション RED/GREEN/REFACTOR (unit + app action tests added/passing)
+        - [x] 基本情報フォーム (役割・目的・種類・組織確認) — role/type fields とリーダー時の組織名入力 UI を追加、対応する UI テスト追加
+        - [x] 価値観回答ステップ — 価値観チェックボックス UI とサーバー保存の初期実装（TDD）
+        - [x] スキル・チャート / 目標設定 — 基本スキル選択 UI とサーバー保存の初期実装（TDD）
         - [ ] 外部リンク・連絡先入力
         - [ ] 公開形式切替 & プロフィール上限ガード
     - [ ] 作品登録・評価機能 (TDD)
@@ -18,6 +19,19 @@
         - [ ] プロフィールへの作品追加
         - [ ] 状態 (今/人生/未来)・Tier 評価
         - [ ] 拍手/スキ最小実装
+    - [x] UI Prototype: Home Page Demo (Playground)
+    - [ ] UI Prototype: Root Account Demo
+    - [ ] UI Prototype: User Profile Demo
+    - [ ] UI Prototype: Works List Demo
+    - [ ] UI Prototype: Work Detail Demo
+    - [ ] UI Prototype: Work Registration Demo
+    - [ ] UI Prototype: Organization List Demo
+    - [ ] UI Prototype: Nation List Demo
+    - [ ] UI Prototype: Matching Settings Demo
+    - [ ] UI Prototype: Search Demo
+    - [ ] UI Prototype: Settings Demo
+    - [ ] UI Prototype: Oasis Declaration Demo
+    - [ ] UI Prototype: Terms of Service Demo
 - [ ] Phase 3.5: アクセス権限管理 (RBAC)
     - [ ] スキーマ拡張 TDD
         - [ ] `acl_permissions` / `acl_roles` / `acl_role_permissions` マイグレーション RED→GREEN

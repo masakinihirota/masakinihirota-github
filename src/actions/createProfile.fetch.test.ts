@@ -82,9 +82,53 @@ describe('createProfile (unit)', () => {
     expect(res).toHaveProperty('profileId', 'p-leader')
     expect(res).toHaveProperty('organizationId', 'org-1')
   })
-})
-import { describe, it, expect } from 'vitest'
 
+  it('creates profile and inserts profile_values when values are provided', async () => {
+    const whereMock = vi.fn().mockResolvedValue([{ id: 'r1', userId: 'user-123' }])
+    ;(db.select as any).mockReturnValue({ from: () => ({ where: whereMock }) })
+
+    // profiles insert -> returns a profile id
+    const insertMock = vi.fn()
+    insertMock.mockReturnValue({ returning: vi.fn().mockResolvedValue([{ id: 'profile-values-test' }]) })
+    ;(db.insert as any).mockImplementation((t: any) => ({ values: insertMock }))
+
+    const payload = { rootAccountId: 'r1', name: 'Values Profile', role: 'member', type: 'self', values: ['v1', 'v2'] }
+    const ctx = { session: { user: { id: 'user-123' } } }
+
+    const res = await actionModule.createProfile(payload as any, ctx as any)
+
+    expect(res).toHaveProperty('success', true)
+    expect(res).toHaveProperty('profileId', 'profile-values-test')
+
+    // Ensure that we attempted to insert profile_values for provided values
+    // db.insert should have been called at least once with profileValues table
+    const calls = (db.insert as any).mock.calls
+    // First insert is profile, afterwards we expect one insert per provided value
+    expect(calls.length).toBeGreaterThanOrEqual(1 + payload.values.length)
+  })
+
+  it('creates profile and inserts profile_skills when skills are provided', async () => {
+    const whereMock = vi.fn().mockResolvedValue([{ id: 'r1', userId: 'user-123' }])
+    ;(db.select as any).mockReturnValue({ from: () => ({ where: whereMock }) })
+
+    // profiles insert -> returns a profile id
+    const insertMock = vi.fn()
+    insertMock.mockReturnValue({ returning: vi.fn().mockResolvedValue([{ id: 'profile-skills-test' }]) })
+    ;(db.insert as any).mockImplementation((t: any) => ({ values: insertMock }))
+
+    const payload = { rootAccountId: 'r1', name: 'Skills Profile', role: 'member', type: 'self', skills: ['s-a', 's-b'] }
+    const ctx = { session: { user: { id: 'user-123' } } }
+
+    const res = await actionModule.createProfile(payload as any, ctx as any)
+
+    expect(res).toHaveProperty('success', true)
+    expect(res).toHaveProperty('profileId', 'profile-skills-test')
+
+    const calls = (db.insert as any).mock.calls
+    // Expect at least profile insert + one call per provided skill
+    expect(calls.length).toBeGreaterThanOrEqual(1 + payload.skills.length)
+  })
+})
 // RED phase tests for createProfile Server Action
 // These tests expect the Server Action to enforce validation and authentication.
 
