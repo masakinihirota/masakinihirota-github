@@ -3,11 +3,11 @@ import { getWorkById, relatedWorks } from '../data';
 import { ArrowLeft, Edit, Trash2, Link as LinkIcon, ShoppingCart, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default function WorkDetailDemoPage({ params }: { params: { id: string } }) {
-    // In a real app, we would await params, but for this demo we can just use a default or mock it.
-    // Since this is a client component in a way (or server component with static params),
-    // we'll just fetch a default work if params.id is missing or use the one from params.
-    const workId = params?.id || 'work-1';
+export default async function WorkDetailDemoPage({ params }: { params?: Promise<{ id: string }> }) {
+    // Next's generated PageProps may represent params as a Promise — make this
+    // function async and await params to satisfy the generated type checks.
+    const resolvedParams = await params;
+    const workId = resolvedParams?.id || 'work-1';
     const work = getWorkById(workId);
 
     if (!work) {
