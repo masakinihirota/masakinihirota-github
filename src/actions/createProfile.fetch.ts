@@ -5,7 +5,7 @@
  * - Returns a minimal success payload when valid
  */
 import { db } from '@/lib/db'
-import { profiles, organizations, organizationMembers, rootAccounts, profileValues, profileSkills } from '@/db/schema'
+import { profiles, organizations, organizationMembers, rootAccounts, profileValues, profileSkills, profileLinks } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { normalizeAndValidateProfile, type CreateProfilePayload } from '@/lib/profile/createProfile.logic'
 

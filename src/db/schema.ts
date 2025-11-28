@@ -181,6 +181,18 @@ export const profiles = pgTable("profiles", {
   rootAccountIdIdx: index("idx_profiles_root_account_id").on(t.rootAccountId),
 }));
 
+  // Profile Links (external contact / social links for a profile)
+  export const profileLinks = pgTable("profile_links", {
+    profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+    url: text("url").notNull(),
+    label: text("label"),
+    type: text("type"),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  }, (t) => ({
+    pk: primaryKey({ columns: [t.profileId, t.url] }),
+    profileIdx: index("idx_profile_links_profile_id").on(t.profileId),
+  }));
+
   // Aggregates computed by batch job
   export const workAggregates = pgTable("work_aggregates", {
     workId: uuid("work_id").primaryKey().references(() => works.id, { onDelete: "cascade" }),

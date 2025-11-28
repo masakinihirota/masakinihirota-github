@@ -13,8 +13,11 @@
         - [x] スキル・チャート / 目標設定 — 基本スキル選択 UI とサーバー保存の初期実装（TDD）
         - [ ] 外部リンク・連絡先入力
             - [x] URL バリデーション (src/lib/profile/createProfile.logic.ts)
-            - [ ] UI: 入力フォームの実装
-            - [ ] DB: 永続化（profile_links）
+            - [x] UI: 入力フォームの実装
+            - [x] UI: 複数リンクの追加/削除
+            - [x] UI: クライアント側 URL バリデーション
+            - [x] DB: 永続化（profile_links）
+            - [x] DB Migration: drizzle/0005_profile_links.sql
         - [ ] 公開形式切替 & プロフィール上限ガード
     - [ ] 作品登録・評価機能 (TDD)
         - [ ] 作品カタログ登録（公式/ユーザー）
@@ -66,4 +69,6 @@
         - [x] Nation 招待発行: デフォルト有効期限(7日) + server-action test
         - [x] Nation 招待発行: トークン自動生成 (UUID v4) を返す + server-action test
 # Workflow Updates
+    - [ ] Run integration tests locally and verify (REFACTOR)
+    - [x] CI workflow: manual integration-db-tests.yml added
 - [x] Review RSC Article and Update `nextjs-components.md`
