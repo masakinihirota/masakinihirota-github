@@ -3,13 +3,10 @@ import { getWorkById, relatedWorks } from '../data';
 import { ArrowLeft, Edit, Trash2, Link as LinkIcon, ShoppingCart, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-// Next.js internal types allow `params` and `searchParams` to be Promises
-// (see generated .next/types). Accept both sync and async shapes here so
-// the entry's props are compatible with Next's PageProps checks.
-export default function WorkDetailDemoPage(props: any) {
-    // Accept `props` as any here to be compatible with Next's generated PageProps
-    // which may represent params/searchParams as Promise-wrapped types in .next/types.
-    const params = props?.params;
+export default function WorkDetailDemoPage({ params }: { params: { id: string } }) {
+    // In a real app, we would await params, but for this demo we can just use a default or mock it.
+    // Since this is a client component in a way (or server component with static params),
+    // we'll just fetch a default work if params.id is missing or use the one from params.
     const workId = params?.id || 'work-1';
     const work = getWorkById(workId);
 
