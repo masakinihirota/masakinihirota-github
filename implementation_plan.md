@@ -193,6 +193,7 @@
     - [x] Nation 参加: 招待必須の検証 + server-action test
     - [x] Nation 入国: 招待トークン有効期限チェック + server-action test
     - [x] Nation 招待発行: デフォルト有効期限(7日) + server-action test
+    - [x] Nation 招待発行: トークン自動生成 (UUID v4) を返す + server-action test
     - [ ] 役職任命 (元首による閣僚任命など)
     - [ ] ポイント徴収・維持費管理 (国庫)
 

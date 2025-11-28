@@ -64,5 +64,6 @@
     - [x] Implement nation join invitation check (GREEN)
         - [x] Nation 入国: 招待トークン有効期限チェック + server-action test
         - [x] Nation 招待発行: デフォルト有効期限(7日) + server-action test
+        - [x] Nation 招待発行: トークン自動生成 (UUID v4) を返す + server-action test
 # Workflow Updates
 - [x] Review RSC Article and Update `nextjs-components.md`
