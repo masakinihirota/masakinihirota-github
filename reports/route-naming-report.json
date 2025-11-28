@@ -61,12 +61,6 @@
       "suggestion": "(10-root-accounts)"
     },
     {
-      "path": "src\\app\\(protected)\\root_accounts",
-      "name": "root_accounts",
-      "reason": "child of group (protected) should be numbered or parenthesized",
-      "suggestion": "(10-root-accounts)"
-    },
-    {
       "path": "src\\app\\(protected)\\settings",
       "name": "settings",
       "reason": "child of group (protected) should be numbered or parenthesized",
@@ -132,14 +126,6 @@
         "src\\app\\(public)\\onboarding"
       ],
       "canonical": "src\\app\\(protected)\\onboarding"
-    },
-    {
-      "normalized": "root-accounts",
-      "instances": [
-        "src\\app\\(protected)\\root-accounts",
-        "src\\app\\(protected)\\root_accounts"
-      ],
-      "canonical": "src\\app\\(protected)\\root-accounts"
     },
     {
       "normalized": "auth",
