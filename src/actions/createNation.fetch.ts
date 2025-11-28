@@ -30,7 +30,9 @@ export async function createNation(payload: { rootAccountId: string; name: strin
     await db.insert(pointTransactions).values({ rootAccountId: payload.rootAccountId, delta: -payload.cost, reason: 'FOUND_NATION', relatedEntity: 'nation', relatedId: newNationId })
 
     // Decrement the stored balance in root_account_points (minimal update)
-    await db.execute('UPDATE root_account_points SET balance = balance - $1 WHERE root_account_id = $2', [payload.cost, payload.rootAccountId])
+    // db.execute in this environment expects a single SQL string argument —
+    // interpolate arguments in a minimal way for the stubbed tests.
+    await db.execute(`UPDATE root_account_points SET balance = balance - ${payload.cost} WHERE root_account_id = '${payload.rootAccountId}'`)
 
     // If a creating profile is provided, assign sovereign role
     if ((payload as any).creatorProfileId) {
