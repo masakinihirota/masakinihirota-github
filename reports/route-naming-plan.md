@@ -52,6 +52,7 @@
 2. `root_accounts` と `root-accounts` の統合 (完了)
    - canonical: `src/app/(protected)/root-accounts`
   - 実施: `root_accounts` 側の UI 実装は `root-accounts` を canonical とし、`root_accounts` の重複 (components/route.json) を削除しました。互換性のため、`next.config.ts` にリダイレクトを追加して `/root_accounts*` → `/root-accounts*` を保っています。
+  - 次の小さなステップ: `root-accounts` を `(10-root-accounts)` の番号付きフォルダに移動しました — これで `(protected)` グループの命名規約に従います。
   - 実行結果: 2025-11-28 に `src/app/(protected)/(menu)/(10-root-accounts)/root_accounts` を削除し、`src/app/(protected)/root_accounts` (互換用リダイレクト) を削除・`next.config.ts` に転送ルールを追加しました。routes manifest を再生成済み (25 エントリ)。
 
 ### フェーズ C — 機能ディレクトリの番号付き化（段階的適用）
