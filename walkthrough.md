@@ -1,73 +1,31 @@
+# Walkthrough - Account UI Design Updates
 
-# Walkthrough - Login Page Adaptation & Protected Dashboard
+## 概要
+`vns-masakinihirota-design/0016 UI Design/account-pages` フォルダ内のUI設計書を更新し、最新のゲーミフィケーション要件（Lv、ポイント、バッジ、リスタート機能）を反映しました。
 
-## Changes
+## 変更内容
 
-### Login Page Adaptation
-- Adapted `src/app/(public)/login/page.tsx` to use the provided legacy code.
-- Implemented `GoogleLoginForm` and `GitHubLoginForm` with correct Supabase auth logic and redirect URLs (`/auth/callback?next=/dashboard`).
-- Verified `GoogleLoginForm` with unit tests.
-# Walkthrough - Login Page Adaptation & Protected Dashboard
+### 1. ルートアカウント (`root-account.md`)
+- **ヘッダー:** ユーザーレベル (Lv) とポイント (pt) の表示を追加。
+- **メインコンテンツ:** バッジ・実績一覧を追加。
+- **API契約:** レスポンスに `level`, `points`, `badges` を追加。
 
-## Changes
+### 2. ルートアカウント設定 (`root-account-settings.md`)
+- **データ管理:** 「リスタート（強くてニューゲーム）」機能の詳細を追加（Lv維持、ポイントリセット）。
+- **チュートリアル:** チュートリアル再開機能を追加。
 
-### Login Page Adaptation
-- Adapted `src/app/(public)/login/page.tsx` to use the provided legacy code.
-- Implemented `GoogleLoginForm` and `GitHubLoginForm` with correct Supabase auth logic and redirect URLs (`/auth/callback?next=/dashboard`).
-- Verified `GoogleLoginForm` with unit tests.
+### 3. プロフィール詳細 (`profile-detail.md`)
+- **ヘッダー:** ユーザーレベル (Lv) のバッジ表示を追加。
+- **タブ:** 「バッジ・実績」の表示を追加。
+- **制限:** Lvによる機能解放（スキル、マンダラ等）の表示制御について言及。
 
-### Protected Dashboard
-- Fixed `src/app/(protected)/layout.tsx` to correctly use Supabase auth (`getUser`) and remove invalid `html`/`body` tags.
-- `npm run lint`: PASSED
+### 4. プロフィール作成 (`profile-create.md`)
+- **フロー変更:** 作品や価値観の登録ステップを削除（Lvアップ後のチュートリアルで実施するため）。
+- **Lvアップ:** 作成完了時にLv1→Lv2へアップすることを明記。
 
-### Nation List Demo (Playground)
-- Created `src/app/playground/nation-list-demo/` directory.
-- Implemented `data.ts` with dummy nation data.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` with search, filter, sort functionality, and a list of nation cards.
+### 5. プロフィール編集 (`profile-edit.md`)
+- **スコープ明確化:** 作品や価値観の編集はこの画面ではなく、専用画面で行うことを明記。
 
-### Matching Settings Demo (Playground)
-- Created `src/app/playground/matching-settings-demo/` directory.
-- Implemented `data.ts` with dummy data for values, genres, skills, regions, and generations.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` with a form for setting matching preferences (sliders, checkboxes, dropdowns).
-
-### Search Screen Demo (Playground)
-- Created `src/app/playground/search-demo/` directory.
-- Implemented `data.ts` with dummy data for works, users, values, skills, lists, and chains.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` with search bar, category tabs, and results list.
-
-### Settings Screen Demo (Playground)
-- Created `src/app/playground/settings-demo/` directory.
-- Implemented `data.ts` with dummy data for user settings.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` with tabs for Account, Privacy, Security, Connections, and Payment settings.
-
-### Oasis Declaration Page Demo (Playground)
-- Created `src/app/playground/oasis-demo/` directory.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` displaying the full text of the Oasis Declaration with a "Agree and Register" button.
-
-### Terms of Service Page Demo (Playground)
-- Created `src/app/playground/terms-demo/` directory.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` displaying the full text of the Terms of Service with a "Agree and Register" button.
-
-### Privacy Policy Page Demo (Playground)
-- Created `src/app/playground/privacy-demo/` directory.
-- Created `Sidebar.tsx` and `Header.tsx` components.
-- Implemented `layout.tsx` integrating Sidebar and Header.
-- Implemented `page.tsx` displaying the full text of the Privacy Policy with a "Agree and Register" button.
-
-### Manual Verification
-- Login page should render correctly with Google, GitHub, and Anonymous login options.
-- Google/GitHub login should redirect to `/dashboard` after successful authentication.
-- Accessing `/protected` without login should redirect to `/login` (compatibility redirect now sends `/protected` visitors to `/dashboard`).
-- **Home Demo**: Access `/playground/home-demo` to view the UI prototype.
+## 検証
+- `0003-ゲーミフィケーション.md` の要件（Lv制、ポイント経済、リスタート）が各画面に正しく反映されていることを確認しました。
+- `readme.md` の画面リストと整合性が取れていることを確認しました。
