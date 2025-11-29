@@ -48,3 +48,7 @@ build_log*.txt
 lint_log.txt
 lint_src*.txt
 test_output*.txt
+
+#ninjaa agents
+.agents/*
+!.agents/template/
