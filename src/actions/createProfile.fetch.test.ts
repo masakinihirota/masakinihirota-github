@@ -174,4 +174,23 @@ describe('createProfile (Server Action) - RED tests', () => {
       createProfile({ rootAccountId: 'root_1', name: 'Alice', role: 'member', type: 'self' }, { session: undefined })
     ).rejects.toMatchObject({ code: 401, name: 'UnauthorizedError' })
   })
+
+  // NEW RED test: Ensure profile count limit is enforced
+  it('throws ProfileLimitExceeded when root account has reached max profiles', async () => {
+    // Arrange: root belongs to owner-1, and already has 3 profiles
+    const whereMockRoot = vi.fn().mockResolvedValue([{ id: 'r1', userId: 'owner-1' }])
+    const whereMockProfiles = vi.fn().mockResolvedValue([{ id: 'p1' }, { id: 'p2' }, { id: 'p3' }])
+
+    // First select() call returns root, second select() call returns existing profiles
+    ;(db.select as any)
+      .mockReturnValueOnce({ from: () => ({ where: whereMockRoot }) })
+      .mockReturnValueOnce({ from: () => ({ where: whereMockProfiles }) })
+
+    const { createProfile } = await import('@/actions/createProfile.fetch')
+
+    const payload = { rootAccountId: 'r1', name: 'Extra Profile' }
+    const ctx = { session: { user: { id: 'owner-1' } } }
+
+    await expect(createProfile(payload as any, ctx as any)).rejects.toMatchObject({ code: 409, name: 'ProfileLimitExceeded' })
+  })
 })

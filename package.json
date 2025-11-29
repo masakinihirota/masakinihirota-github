@@ -72,6 +72,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/coverage-v8": "4.0.13",
     "ajv": "8",
     "ajv-formats": "2",
     "babel-plugin-react-compiler": "1.0.0",

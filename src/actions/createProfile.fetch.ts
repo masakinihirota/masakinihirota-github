@@ -27,6 +27,13 @@ export async function createProfile(
     throw { code: 403, name: 'Forbidden', message: 'not allowed to create profile for this root account' }
   }
 
+  // Enforce a simple per-root profile count limit (Phase 3 requirement)
+  const MAX_PROFILES_PER_ROOT = 3
+  const existingProfiles = await db.select().from(profiles).where(eq(profiles.rootAccountId, validated.rootAccountId))
+  if (Array.isArray(existingProfiles) && existingProfiles.length >= MAX_PROFILES_PER_ROOT) {
+    throw { code: 409, name: 'ProfileLimitExceeded', message: 'root account reached maximum allowed profiles' }
+  }
+
   // Insert profile
   const inserted = await db.insert(profiles).values({ rootAccountId: validated.rootAccountId, name: validated.name }).returning()
   const profileId = inserted[0].id

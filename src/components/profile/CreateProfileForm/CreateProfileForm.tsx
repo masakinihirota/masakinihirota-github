@@ -12,7 +12,9 @@ export function CreateProfileForm() {
     const [organizationName, setOrganizationName] = useState('')
     const [selectedValues, setSelectedValues] = useState<string[]>([])
     const [selectedSkills, setSelectedSkills] = useState<string[]>([])
-    const [links, setLinks] = useState<Array<{ url: string; label?: string }>>([])
+    // Start with one blank link input so the UI always renders at least
+    // one Link URL input (tests expect Link URL to be present by default).
+    const [links, setLinks] = useState<Array<{ url: string; label?: string }>>([{ url: '', label: '' }])
     const [error, setError] = useState<string | null>(null)
     const [selectedWorks, setSelectedWorks] = useState<Array<{ id: string; title: string; tier?: number | null; claps?: number; liked?: boolean; status?: string }>>([])
 
@@ -48,7 +50,12 @@ export function CreateProfileForm() {
 
             const normalized = links
                 .filter((l) => l?.url && l.url.trim().length > 0)
-                .map((l) => ({ url: l.url.trim(), label: l.label?.trim() ?? undefined }))
+                .map((l) => {
+                    // only include `label` when it's non-empty after trimming
+                    const url = l.url.trim()
+                    const label = l.label?.trim()
+                    return label ? { url, label } : { url }
+                })
 
             if (normalized.length > 0) formData.append('links', JSON.stringify(normalized))
         }
@@ -82,7 +89,7 @@ export function CreateProfileForm() {
         setSelectedWorks((s) => s.filter((x) => x.id !== id))
     }
 
-    function addContactLink() {
+    function addLink() {
         setLinks((s) => [...s, { url: '', label: '' }])
     }
 
@@ -133,20 +140,15 @@ export function CreateProfileForm() {
                 <div style={{ marginTop: 8 }}>
                     <h4>External Links</h4>
                     <div>
-                        <button type="button" onClick={() => setLinks((s) => [...s, { url: '', label: '' }])}>Add Link</button>
+                        <button type="button" onClick={addLink}>Add Link</button>
                     </div>
-                    {links.length === 0 && (
-                        <div style={{ marginTop: 8 }}>
-                            <small>No links added</small>
-                        </div>
-                    )}
                     <ul>
                         {links.map((l, idx) => (
                             <li key={idx}>
                                 <label>Link URL</label>
-                                <input aria-label="Link URL" value={l.url} onChange={(e) => setLinks((s) => s.map((x, i) => i === idx ? { ...x, url: e.target.value } : x))} />
+                                <input aria-label="Link URL" value={l.url} onChange={(e) => updateLink(idx, { url: e.target.value })} />
                                 <label>Label</label>
-                                <input aria-label="Link Label" value={l.label} onChange={(e) => setLinks((s) => s.map((x, i) => i === idx ? { ...x, label: e.target.value } : x))} />
+                                <input aria-label="Link Label" value={l.label} onChange={(e) => updateLink(idx, { label: e.target.value })} />
                                 <button type="button" onClick={() => setLinks((s) => s.filter((_, i) => i !== idx))}>Remove</button>
                             </li>
                         ))}
@@ -158,22 +160,9 @@ export function CreateProfileForm() {
                 <h3>Add works to this profile</h3>
                 <WorkSearch onSelect={addWork} />
 
-                <div style={{ marginTop: 12 }}>
-                    <h4>Contact / External Links</h4>
-                    <button type="button" onClick={addContactLink}>Add Link</button>
-                    <ul>
-                        {links.map((l, idx) => (
-                            <li key={idx}>
-                                <label>Link URL
-                                    <input aria-label="Link URL" value={l.url} onChange={(e) => updateLink(idx, { url: e.target.value })} />
-                                </label>
-                                <label>Link Label
-                                    <input aria-label="Link Label" value={l.label ?? ''} onChange={(e) => updateLink(idx, { label: e.target.value })} />
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {/* Contact / External Links section was redundant and created duplicate
+                    'Add Link' buttons. Merge with the main External Links UI above so
+                    there's a single authoritative place to add/remove contact links. */}
 
                 <ul>
                     {selectedWorks.map((w) => (
