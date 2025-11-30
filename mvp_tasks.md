@@ -17,6 +17,7 @@
 
 ### 3. コミュニティ作成・一覧表示 (高)
 - Task 3.1: コミュニティ作成フローの acceptance criteria 作成
+ - Task 3.1: コミュニティ作成フローの acceptance criteria 作成 ✅
 - Task 3.2: コンポーネントテスト (フォーム検証 / 作成成功失敗) を作る
 - Task 3.3: 実装（小さな CRUD API + DB スキーマ）
 
