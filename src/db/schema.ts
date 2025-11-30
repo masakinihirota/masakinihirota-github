@@ -120,6 +120,47 @@ export const aclExceptionGrants = pgTable("acl_exception_grants", {
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
 });
 
+// RBAC: user-context roles and history
+export const userContextRoles = pgTable("user_context_roles", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").notNull(),
+  contextType: text("context_type").notNull(), // 'nation'|'organization'
+  contextId: uuid("context_id").notNull(),
+  roleKey: text("role_key").notNull(),
+  validFrom: timestamp("valid_from", { withTimezone: true, mode: "date" }),
+  validTo: timestamp("valid_to", { withTimezone: true, mode: "date" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  userIdx: index("idx_user_context_roles_user_id").on(t.userId),
+}));
+
+export const roleAssignmentHistory = pgTable("role_assignment_history", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").notNull(),
+  roleKey: text("role_key").notNull(),
+  operation: text("operation").notNull(), // assign|revoke
+  operatorId: uuid("operator_id"),
+  reason: text("reason"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  userIdx: index("idx_role_assignment_history_user_id").on(t.userId),
+}));
+
+export const userAuthorizationPermissions = pgTable("user_authorization_permissions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").notNull(),
+  resourceId: uuid("resource_id"),
+  resourceType: text("resource_type"),
+  action: text("action").notNull(),
+  allowed: boolean("allowed").notNull(),
+  contextId: uuid("context_id"),
+  expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }),
+  computedAt: timestamp("computed_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  userIdx: index("idx_user_auth_perms_user_id").on(t.userId),
+  resourceIdx: index("idx_user_auth_perms_resource").on(t.resourceType, t.resourceId),
+}));
+
 // --- Main Tables ---
 
 // Users table (Synced with Supabase Auth)
@@ -327,6 +368,29 @@ export const achievements = pgTable("achievements", {
   points: integer("points").default(0),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
 });
+
+// Ledger entries (double-entry bookkeeping logs)
+export const ledgerEntries = pgTable("ledger_entries", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  transactionId: uuid("transaction_id").notNull(),
+  ledgerId: uuid("ledger_id").notNull(),
+  entryDirection: text("entry_direction").notNull(), // 'in' | 'out'
+  amount: integer("amount").notNull(),
+  balanceBefore: integer("balance_before").notNull(),
+  balanceAfter: integer("balance_after").notNull(),
+  entryType: text("entry_type"),
+  status: text("status"),
+  counterpartLedgerId: uuid("counterpart_ledger_id"),
+  context: text("context"),
+  hash: text("hash"),
+  workflowId: uuid("workflow_id"),
+  consentTraceId: uuid("consent_trace_id"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  transactionIdx: index("idx_ledger_entries_transaction").on(t.transactionId),
+  ledgerIdx: index("idx_ledger_entries_ledger").on(t.ledgerId),
+  hashIdx: index("idx_ledger_entries_hash").on(t.hash),
+}));
 
 export const rootAccountAchievements = pgTable("root_account_achievements", {
   id: uuid("id").defaultRandom().primaryKey(),
