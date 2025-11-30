@@ -24,6 +24,10 @@ export default function LandingPage() {
                     <Link href="/login">
                         <Button size="lg">ログイン</Button>
                     </Link>
+                    {/* ルートから /home（メニュー付きページ）へ遷移できるようにする */}
+                    <Link href="/home">
+                        <Button variant="ghost" size="lg">Home</Button>
+                    </Link>
                     <Link href="/onboarding/guest">
                         <Button variant="outline" size="lg">匿名で試す</Button>
                     </Link>

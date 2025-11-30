@@ -1,0 +1,19 @@
+import { searchWorks } from '@/actions/searchWorks.fetch'
+
+export async function searchContent(payload: { q?: string; scope?: string }) {
+    const q = payload.q ?? ''
+    const scope = payload.scope ?? 'works'
+
+    if (!q || q.toString().trim().length === 0) {
+        throw new Error('q is required')
+    }
+
+    if (scope === 'works') {
+        return await searchWorks({ q: q.toString() })
+    }
+
+    // For MVP, only works supported
+    throw new Error(`Scope not supported: ${scope}`)
+}
+
+export default searchContent
