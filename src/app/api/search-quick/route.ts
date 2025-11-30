@@ -19,4 +19,6 @@ export async function GET(req: Request) {
   }
 }
 
-export const runtime = 'edge'
+// This route executes server-side and needs access to Node-only modules (postgres),
+// so use the Node runtime rather than the Edge runtime which doesn't provide Node core libs.
+export const runtime = 'nodejs'

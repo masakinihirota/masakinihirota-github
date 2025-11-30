@@ -3,9 +3,10 @@ import Link from 'next/link'
 import { searchContent } from './_actions/searchContent'
 import ResultsList from './_components/ResultsList'
 
-export default async function SearchPage({ searchParams }: { searchParams?: { q?: string; scope?: string } }) {
-    const q = searchParams?.q?.toString() ?? ''
-    const scope = (searchParams?.scope?.toString() ?? 'works')
+export default async function SearchPage({ searchParams }: { searchParams?: Promise<{ q?: string; scope?: string } | undefined> }) {
+    const resolved = searchParams ? await searchParams : undefined
+    const q = resolved?.q?.toString() ?? ''
+    const scope = (resolved?.scope?.toString() ?? 'works')
 
     if (!q) {
         return (
