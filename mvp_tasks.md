@@ -13,7 +13,7 @@
 -### 2. プロフィール (高優先)
 - Task 2.1: プロフィール表示・編集の受け入れ基準を決める ✅
 - Task 2.2: コンポーネント単位のユニットテストを書く（profile view/edit） ✅
-- Task 2.3: 最小実装: DB スキーマ（Drizzle）と API/ルート
+- Task 2.3: 最小実装: DB スキーマ（Drizzle）と API/ルート ✅
 
 ### 3. コミュニティ作成・一覧表示 (高)
 - Task 3.1: コミュニティ作成フローの acceptance criteria 作成
