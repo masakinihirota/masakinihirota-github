@@ -36,13 +36,13 @@ beforeEach(async () => {
 			} catch (e) {
 				// ignore rollback errors but log
 				// eslint-disable-next-line no-console
-				console.warn('rollback failed', e?.message ?? e);
+				console.warn('rollback failed', (e as any)?.message ?? e);
 			}
 		});
 	} catch (e) {
 		// If DB is not available, skip transaction isolation
 		// eslint-disable-next-line no-console
-		console.warn('DB transaction begin failed (tests may not be isolated):', e?.message ?? e);
+		console.warn('DB transaction begin failed (tests may not be isolated):', (e as any)?.message ?? e);
 	}
 });
 

@@ -54,12 +54,11 @@ export async function seedRBAC() {
         permissionId: permId,
       }));
 
-      await db
-        .insert(aclRolePermissions)
-        .values(values)
-        .onConflictDoNothing();
-    }
-  }
+        await db
+          .insert(aclRolePermissions)
+          .values(values)
+          .onConflictDoNothing();
+      }
 
   console.log("✅ RBAC Seeding completed.");
 }

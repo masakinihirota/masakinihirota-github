@@ -9,7 +9,7 @@ import {
   profiles,
   aclGroupClosure
 } from "@/db/schema";
-import { eq, and, or, inArray } from "drizzle-orm";
+import { eq, and, or, inArray, isNull } from "drizzle-orm";
 import { AclPermission, AclRole } from "@/constants/rbac";
 
 export class RbacService {
@@ -55,8 +55,8 @@ export class RbacService {
           inArray(aclExceptionGrants.profileId, profileIds),
           eq(aclExceptionGrants.permissionId, permissionId),
           // only consider global exceptions (no resource scope) for global permission check
-          eq(aclExceptionGrants.resourceType, null),
-          eq(aclExceptionGrants.resourceId, null)
+          isNull(aclExceptionGrants.resourceType),
+          isNull(aclExceptionGrants.resourceId)
         ));
 
       if (exceptions.length > 0) {
@@ -92,7 +92,7 @@ export class RbacService {
             inArray(aclExceptionGrants.profileId, profileIds),
             eq(aclExceptionGrants.permissionId, permissionId),
             eq(aclExceptionGrants.resourceType, rc.resourceType),
-            eq(aclExceptionGrants.resourceId, rc.resourceId)
+            eq(aclExceptionGrants.resourceId, rc.resourceId as string)
           ));
 
         // filter expired as before
