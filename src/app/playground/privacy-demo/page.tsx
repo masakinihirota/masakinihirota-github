@@ -147,7 +147,7 @@ export default function PrivacyDemoPage() {
                     </section>
 
                     {/* Action Button */}
-                    <div className="flex justify-center pt-8 pb-8">
+                    <div className="flex justify-center pt-8 pb-8 print:hidden">
                         <Link
                             href="/playground/home-demo"
                             className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transition-all transform hover:scale-105"
