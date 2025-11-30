@@ -12,7 +12,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
     const supabase = await createClient();
     const { data: { user }, error } = await supabase.auth.getUser();
 
-    if (error || !user) {
+    if ((error || !user) && process.env.NODE_ENV !== 'development') {
         redirect("/login");
     }
 
