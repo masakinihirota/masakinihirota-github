@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { db } from '@/lib/db';
 import { users } from '@/db/schema';
 import { randomUUID } from 'crypto';
+import { eq } from 'drizzle-orm';
 
 describe('Minimal DB Test', () => {
   it('should insert a user', async () => {
@@ -15,7 +16,7 @@ describe('Minimal DB Test', () => {
     } finally {
       // cleanup
       try {
-        await db.delete(users).where(users.id === id); // This syntax might be wrong for drizzle, use eq
+        await db.delete(users).where(eq(users.id, id));
       } catch (e) {}
     }
   });

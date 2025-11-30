@@ -10,10 +10,18 @@ if (matchers && typeof matchers === 'object') {
 
 // You can add other global test setup here later (e.g., fetch polyfills)
 import { cleanup } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import { afterEach, beforeEach } from 'vitest';
+import { runAndResetCleanups, resetCleanupRegistry } from './src/tests/setup/cleanup';
 
-afterEach(() => {
-    cleanup();
+beforeEach(() => {
+	// ensure registry is clean before each test
+	resetCleanupRegistry();
+});
+
+afterEach(async () => {
+	// Any registered cleanup functions (db deletes, etc.) are executed here
+	await runAndResetCleanups();
+	cleanup();
 });
 
 // Helpful note for contributors: centralized test helpers

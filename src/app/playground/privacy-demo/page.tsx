@@ -11,7 +11,7 @@ export default function PrivacyDemoPage() {
                 <div className="text-center mb-12">
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">プライバシーポリシー</h1>
                     <p className="text-lg text-gray-500 font-medium mb-4">Privacy Policy</p>
-                    <p className="text-sm text-gray-400">最終更新日: 2024年12月31日</p>
+                    <p className="text-sm text-gray-400">最終更新日: 2025-11-30</p>
                 </div>
 
                 <div className="space-y-12">

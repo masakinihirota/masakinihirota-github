@@ -5,14 +5,17 @@ import {
   aclRolePermissions,
   userSystemRoles,
   aclNationRoleAssignments,
+  organizationMembers,
   aclGroupRoleAssignments,
   aclExceptionGrants,
   userAuthorizationPermissions,
   aclGroups,
+  rootAccounts,
+  profiles,
   aclGroupClosure
 } from "@/db/schema";
-import { eq, and, or, inArray, sql } from "drizzle-orm";
-import { AclPermission, AclRole, ACL_SCOPES } from "@/constants/rbac";
+import { eq, and, or, inArray } from "drizzle-orm";
+import { AclPermission, AclRole } from "@/constants/rbac";
 
 export class RbacService {
   /**
@@ -30,18 +33,44 @@ export class RbacService {
   ): Promise<boolean> {
     // 1. Check Exception Grants (Direct Allow/Deny)
     // Deny takes precedence over everything.
-    const exceptions = await db.query.aclExceptionGrants.findMany({
-      where: and(
-        eq(aclExceptionGrants.permissionId, permissionId),
-        // We need to join with profile to get userId, or assume profileId is passed?
-        // Schema uses profileId for exceptions. We need to resolve profileId from userId.
-        // For now, let's assume we can get profileId.
-        // TODO: Resolve profileId from userId efficiently.
-      )
-    });
+    // Resolve user's profiles (users -> rootAccounts -> profiles) and check
+    // any exception grants attached to those profiles for this permission.
+    const rootAcctRows = await db
+      .select({ id: rootAccounts.id })
+      .from(rootAccounts)
+      .where(eq(rootAccounts.userId, userId));
 
-    // For simplicity in this initial version, we will focus on Role-based checks.
-    // Full implementation requires resolving the user's active profile(s).
+    const rootAccountIds = rootAcctRows.map(r => r.id);
+
+    let profileIds: string[] = [];
+    if (rootAccountIds.length > 0) {
+      const profileRows = await db
+        .select({ id: profiles.id })
+        .from(profiles)
+        .where(inArray(profiles.rootAccountId, rootAccountIds));
+
+      profileIds = profileRows.map(p => p.id);
+    }
+
+    if (profileIds.length > 0) {
+      const exceptions = await db
+        .select()
+        .from(aclExceptionGrants)
+        .where(and(
+          inArray(aclExceptionGrants.profileId, profileIds),
+          eq(aclExceptionGrants.permissionId, permissionId)
+        ));
+
+      if (exceptions.length > 0) {
+        // If any deny exists, deny overrides
+        const hasDeny = exceptions.some((e: any) => e.isDeny === true);
+        if (hasDeny) return false;
+
+        // Any allow grant will permit
+        const hasAllow = exceptions.some((e: any) => e.isDeny === false);
+        if (hasAllow) return true;
+      }
+    }
 
     // 2. Check System Roles
     const systemRoles = await db
@@ -55,13 +84,31 @@ export class RbacService {
       return true;
     }
 
-    // 3. Check Context Roles (Nation)
-    if (context?.nationId) {
-      // We need to find the profile(s) associated with this user
-      // Then check aclNationRoleAssignments
-      // This part requires joining users -> rootAccounts -> profiles
-      // Let's do a raw query or a complex join for efficiency?
-      // Or better, fetch user's profiles first.
+    // 3. Check Context Roles (Nation / Organization)
+    if (context?.nationId && profileIds.length > 0) {
+      // Find roles assigned to these profiles within that nation
+      const nationAssignments = await db
+        .select({ roleId: aclNationRoleAssignments.roleId })
+        .from(aclNationRoleAssignments)
+        .where(and(eq(aclNationRoleAssignments.nationId, context.nationId), inArray(aclNationRoleAssignments.profileId, profileIds)));
+
+      const nationRoleIds = nationAssignments.map(r => r.roleId);
+      if (nationRoleIds.length > 0 && await this.checkRolesForPermission(nationRoleIds, permissionId)) {
+        return true;
+      }
+    }
+
+    if (context?.organizationId && profileIds.length > 0) {
+      // organizationMembers stores profileId -> roleId for organizations
+      const orgAssignments = await db
+        .select({ roleId: organizationMembers.roleId })
+        .from(organizationMembers)
+        .where(and(eq(organizationMembers.organizationId, context.organizationId), inArray(organizationMembers.profileId, profileIds)));
+
+      const orgRoleIds = orgAssignments.map(r => r.roleId);
+      if (orgRoleIds.length > 0 && await this.checkRolesForPermission(orgRoleIds, permissionId)) {
+        return true;
+      }
     }
 
     // Fallback: False
@@ -71,7 +118,7 @@ export class RbacService {
   /**
    * Helper to check if any of the given roles have the permission
    */
-  private async checkRolesForPermission(roleIds: string[], permissionId: string): Promise<boolean> {
+  private async checkRolesForPermission(roleIds: string[], permissionId: AclPermission): Promise<boolean> {
     if (roleIds.length === 0) return false;
 
     // Check if any role has the permission directly

@@ -20,15 +20,22 @@ export async function seedRBAC() {
     .onConflictDoNothing();
 
   // 2. Seed Roles
-  const rolesData = Object.values(ACL_ROLES).map((roleId) => {
-    const def = ROLE_DEFINITIONS[roleId];
-    return {
-      id: roleId,
-      name: def.name,
-      scope: def.scope,
-      description: def.description,
-    };
-  });
+  const rolesData = Object.values(ACL_ROLES)
+    .map((roleId) => {
+      const def = ROLE_DEFINITIONS[roleId as any];
+      if (!def) {
+        console.warn(`Skipping role seed: ROLE_DEFINITIONS[${roleId}] not found`);
+        return null;
+      }
+
+      return {
+        id: roleId,
+        name: def.name,
+        scope: def.scope,
+        description: def.description,
+      };
+    })
+    .filter(Boolean) as { id: string; name: string; scope: string; description: string }[];
 
   console.log(`   - Inserting ${rolesData.length} roles...`);
   await db
@@ -39,8 +46,9 @@ export async function seedRBAC() {
   // 3. Seed Role-Permission Assignments
   console.log("   - Assigning permissions to roles...");
   for (const roleId of Object.values(ACL_ROLES)) {
-    const def = ROLE_DEFINITIONS[roleId];
-    if (def.permissions.length > 0) {
+    const def = ROLE_DEFINITIONS[roleId as any];
+    if (!def) continue;
+    if (!Array.isArray(def.permissions) || def.permissions.length === 0) continue;
       const values = def.permissions.map((permId) => ({
         roleId: roleId,
         permissionId: permId,
