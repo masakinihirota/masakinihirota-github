@@ -11,7 +11,8 @@ if (matchers && typeof matchers === 'object') {
 // You can add other global test setup here later (e.g., fetch polyfills)
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeEach } from 'vitest';
-import { runAndResetCleanups, resetCleanupRegistry } from './src/tests/setup/cleanup';
+import { runAndResetCleanups, resetCleanupRegistry, registerCleanup } from './src/tests/setup/cleanup';
+import { db } from './src/lib/db';
 
 beforeEach(() => {
 	// ensure registry is clean before each test
@@ -22,6 +23,27 @@ afterEach(async () => {
 	// Any registered cleanup functions (db deletes, etc.) are executed here
 	await runAndResetCleanups();
 	cleanup();
+});
+
+// Start a DB transaction before each test and schedule a rollback as the last cleanup.
+beforeEach(async () => {
+	try {
+		await db.execute('BEGIN');
+		// Register rollback so it runs after other cleanups (LIFO ensures it runs last)
+		registerCleanup(async () => {
+			try {
+				await db.execute('ROLLBACK');
+			} catch (e) {
+				// ignore rollback errors but log
+				// eslint-disable-next-line no-console
+				console.warn('rollback failed', e?.message ?? e);
+			}
+		});
+	} catch (e) {
+		// If DB is not available, skip transaction isolation
+		// eslint-disable-next-line no-console
+		console.warn('DB transaction begin failed (tests may not be isolated):', e?.message ?? e);
+	}
 });
 
 // Helpful note for contributors: centralized test helpers

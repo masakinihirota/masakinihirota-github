@@ -1,15 +1,10 @@
 import { db } from "@/lib/db";
 import {
-  aclRoles,
-  aclPermissions,
   aclRolePermissions,
   userSystemRoles,
   aclNationRoleAssignments,
   organizationMembers,
-  aclGroupRoleAssignments,
   aclExceptionGrants,
-  userAuthorizationPermissions,
-  aclGroups,
   rootAccounts,
   profiles,
   aclGroupClosure
@@ -53,15 +48,26 @@ export class RbacService {
     }
 
     if (profileIds.length > 0) {
-      const exceptions = await db
+      let exceptions = await db
         .select()
         .from(aclExceptionGrants)
         .where(and(
           inArray(aclExceptionGrants.profileId, profileIds),
-          eq(aclExceptionGrants.permissionId, permissionId)
+          eq(aclExceptionGrants.permissionId, permissionId),
+          // only consider global exceptions (no resource scope) for global permission check
+          eq(aclExceptionGrants.resourceType, null),
+          eq(aclExceptionGrants.resourceId, null)
         ));
 
       if (exceptions.length > 0) {
+        // ignore expired exceptions (expiresAt in the past)
+        const nowTs = Date.now();
+        exceptions = exceptions.filter((e: any) => {
+          if (!e?.expiresAt) return true;
+          const t = Date.parse(String(e.expiresAt));
+          return !isNaN(t) && t > nowTs;
+        });
+        // If filtering removed all exceptions, fall through to other checks
         // If any deny exists, deny overrides
         const hasDeny = exceptions.some((e: any) => e.isDeny === true);
         if (hasDeny) return false;
@@ -69,6 +75,40 @@ export class RbacService {
         // Any allow grant will permit
         const hasAllow = exceptions.some((e: any) => e.isDeny === false);
         if (hasAllow) return true;
+      }
+
+      // --- Resource-scoped exceptions for context (e.g., organization / nation)
+      // If caller provided a context (organizationId or nationId), check for
+      // exceptions that are scoped to that resource and apply precedence.
+      const resourceChecks: Array<{ resourceType: string; resourceId?: string | undefined }> = []
+      if (context?.organizationId) resourceChecks.push({ resourceType: 'organization', resourceId: context.organizationId })
+      if (context?.nationId) resourceChecks.push({ resourceType: 'nation', resourceId: context.nationId })
+
+      for (const rc of resourceChecks) {
+        const resExceptions = await db
+          .select()
+          .from(aclExceptionGrants)
+          .where(and(
+            inArray(aclExceptionGrants.profileId, profileIds),
+            eq(aclExceptionGrants.permissionId, permissionId),
+            eq(aclExceptionGrants.resourceType, rc.resourceType),
+            eq(aclExceptionGrants.resourceId, rc.resourceId)
+          ));
+
+        // filter expired as before
+        const nowTs = Date.now();
+        const active = (resExceptions || []).filter((e: any) => {
+          if (!e?.expiresAt) return true;
+          const t = Date.parse(String(e.expiresAt));
+          return !isNaN(t) && t > nowTs;
+        });
+
+        if (active.length > 0) {
+          const hasDeny = active.some((e: any) => e.isDeny === true);
+          if (hasDeny) return false;
+          const hasAllow = active.some((e: any) => e.isDeny === false);
+          if (hasAllow) return true;
+        }
       }
     }
 

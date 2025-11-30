@@ -140,4 +140,6 @@ describe('RbacService', () => {
     const hasPerm = await rbacService.hasPermission(testUserId, localPermId as any, { organizationId: localOrganizationId });
     expect(hasPerm).toBe(true);
   });
+
+  // resource-scoped exception test moved to dedicated unit test that uses mocks
 });
