@@ -25,8 +25,10 @@ export async function transferPoints(transactionId: string, fromRootId: string, 
     const toSelect = await tx.execute(sql`SELECT balance FROM root_account_points WHERE root_account_id = ${toRootId} FOR UPDATE`);
 
     // driver-specific result shapes: prefer reading rows array when present
-    const fromBalance = (fromSelect?.rows?.[0]?.balance ?? (fromSelect?.[0]?.balance ?? null));
-    const toBalance = (toSelect?.rows?.[0]?.balance ?? (toSelect?.[0]?.balance ?? null));
+    // tx.execute may return driver-specific shapes (some drivers offer .rows, some return an indexable array)
+    // Cast to any to safely handle both shapes without TypeScript errors.
+    const fromBalance = ((fromSelect as any)?.rows?.[0]?.balance ?? (fromSelect?.[0]?.balance ?? null));
+    const toBalance = ((toSelect as any)?.rows?.[0]?.balance ?? (toSelect?.[0]?.balance ?? null));
 
     if (fromBalance === null || fromBalance === undefined) throw new Error('source ledger row not found');
     if (toBalance === null || toBalance === undefined) throw new Error('destination ledger row not found');
