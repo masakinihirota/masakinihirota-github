@@ -87,7 +87,7 @@ IMPORTANT: このプロンプトは `implementation_plan.md` および `mvp_task
 
 6.  **完了記録**:
     - 問題がなければ、`serena/*` を使用して作業ログ、変更ファイル一覧、RED→GREEN の証跡を残す。
-    - 完了したタスクがあれば `implementation_plan.md` や `mvp-task.md` にチェックマークを入れてください。
+    - 完了したタスクがあれば `implementation_plan.md` や `mvp_tasks.md` にチェックマークを入れてください。
     - ユーザーには問題が発生するなどのトラブルがない限り実装すべき項目が終わるまで指示を仰ぐのは禁止。
     - まだ実装すべき項目が残っている場合は、次の TDD サイクルへ進む。
 
@@ -108,6 +108,36 @@ IMPORTANT: このプロンプトは `implementation_plan.md` および `mvp_task
 ## ガードレール（自動チェック）
 
 - エージェントは `testFailure` ツールまたはテスト実行ログの解析を通じて、「今回追加された失敗テスト数が 1 であること」を常に監視してください。
+
+  - 具体的には、テスト実行時の失敗数を検査するか、直近の Git diff で "新規追加されたテストのうち FAIL している数" を検出してください。
+  - テスト実行ログからの判定では、ファイル単位で新規作成されたテストファイルの中で失敗している count===1 を期待値とします。
+  - 自動判定で不確実な場合は、該当テストファイルの名前と一つだけ失敗していることのスクリーンショット（ログ抜粋）を作業証跡として残してください。
+
+  ※ 参考／自動化補助: リポジトリには `scripts/check-new-tests.js` と npm スクリプト `pnpm check:new-tests` を追加しました。これは
+
+  - Git の差分（origin/main...HEAD）から新規に追加されたテストファイルを検出し、
+  - それらに対して `vitest --reporter=json` を実行して JSON を解析し、"新規に追加された失敗テスト" の数を取得します。
+  - 成功条件は `new failing test count === 1` です（違う場合は非ゼロ終了コードで失敗します）。
+
+  Agent は内部チェックとして `pnpm check:new-tests` を呼び出して厳密判定を行うことができます（CLI／CI どちらでも利用可）。
+
+## integration テストの取扱い（明確化）
+
+- Integration / DB 必須テストの規約:
+  - integration レベルのテストは必ず `tests/integration/**` 配下に配置してください。
+  - Integration テストはローカル DB / Supabase に依存するため、実行するときは必ず環境変数 `RUN_DB_TESTS=1` を付けてください。CI で自動的に走らせないことを強制します。
+  - Agent が integration テストを走らせる場合は、`RUN_DB_TESTS` の有無をチェックし、無い場合はスキップして下さい（失敗とみなさない）。
+
+## 完了時のコミット／更新ルール（自動化しやすく）
+
+- 作業完了時のコミットメッセージテンプレート（推奨）:
+  - `TDD: complete <mvp_tasks.md#TaskIdentifier> — <short-description>`
+  - 例: `TDD: complete mvp_tasks.md#Task 5.1.1 — ignore resource-scoped exceptions for global checks`
+- 作業後は `mvp_tasks.md` の該当行にチェックを入れ、変更のコミットに必ず含めてください。Agent は `mvp_tasks.md` の該当タスク行を更新することを忘れないでください。
+
+## 変更検証とエビデンス
+
+- Agent は RED→GREEN→REFACTOR の各ステップのログ（コマンドの結果）を作業証跡として保存または `serena/*` に記録してください。ログは短い抜粋でよいので、RED の失敗メッセージ、GREEN のテスト成功行、最後に lint 結果を含めてください。
 
 ## タスク整合性ルール（必須）
 
