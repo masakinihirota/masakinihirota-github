@@ -1,0 +1,27 @@
+{
+    // Use the workspace biome binary for reproducible formatting/linting
+    "biome.lsp.bin": "./node_modules/.bin/biome",
+    // Keep Biome LSP enabled for this workspace
+    "biome.enabled": true,
+    // Prefer the workspace binary, don't spam suggestions for global installs
+    "biome.suggestInstallingGlobally": false,
+    // Formatting + fix on save using Biome
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.biome": "explicit",
+        "source.organizeImports.biome": "explicit"
+    },
+    // Make Biome the default formatter where it applies (optional, safe)
+    "[javascript]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    }
+}

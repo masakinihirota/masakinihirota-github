@@ -26,6 +26,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
+    "check:tools": "node ./scripts/check-tools.js biome",
+    "prelint": "pnpm run check:tools",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write ./src",
     "format": "biome format --write ./src",
