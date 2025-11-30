@@ -20,7 +20,7 @@ export default function AdToggle({ storageKey = 'ui:ads' }: { storageKey?: strin
       aria-label={enabled ? '広告を表示する' : '広告を非表示にする'}
       title={enabled ? '広告: 表示中' : '広告: オフ'}
       onClick={() => setEnabled(!enabled)}
-      className={`text-sm px-2 py-1 rounded border ${enabled ? 'bg-primary text-white' : 'bg-white text-zinc-700'}`}
+      className={`text-sm px-2 py-1 rounded border ${enabled ? 'bg-primary text-primary-foreground' : 'bg-background text-foreground hover:bg-accent hover:text-accent-foreground'}`}
     >
       {enabled ? '広告: ON' : '広告: OFF'}
     </button>

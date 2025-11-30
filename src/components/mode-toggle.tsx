@@ -24,11 +24,27 @@ export function ModeToggle() {
 
     const current = resolvedTheme ?? theme ?? 'light';
 
+    const handleClick = () => {
+        const next = current === 'light' ? 'dark' : 'light';
+        // use next-themes to persist / manage theme
+        setTheme(next);
+        // defensive fallback: ensure the class on documentElement is set so CSS that relies
+        // on `.dark` (or `.light`) works even if next-themes cannot toggle immediately.
+        try {
+            if (typeof document !== 'undefined' && document.documentElement) {
+                document.documentElement.classList.toggle('dark', next === 'dark');
+                document.documentElement.classList.toggle('light', next === 'light');
+            }
+        } catch (e) {
+            // silent fallback
+        }
+    };
+
     return (
         <Button
             variant="outline"
             size="icon"
-            onClick={() => setTheme(current === 'light' ? 'dark' : 'light')}
+            onClick={handleClick}
             aria-pressed={current === 'dark'}
             aria-label="切り替え: ダーク/ライト"
         >

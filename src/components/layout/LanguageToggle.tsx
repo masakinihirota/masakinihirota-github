@@ -21,7 +21,7 @@ export default function LanguageToggle({ storageKey = 'ui:lang' }: { storageKey?
       aria-label="言語切替"
       value={lang}
       onChange={(e) => setLang(e.target.value)}
-      className="text-sm px-2 py-1 rounded border bg-white"
+      className="text-sm px-2 py-1 rounded border bg-background text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
     >
       {LANGS.map(l => (
         <option key={l.code} value={l.code}>{l.label}</option>

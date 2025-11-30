@@ -9,6 +9,21 @@ if (matchers && typeof matchers === 'object') {
 }
 
 // You can add other global test setup here later (e.g., fetch polyfills)
+// Provide a minimal polyfill for window.matchMedia in the jsdom environment
+if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	window.matchMedia = (query: string) => ({
+		matches: false,
+		media: query,
+		onchange: null,
+		addListener: () => {},
+		removeListener: () => {},
+		addEventListener: () => {},
+		removeEventListener: () => {},
+		dispatchEvent: () => false,
+	});
+}
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeEach } from 'vitest';
 import { runAndResetCleanups, resetCleanupRegistry, registerCleanup } from './src/tests/setup/cleanup';

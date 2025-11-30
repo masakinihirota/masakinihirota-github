@@ -63,13 +63,13 @@ export default function GlobalHeaderMenu() {
     return (
         <form onSubmit={submit} className="flex items-center space-x-2">
             <div className="relative">
-                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                     aria-label="ヘッダークイック検索"
                     placeholder="作品を検索…（Enterで詳細検索ページへ）"
                     value={q}
                     onChange={(e) => { setQ(e.target.value); debounced(e.target.value) }}
-                    className="pl-8 pr-3 py-1 rounded-md border bg-white text-sm w-40 md:w-56 focus:outline-none focus:ring-2 focus:ring-primary h-9"
+                    className="pl-8 pr-3 py-1 rounded-md border bg-background text-sm w-40 md:w-56 focus:outline-none focus:ring-2 focus:ring-primary h-9"
                 />
             </div>
 
@@ -77,17 +77,17 @@ export default function GlobalHeaderMenu() {
 
             {/* quick dropdown */}
             {open && (
-                <div className="absolute mt-1 w-80 bg-white border rounded-md shadow-lg right-0 z-50 p-2" role="listbox">
+                <div className="absolute mt-1 w-80 bg-popover border rounded-md shadow-lg right-0 z-50 p-2 text-popover-foreground" role="listbox">
                     {results.slice(0,5).map((r) => (
-                        <div key={r.id} className="py-1 px-2 hover:bg-zinc-100 rounded">
+                        <div key={r.id} className="py-1 px-2 hover:bg-accent hover:text-accent-foreground rounded">
                             <a href={r.type === 'work' ? `/works/${r.id}` : '#'} className="flex items-center gap-3">
-                                <span className="inline-block text-xs text-zinc-500">{r.type}</span>
-                                <span className="text-sm text-zinc-800">{r.title}</span>
+                                <span className="inline-block text-xs text-muted-foreground">{r.type}</span>
+                                <span className="text-sm font-medium">{r.title}</span>
                             </a>
                         </div>
                     ))}
                     <div className="mt-2 border-t pt-2 text-center">
-                        <a href={`/search?q=${encodeURIComponent(q)}`} className="inline-block px-3 py-1 rounded bg-primary text-white text-sm">もっと詳しく検索</a>
+                        <a href={`/search?q=${encodeURIComponent(q)}`} className="inline-block px-3 py-1 rounded bg-primary text-primary-foreground text-sm">もっと詳しく検索</a>
                     </div>
                 </div>
             )}
