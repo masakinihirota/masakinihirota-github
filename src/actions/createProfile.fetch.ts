@@ -67,9 +67,8 @@ export async function createProfile(
   // db.insert see the expected number of calls)
   if (validated.links && Array.isArray(validated.links) && validated.links.length > 0) {
     for (const l of validated.links) {
-      // schema for profile_links isn't modeled yet, so use a typed-any to
-      // satisfy TS while maintaining testable behavior
-      await db.insert({} as any).values({ profileId, label: l.label, url: l.url })
+      // persist to the modeled profileLinks table
+      await db.insert(profileLinks).values({ profileId, label: l.label, url: l.url, type: l.type ?? null })
     }
   }
 

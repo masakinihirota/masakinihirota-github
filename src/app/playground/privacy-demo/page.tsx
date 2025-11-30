@@ -11,7 +11,7 @@ export default function PrivacyDemoPage() {
                 <div className="text-center mb-12">
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">プライバシーポリシー</h1>
                     <p className="text-lg text-gray-500 font-medium mb-4">Privacy Policy</p>
-                    <p className="text-sm text-gray-400">最終更新日: 2024年12月31日</p>
+                    <p className="text-sm text-gray-400">最終更新日: 2025-11-30</p>
                 </div>
 
                 <div className="space-y-12">
@@ -147,7 +147,7 @@ export default function PrivacyDemoPage() {
                     </section>
 
                     {/* Action Button */}
-                    <div className="flex justify-center pt-8 pb-8">
+                    <div className="flex justify-center pt-8 pb-8 print:hidden">
                         <Link
                             href="/playground/home-demo"
                             className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg transition-all transform hover:scale-105"

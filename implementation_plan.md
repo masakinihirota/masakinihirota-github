@@ -1,69 +1,94 @@
-# Account UI Demos Implementation Plan
+# 実装計画 (implementation_plan.md)
 
-## Goal
-Implement static UI demos for the account pages based on the design documents in `vns-masakinihirota-design/0016 UI Design/account-pages`. These pages will use dummy data but be structured to allow future Supabase integration.
+この文書は「masakinihirota」プロジェクトの実装を進めるための実践的な計画書です。
+設計リポジトリ内の要件定義書／設計書を基に、MVP 実装の優先順位、フェーズ分割、テスト指針 (TDD)、コロケーション方針を明確化します。
 
-## Proposed Changes
+※ 本計画は `masakinihirota` コードリポジトリの実装作業に直接従うものです。
 
-### Directory Structure
-Create `src/app/playground/account-demos/` with the following structure:
+---
 
-```
-src/app/playground/account-demos/
-├── layout.tsx                  # Shared layout for account demos (optional)
-├── data.ts                     # Dummy data for root account and profiles
-├── page.tsx                    # Index page listing the demos
-├── root-account/
-│   ├── page.tsx                # Root Account Dashboard
-│   └── settings/
-│       └── page.tsx            # Root Account Settings
-└── profile/
-    ├── create/
-    │   └── page.tsx            # Profile Create
-    ├── [username]/
-    │   ├── page.tsx            # Profile Detail
-    │   └── edit/
-    │       └── page.tsx        # Profile Edit
-```
+## 要約（目的） ✅
 
-### Components & Features
+- 早期に価値を提供できる MVP を TDD で実装する。最小限の機能を短いイテレーションでデリバリする。
+- 設計ドキュメントは日本語が一次情報。実装者はこれらを参照し、差分は実装計画に反映する。
 
-#### 1. Dummy Data (`data.ts`)
-- `mockRootAccount`: Includes UUID, provider, plan, points, level, badges.
-- `mockProfiles`: Array of profile objects (display_name, username, bio, role, etc.).
+---
 
-#### 2. Root Account Dashboard (`root-account/page.tsx`)
-- Display Header with Level, Points, Badges.
-- List of owned profiles.
-- Link to Settings.
+## 前提条件 / ルール ⚙️
 
-#### 3. Root Account Settings (`root-account/settings/page.tsx`)
-- Security, Payment (mock), Data Management sections.
-- **Restart (Strong New Game)** button with mock action.
+- 使用技術（確定）: Next.js (App Router) + TypeScript + Tailwind + Shadcn/UI
+- DB: PostgreSQL (Supabase Local)、ORM: Drizzle
+- 認証: Supabase Auth (Google OAuth)
+- テスト: Vitest + React Testing Library (TDD)
+- デプロイ: Vercel（将来）
+- 開発環境は Windows で pwsh を使用する想定
 
-#### 4. Profile Detail (`profile/[username]/page.tsx`)
-- Header with Avatar, Name, Level Badge.
-- Tabs: Overview, Works, Values, Skills, Mandala.
-- Mock "Follow" and "Scout" actions.
+特に重要な運用ルール:
+- DB 統合テストはローカルでのみ実行。CI による自動化は行わない（手動トリガーは可）。
+- コロケーション: コンポーネント単位で実装とテストを近接させる。
 
-#### 5. Profile Create (`profile/create/page.tsx`)
-- Form for Basic Info (Name, ID, Bio) and Attributes (Role, Purpose, Type).
-- "Create" button that mocks a server action and redirects.
+---
 
-#### 6. Profile Edit (`profile/[username]/edit/page.tsx`)
-- Form pre-filled with mock data.
-- "Save" button that mocks an update.
+## リリースフェーズ（高レベル） 📦
 
-## Verification Plan
+1. フェーズ 0 — 準備 (環境整備 / ドキュメント確定)
+   - 開発環境の標準化（ローカル Supabase の手順とチェックリスト作成）
+   - TDD 用テンプレート (Vitest + example) を既存リポジトリに揃える
 
-### Manual Verification
-1.  Navigate to `/playground/account-demos`.
-2.  Click through each demo link.
-3.  **Root Account:** Verify Level/Points display and Profile list.
-4.  **Settings:** Click "Restart" and verify mock alert/toast.
-5.  **Profile Detail:** Check tabs and badge display.
-6.  **Profile Create:** Fill form and click Create (verify mock success).
-7.  **Profile Edit:** Verify pre-filled data and Save action.
+2. フェーズ 1 — コア MVP（基礎機能群）
+   優先度の高いコア体験を一つずつ実装
+   - ユーザ登録 / ログイン（Google OAuth）
+   - プロフィールの基本表示/編集
+   - コミュニティ（小さな単位）の作成と表示
 
-### Automated Tests
-- None for these playground demos (they are for UI verification).
+3. フェーズ 2 — ポイント経済とシンプル相互作用
+   - ポイント付与/消費の最小限フロー（トランザクション整合性確認）
+   - 一部のコントリビューションでポイントが動く体験
+
+4. フェーズ 3 — UI 改善・ガバナンス/運用機能
+   - 管理者用ページ、RBAC（段階的に追加）
+   - チュートリアル導線や UX 改善
+
+---
+
+## MVP 機能の優先順位（例）🔍
+
+1. 認証（サインイン/サインアップ） — 必須
+2. プロフィール（表示/編集） — 必須
+3. コミュニティ作成・一覧表示 — 必須
+4. 基本的なポイント履歴表示 — 高
+5. シンプルなポイント送金/消費フロー — 中
+
+※ 優先順位は段階的に変更可能。初期実装は「最小で動く体験」に絞る。
+
+---
+
+## TDD とコロケーション方針（必須）🧪
+
+- 全ての新規 UI コンポーネント / ビジネスロジックはテストファーストで作成する。まず失敗するテストを書き、最小実装を行いリファクタする（RED → GREEN → REFACTOR）。
+- コンポーネント単位で近くにテストファイルを置く（例: src/app/(path)/Component.tsx と同ディレクトリに Component.test.tsx）。
+## 進捗管理とレビューサイクル 🔁
+
+- 短いスプリント（1〜2 週間目安）で小さなデリバリを行う
+- 1 機能ごとに PR を作ってレビュー（このワークスペースではローカル開発が主だが、変更は commit で記録）
+
+---
+
+## セキュリティ・運用注意点 🔒
+
+- OAuth シークレットや DB 接続情報は決してリポジトリに含めない（.env ファイル管理）
+- RLS / RBAC の設計は早期に検討（段階的に実装）
+
+---
+
+## 次のアクション（短期）▶️
+
+1. この implementation_plan.md を設計リポジトリに追加（完了: これ）
+2. `masakinihirota` 実装リポジトリに反映するための初期タスク（フェーズ0 のチェックリスト）を作る
+3. 最初の MVP 機能（認証）で TDD サイクルを回す（完了）
+4. 失敗しているテストを修正する (LoginForm, GoogleLogin, Ledger)
+5. コミュニティ作成フローの要件定義と実装 (Task 3.1 - 3.3)
+
+---
+
+質問や優先事項の変更があれば教えてください — 計画を調整します。
