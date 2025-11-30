@@ -7,3 +7,9 @@
     - [ ] Define "Organization Route" Simulation in `0006` <!-- id: 4 -->
     - [ ] Define "Nation Route" Simulation in `0006` <!-- id: 5 -->
     - [x] Adjust `0003-ゲーミフィケーション.md` if Level triggers need tuning <!-- id: 6 -->
+
+- [x] UI Design Review (Nation & Organization) <!-- id: 7 -->
+    - [x] Review Nation & Organization UI docs against requirements <!-- id: 8 -->
+    - [x] Update `nation-detail.md` (Rank, Map link) <!-- id: 9 -->
+    - [x] Update `organization-manage.md` (Election, Penalty) <!-- id: 10 -->
+    - [x] Update `organization-detail.md` (Election visibility) <!-- id: 11 -->
