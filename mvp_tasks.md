@@ -10,6 +10,9 @@
 - Task 1.3: Supabase Auth 接続の最小実装（ローカル .env チェック） ✅
 - Task 1.4: e2e 簡易検証 (ローカルでの手動手順文書化) ✅
 
+Note: 新規 `/home2` の左サイドメニューを shadcn スタイルで追加しました (src/app/home2)。
+Note: 新しく `/home3` を追加 — 認証後トップページ（route.json 未使用、shadcn スタイル）を `src/app/home3` に実装しました。
+
 -### 2. プロフィール (高優先)
 - Task 2.1: プロフィール表示・編集の受け入れ基準を決める ✅
 - Task 2.2: コンポーネント単位のユニットテストを書く（profile view/edit） ✅
