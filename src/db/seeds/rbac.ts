@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { aclPermissions, aclRoles, aclRolePermissions } from "@/db/schema";
-import { ACL_PERMISSIONS, ACL_ROLES, ROLE_DEFINITIONS } from "@/constants/rbac";
+import { ACL_PERMISSIONS, ACL_ROLES, ROLE_DEFINITIONS, type AclRole } from "@/constants/rbac";
 import { eq } from "drizzle-orm";
 
 export async function seedRBAC() {
@@ -20,9 +20,9 @@ export async function seedRBAC() {
     .onConflictDoNothing();
 
   // 2. Seed Roles
-  const rolesData = Object.values(ACL_ROLES)
+  const rolesData = (Object.values(ACL_ROLES) as AclRole[])
     .map((roleId) => {
-      const def = ROLE_DEFINITIONS[roleId as any];
+      const def = ROLE_DEFINITIONS[roleId];
       if (!def) {
         console.warn(`Skipping role seed: ROLE_DEFINITIONS[${roleId}] not found`);
         return null;
@@ -45,8 +45,8 @@ export async function seedRBAC() {
 
   // 3. Seed Role-Permission Assignments
   console.log("   - Assigning permissions to roles...");
-  for (const roleId of Object.values(ACL_ROLES)) {
-    const def = ROLE_DEFINITIONS[roleId as any];
+  for (const roleId of Object.values(ACL_ROLES) as AclRole[]) {
+    const def = ROLE_DEFINITIONS[roleId];
     if (!def) continue;
     if (!Array.isArray(def.permissions) || def.permissions.length === 0) continue;
       const values = def.permissions.map((permId) => ({
