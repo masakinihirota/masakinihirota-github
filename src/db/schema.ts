@@ -383,6 +383,8 @@ export const ledgerEntries = pgTable("ledger_entries", {
   counterpartLedgerId: uuid("counterpart_ledger_id"),
   context: text("context"),
   hash: text("hash"),
+  signerType: text("signer_type"),
+  signerId: text("signer_id"),
   workflowId: uuid("workflow_id"),
   consentTraceId: uuid("consent_trace_id"),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
@@ -390,6 +392,7 @@ export const ledgerEntries = pgTable("ledger_entries", {
   transactionIdx: index("idx_ledger_entries_transaction").on(t.transactionId),
   ledgerIdx: index("idx_ledger_entries_ledger").on(t.ledgerId),
   hashIdx: index("idx_ledger_entries_hash").on(t.hash),
+  signerIdx: index("idx_ledger_entries_signer_type").on(t.signerType),
 }));
 
 export const rootAccountAchievements = pgTable("root_account_achievements", {

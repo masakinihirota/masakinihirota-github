@@ -26,8 +26,8 @@ END$$;
 
 CREATE POLICY nations_select_policy ON nations FOR SELECT USING (
   (
-    -- sys_admin string present in session variable `app.current_roles`
-    COALESCE(current_setting('app.current_roles', true), '') LIKE '%sys_admin%'
+    -- sys_admin membership check: expect app.current_roles to be a JSON array string like '["sys_admin","role2"]'
+    COALESCE(current_setting('app.current_roles', true), '[]')::jsonb @> '"sys_admin"'::jsonb
   )
   OR
   (
@@ -35,4 +35,32 @@ CREATE POLICY nations_select_policy ON nations FOR SELECT USING (
     current_setting('app.current_profile_id', true) IS NOT NULL
     AND has_nation_role(current_setting('app.current_profile_id', true)::uuid, id, 'nation_leader')
   )
+);
+
+-- Secure write policies: allow only sys_admin to create/update/delete nations.
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'nations_write_insert') THEN
+    EXECUTE 'DROP POLICY nations_write_insert ON nations';
+  END IF;
+  IF EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'nations_write_update') THEN
+    EXECUTE 'DROP POLICY nations_write_update ON nations';
+  END IF;
+  IF EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'nations_write_delete') THEN
+    EXECUTE 'DROP POLICY nations_write_delete ON nations';
+  END IF;
+END$$;
+
+CREATE POLICY nations_write_insert ON nations FOR INSERT WITH CHECK (
+  COALESCE(current_setting('app.current_roles', true), '[]')::jsonb @> '"sys_admin"'::jsonb
+);
+
+CREATE POLICY nations_write_update ON nations FOR UPDATE USING (
+  COALESCE(current_setting('app.current_roles', true), '[]')::jsonb @> '"sys_admin"'::jsonb
+) WITH CHECK (
+  COALESCE(current_setting('app.current_roles', true), '[]')::jsonb @> '"sys_admin"'::jsonb
+);
+
+CREATE POLICY nations_write_delete ON nations FOR DELETE USING (
+  COALESCE(current_setting('app.current_roles', true), '[]')::jsonb @> '"sys_admin"'::jsonb
 );

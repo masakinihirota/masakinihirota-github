@@ -54,9 +54,15 @@ describe('Ledger double-entry transfer', () => {
       expect(e1.hash?.length).toBeGreaterThanOrEqual(64);
       expect(typeof e2.hash).toBe('string');
       expect(e2.hash?.length).toBeGreaterThanOrEqual(64);
-      // ensure DB rows contain hash
+      // ensure DB rows contain hash and signer metadata
       expect(typeof ledgerRows[0].hash).toBe('string');
       expect(typeof ledgerRows[1].hash).toBe('string');
+      // ensure signer metadata recorded
+      expect(typeof ledgerRows[0].signer_type).toBe('string');
+      expect(typeof ledgerRows[1].signer_type).toBe('string');
+      // returned entries should include signerType
+      expect(typeof e1.signerType).toBe('string');
+      expect(typeof e2.signerType).toBe('string');
 
       // verify entries hash validate
       const { verifyLedgerEntryHash } = await import('./index');
@@ -244,7 +250,5 @@ describe('Ledger double-entry transfer', () => {
       await db.delete(users).where(eq(users.id, userC)).catch(()=>{});
     }
   });
-  });
-});
 
 }

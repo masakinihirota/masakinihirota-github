@@ -45,6 +45,63 @@ describe('Nations RLS policies', () => {
     }
   });
 
+  it('AC-DB-004: current_roles false-positive check should not grant sys_admin-like substring', async () => {
+    // Setup: create a nation
+    const [n] = await db.insert(nations).values({ name: 'N-FalseMatch' }).returning();
+    const userId = randomUUID();
+    const [u] = await db.insert(users).values({ id: userId, email: `${userId}@ex.test` }).returning();
+    const [r] = await db.insert(rootAccounts).values({ userId, displayName: 'ra-false' }).returning();
+    const [p] = await db.insert(profiles).values({ rootAccountId: r.id, name: 'profile-false' }).returning();
+
+    try {
+      const rows = await db.transaction(async (tx) => {
+        // set a role that contains substring 'sys_admin' but isn't the role
+        await tx.execute(sql`SELECT set_config('app.current_roles', '["not_sys_admin"]', true)`);
+        await tx.execute(sql`SELECT set_config('app.current_profile_id', ${p.id}::text, true)`);
+        const res = await tx.select().from(nations).where(eq(nations.id, n.id));
+        return res;
+      });
+
+      expect(rows.length).toBe(0);
+    } finally {
+      await db.delete(nations).where(eq(nations.id, n.id));
+      await db.delete(profiles).where(eq(profiles.id, p.id)).catch(()=>{});
+      await db.delete(rootAccounts).where(eq(rootAccounts.id, r.id)).catch(()=>{});
+      await db.delete(users).where(eq(users.id, userId)).catch(()=>{});
+    }
+  });
+
+  it('AC-DB-005: write policy — only sys_admin can INSERT nations', async () => {
+    const userId = randomUUID();
+    const [u] = await db.insert(users).values({ id: userId, email: `${userId}@ex.test` }).returning();
+    const [r] = await db.insert(rootAccounts).values({ userId, displayName: 'ra-writer' }).returning();
+    const [p] = await db.insert(profiles).values({ rootAccountId: r.id, name: 'profile-writer' }).returning();
+
+    try {
+      // non-admin should be denied when trying to insert
+      await expect(db.transaction(async (tx) => {
+        await tx.execute(sql`SELECT set_config('app.current_roles', '["not_sys_admin"]', true)`);
+        await tx.execute(sql`SELECT set_config('app.current_profile_id', ${p.id}::text, true)`);
+        return await tx.insert(nations).values({ name: 'N-Insert-Fail' }).returning();
+      })).rejects.toThrow();
+
+      // admin can insert
+      const rows = await db.transaction(async (tx) => {
+        await tx.execute(sql`SELECT set_config('app.current_roles', '["sys_admin"]', true)`);
+        await tx.execute(sql`SELECT set_config('app.current_profile_id', ${p.id}::text, true)`);
+        return await tx.insert(nations).values({ name: 'N-Insert-Success' }).returning();
+      });
+      expect(rows.length).toBeGreaterThanOrEqual(1);
+
+      // cleanup inserted
+      await db.delete(nations).where(eq(nations.name, 'N-Insert-Success'));
+    } finally {
+      await db.delete(profiles).where(eq(profiles.id, p.id)).catch(()=>{});
+      await db.delete(rootAccounts).where(eq(rootAccounts.id, r.id)).catch(()=>{});
+      await db.delete(users).where(eq(users.id, userId)).catch(()=>{});
+    }
+  });
+
   it('AC-DB-002: profile without assignment cannot SELECT nation (RLS deny)', async () => {
     // Setup a nation and a different profile
     const userA = randomUUID();
@@ -90,8 +147,8 @@ describe('Nations RLS policies', () => {
 
     try {
       const rows = await db.transaction(async (tx) => {
-        // Grant sys_admin via session variable
-        await tx.execute(sql`SELECT set_config('app.current_roles', 'sys_admin', true)`);
+        // Grant sys_admin via session variable (JSON array)
+        await tx.execute(sql`SELECT set_config('app.current_roles', '["sys_admin"]', true)`);
         await tx.execute(sql`SELECT set_config('app.current_profile_id', ${p[0].id}::text, true)`);
         const res = await tx.select().from(nations).where(eq(nations.id, n[0].id));
         return res;

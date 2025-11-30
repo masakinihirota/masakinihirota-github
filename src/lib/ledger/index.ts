@@ -2,7 +2,8 @@ import { db } from '@/lib/db';
 import { sql } from 'drizzle-orm';
 import { rootAccountPoints, ledgerEntries } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { createHash, createHmac } from 'crypto';
+import { createHash } from 'crypto';
+import { getConfiguredSigner, HmacSigner, LocalEd25519Signer, KmsSigner } from './signer';
 
 export type TransferResult = {
   transactionId: string;
@@ -38,15 +39,15 @@ export async function transferPoints(transactionId: string, fromRootId: string, 
     const fromNew = fromBalNum - amount;
     const toNew = toBalNum + amount;
 
-    const fromNew = fromBalance - amount;
-    const toNew = toBalance + amount;
-
     // Create ledger entries
-    // use HMAC-SHA256 for tamper-resistant hash if secret supplied, otherwise fallback to pure sha256
-    const hmacSecret = process.env.LEDGER_HMAC_SECRET ?? '';
-    const outHash = hmacSecret
-      ? createHmac('sha256', hmacSecret).update(`${transactionId}|${fromRootId}|out|${amount}|${fromBalNum}|${fromNew}`).digest('hex')
-      : createHash('sha256').update(`${transactionId}|${fromRootId}|out|${amount}|${fromBalNum}|${fromNew}`).digest('hex');
+    // sign the ledger entry body using configured signer (hmac by default)
+    const signer = getConfiguredSigner();
+    const outBase = `${transactionId}|${fromRootId}|out|${amount}|${fromBalNum}|${fromNew}`;
+    const outHash = signer.sign(outBase);
+    // compute signer id: prefer explicit key material for local signers
+    const signerIdValue = (signer.type === 'ed25519-local' || signer.type === 'local-ed25519')
+      ? (typeof (signer as any).getPublicKeyPem === 'function' ? (signer as any).getPublicKeyPem() : null)
+      : (process.env.LEDGER_SIGNER_ID ?? null);
     const out = await tx.insert(ledgerEntries).values({
       transactionId,
       ledgerId: fromRootId,
@@ -58,11 +59,12 @@ export async function transferPoints(transactionId: string, fromRootId: string, 
       status: 'completed',
       counterpartLedgerId: toRootId,
       hash: outHash,
+      signerType: signer.type,
+      signerId: signerIdValue,
     }).returning();
 
-    const inHash = hmacSecret
-      ? createHmac('sha256', hmacSecret).update(`${transactionId}|${toRootId}|in|${amount}|${toBalNum}|${toNew}`).digest('hex')
-      : createHash('sha256').update(`${transactionId}|${toRootId}|in|${amount}|${toBalNum}|${toNew}`).digest('hex');
+    const inBase = `${transactionId}|${toRootId}|in|${amount}|${toBalNum}|${toNew}`;
+    const inHash = signer.sign(inBase);
     const ins = await tx.insert(ledgerEntries).values({
       transactionId,
       ledgerId: toRootId,
@@ -74,6 +76,8 @@ export async function transferPoints(transactionId: string, fromRootId: string, 
       status: 'completed',
       counterpartLedgerId: fromRootId,
       hash: inHash,
+      signerType: signer.type,
+      signerId: signerIdValue,
     }).returning();
 
     // Update balances - ensure updates affect rows
@@ -88,12 +92,22 @@ export async function transferPoints(transactionId: string, fromRootId: string, 
 
     return {
       transactionId,
-      entries: [out[0], ins[0]].map((r: any) => ({ id: r.id, ledgerId: r.ledger_id ?? r.ledgerId, entryDirection: r.entry_direction ?? r.entryDirection, amount: r.amount, balanceBefore: r.balance_before ?? r.balanceBefore, balanceAfter: r.balance_after ?? r.balanceAfter, hash: r.hash })),
+      entries: [out[0], ins[0]].map((r: any) => ({
+        id: r.id,
+        ledgerId: r.ledger_id ?? r.ledgerId,
+        entryDirection: r.entry_direction ?? r.entryDirection,
+        amount: r.amount,
+        balanceBefore: r.balance_before ?? r.balanceBefore,
+        balanceAfter: r.balance_after ?? r.balanceAfter,
+        hash: r.hash,
+        signerType: r.signer_type ?? r.signerType,
+        signerId: r.signer_id ?? r.signerId,
+      })),
     };
   });
 }
 
-export default { transferPoints };
+// default export will be redefined later including helper; remove earlier default export
 
 /**
  * Verify a ledger entry's hash. Returns true when matches the computed HMAC/SHA256.
@@ -101,13 +115,44 @@ export default { transferPoints };
  */
 export function verifyLedgerEntryHash(entry: any): boolean {
   if (!entry) return false;
-  const secret = process.env.LEDGER_HMAC_SECRET ?? '';
   const base = `${entry.transaction_id ?? entry.transactionId}|${entry.ledger_id ?? entry.ledgerId}|${entry.entry_direction ?? entry.entryDirection}|${entry.amount}|${entry.balance_before ?? entry.balanceBefore}|${entry.balance_after ?? entry.balanceAfter}`;
-  const expected = secret
-    ? createHmac('sha256', secret).update(base).digest('hex')
-    : createHash('sha256').update(base).digest('hex');
+  try {
+    // Prefer the signer that was recorded at creation-time if available
+    const recordedSignerType = (entry.signer_type ?? entry.signerType) as string | undefined;
+    let verifier: { verify: (base: string, signature: string) => boolean };
+    if (recordedSignerType) {
+      const t = recordedSignerType.toLowerCase();
+      if (t === 'hmac') {
+        verifier = new HmacSigner(process.env.LEDGER_HMAC_SECRET ?? '');
+      } else if (t === 'local-ed25519' || t === 'ed25519-local') {
+        // If the ledger row contains the public key (signer_id), use it to verify.
+        const signerPub = (entry.signer_id ?? entry.signerId) as string | undefined;
+        if (signerPub) {
+          verifier = new LocalEd25519Signer({ publicKeyPem: signerPub });
+        } else {
+          // fallback to configured signer instance (in-process key) when public key not stored
+          verifier = getConfiguredSigner();
+        }
+      } else if (t === 'kms') {
+        // KMS verifier typically uses an external provider; getConfiguredSigner will provide a KmsSigner instance if configured
+        verifier = getConfiguredSigner();
+      } else {
+        verifier = getConfiguredSigner();
+      }
+    } else {
+      verifier = getConfiguredSigner();
+    }
 
-  return String(entry.hash) === expected;
+    // verification may throw if provider isn't configured; treat throw as mismatch
+    return Boolean(verifier.verify(base, String(entry.hash)));
+  } catch (err) {
+    // fallback: if signer not available/throws, attempt legacy sha/hmac check
+    const secret = process.env.LEDGER_HMAC_SECRET ?? '';
+    const expected = secret
+      ? /* hmac */ require('crypto').createHmac('sha256', secret).update(base).digest('hex')
+      : createHash('sha256').update(base).digest('hex');
+    return String(entry.hash) === expected;
+  }
 }
 
 export default { transferPoints, verifyLedgerEntryHash };
