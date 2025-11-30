@@ -30,8 +30,8 @@ export class HmacSigner implements Signer {
  */
 export class LocalEd25519Signer implements Signer {
   public readonly type = 'ed25519-local';
-  private privateKey: string | Buffer;
-  private publicKey: string | Buffer;
+  private privateKey?: string | Buffer;
+  private publicKey?: string | Buffer;
 
   constructor(options?: { privateKeyPem?: string; publicKeyPem?: string }) {
     if (options?.privateKeyPem && options?.publicKeyPem) {
@@ -66,7 +66,7 @@ export class LocalEd25519Signer implements Signer {
     }
   }
 
-  getPublicKeyPem(): string | Buffer {
+  getPublicKeyPem(): string | Buffer | undefined {
     return this.publicKey;
   }
 }

@@ -1,3 +1,25 @@
+import { LocalEd25519Signer } from './signer';
+
+describe('LocalEd25519Signer', () => {
+  it('generates keypair when none supplied and can sign/verify', () => {
+    const s = new LocalEd25519Signer();
+    const pub = s.getPublicKeyPem();
+    expect(pub).toBeTruthy();
+
+    const payload = 'test-message-' + Math.random();
+    const sig = s.sign(payload);
+    expect(typeof sig).toBe('string');
+
+    // verify using pub-only signer
+    const sv = new LocalEd25519Signer({ publicKeyPem: String(pub) });
+    expect(sv.verify(payload, sig)).toBe(true);
+  });
+
+  it('throws when signing without a private key', () => {
+    const s = new LocalEd25519Signer({ publicKeyPem: '-----BEGIN PUBLIC KEY-----\nMIIBIj...\n-----END PUBLIC KEY-----' });
+    expect(() => s.sign('msg')).toThrow();
+  });
+});
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { getConfiguredSigner, HmacSigner, LocalEd25519Signer, resetConfiguredSigner } from './signer';
 
