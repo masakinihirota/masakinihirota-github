@@ -9,45 +9,37 @@
 | カテゴリ | ページ/コンポーネント | パス | テスト数 |
 |---------|---------------------|------|---------|
 | マッチング | MatchingTop | `/matching` | 4件 ✅ |
+| マッチング | MatchingResults | `/matching/results` | 4件 ✅ |
+| マッチング | MatchingResultDetail | `/matching/results/[result_id]` | 4件 ✅ |
+| マッチング | MatchingSettings | `/matching/settings` | 4件 ✅ |
 | 組織 | OrganizationList | `/organizations` | 4件 ✅ |
 | 組織 | OrganizationDetail | `/organizations/[org_id]` | 4件 ✅ |
+| 組織 | OrganizationCreateForm | `/organizations/new` | 4件 ✅ |
+| 組織 | OrganizationEditForm | `/organizations/[org_id]/edit` | 4件 ✅ |
+| 組織 | OrganizationManage | `/organizations/[org_id]/manage` | 4件 ✅ |
+| 組織 | OrganizationSettings | `/organizations/[org_id]/settings` | 4件 ✅ |
 | 国 | NationList | `/nations` | 4件 ✅ |
 | 国 | NationDetail | `/nations/[nation_id]` | 4件 ✅ |
+| 国 | NationCreateForm | `/nations/new` | 4件 ✅ |
+| 国 | NationEditForm | `/nations/[nation_id]/edit` | 4件 ✅ |
+| 国 | NationManage | `/nations/[nation_id]/manage` | 4件 ✅ |
+| 国 | NationSettings | `/nations/[nation_id]/settings` | 4件 ✅ |
 | プロフィール | ProfileList | `/profiles` | 3件 ✅ |
 | プロフィール | ProfileDetail | `/profiles/[profile_id]` | 4件 ✅ |
+| プロフィール | ProfileCreateForm | `/profiles/new` | 4件 ✅ |
+| プロフィール | ProfileEditForm | `/profiles/[profile_id]/edit` | 4件 ✅ |
+| ルートアカウント | RootAccountDashboard | `/root-accounts/[root_account_id]` | 4件 ✅ |
+| ルートアカウント | RootAccountSettings | `/root-accounts/[root_account_id]/settings` | 4件 ✅ |
 
 ---
 
 ### ⬜ 未実装 UI ページ一覧
 
-#### 📁 マッチングページ（3件）
-| ファイル | 内容 |
-|---------|------|
-| `マッチング結果.md` | マッチング結果一覧 |
-| `マッチング結果詳細.md` | 個別マッチング結果の詳細 |
-| `13-マッチング設定画面.md` | マッチング設定 |
+#### 📁 マッチングページ（0件）完了！ ✅
 
-#### 📁 アカウントページ（6件）
-| ファイル | 内容 |
-|---------|------|
-| `ユーザープロフィール画面.md` | プロフィール表示 |
-| `ユーザープロフィール作成.md` | プロフィール新規作成 |
-| `ユーザープロフィール詳細.md` | プロフィール詳細 |
-| `ユーザープロフィール編集.md` | プロフィール編集 |
-| `ルートアカウント画面.md` | ルートアカウント表示 |
-| `ルートアカウント設定.md` | ルートアカウント設定 |
+#### 📁 アカウントページ（0件）完了！ ✅
 
-#### 📁 コミュニティページ（10件）
-| ファイル | 内容 |
-|---------|------|
-| `組織作成.md` | 組織新規作成 |
-| `組織編集.md` | 組織編集 |
-| `組織管理.md` | 組織管理 |
-| `組織設定.md` | 組織設定 |
-| `国作成.md` | 国新規建国 |
-| `国編集.md` | 国編集 |
-| `国管理.md` | 国管理 |
-| `国設定.md` | 国設定 |
+#### 📁 コミュニティページ（0件）完了！ ✅
 
 #### 📁 コンテンツページ（16件）
 | ファイル | 内容 |
@@ -105,15 +97,16 @@
 
 | カテゴリ | 完了 | 残り | 進捗率 |
 |---------|------|------|--------|
-| マッチング | 1 | 3 | 25% |
-| 組織 | 2 | 4 | 33% |
-| 国 | 2 | 4 | 33% |
-| プロフィール | 2 | 4 | 33% |
+| マッチング | 4 | 0 | 100% ✅ |
+| 組織 | 6 | 0 | 100% ✅ |
+| 国 | 6 | 0 | 100% ✅ |
+| プロフィール | 4 | 0 | 100% ✅ |
+| ルートアカウント | 2 | 0 | 100% ✅ |
 | コンテンツ | 0 | 16+ | 0% |
 | その他 | 0 | 8 | 0% |
 | 静的 | 0 | 7 | 0% |
 | 管理者 | 0 | 5 | 0% |
-| **合計** | **7** | **51+** | **約12%** |
+| **合計** | **22** | **36+** | **約38%** |
 
 ---
 
