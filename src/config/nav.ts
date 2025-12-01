@@ -19,11 +19,11 @@ export type AuthNavItem = NavItem & { frequent?: boolean; group?: 'main'|'more' 
 export const authNav: AuthNavItem[] = [
   { label: "ホーム", href: "/home", frequent: true, group: 'main' },
   { label: "プロフィール（千の仮面）", href: "/profiles", frequent: true, group: 'main' },
-  { label: "国", href: "/nations", frequent: false, group: 'more' },
+  { label: "国", href: "/nations", frequent: false, group: 'main' },
   { label: "組織", href: "/organizations", frequent: true, group: 'main' },
   { label: "マッチング", href: "/matching", frequent: true, group: 'main' },
   { label: "作品", href: "/works", frequent: true, group: 'main' },
-  { label: "スキル", href: "/skills", frequent: true, group: 'main' },
+  { label: "スキル", href: "/skills", frequent: false, group: 'more' },
 
   { label: "チェーン", href: "/chain", frequent: false, group: 'more' },
   { label: "マンダラチャート", href: "/mandala", frequent: false, group: 'more' },
@@ -32,7 +32,6 @@ export const authNav: AuthNavItem[] = [
   { label: "メッセージ", href: "/messages", frequent: false, group: 'more' },
   { label: "アクティビティ", href: "/activity", frequent: false, group: 'more' },
   { label: "チュートリアル", href: "/tutorial", frequent: false, group: 'more' },
-  { label: "設定", href: "/settings", frequent: false, group: 'more' },
 ];
 
 export const footerNav: NavItem[] = [

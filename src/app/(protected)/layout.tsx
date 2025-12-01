@@ -1,8 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { authNav } from "@/config/nav";
-import Sidebar from "@/components/ui/Sidebar";
+// authNav intentionally not rendered in header to reduce clutter; primary navigation lives in the left sidebar
+import GlobalHeaderMenu from '@/components/layout/GlobalHeaderMenu';
+import AdToggle from '@/components/layout/AdToggle';
+import LanguageToggle from '@/components/layout/LanguageToggle';
+import { ModeToggle } from '@/components/mode-toggle';
+import Sidebar from "@/components/ui/LegacySidebar";
 
 export const metadata = {
     title: "masakinihirota - Authenticated",
@@ -12,28 +16,34 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
     const supabase = await createClient();
     const { data: { user }, error } = await supabase.auth.getUser();
 
-    if (error || !user) {
+    if ((error || !user) && process.env.NODE_ENV !== 'development') {
         redirect("/login");
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900">
-            <header className="p-4 border-b bg-white shadow-sm">
-                <div className="max-w-4xl mx-auto flex justify-between items-center">
-                    <Link href="/" className="font-semibold">masakinihirota</Link>
-                    <nav className="flex gap-3">
-                        {authNav.map((item: { href: string; label: string }) => (
-                            <Link key={item.href} href={item.href} className="text-sm text-zinc-700 hover:text-zinc-900">
-                                {item.label}
-                            </Link>
-                        ))}
-                    </nav>
-                </div>
-            </header>
+        <div className="min-h-screen bg-background text-foreground min-w-[1024px]">
+            {/* Header is placed in the content column so sidebar remains top-left and is visually primary */}
 
             <div className="flex">
                 <Sidebar />
-                <main className="flex-1 max-w-4xl mx-auto p-6">{children}</main>
+                <div className="flex-1 max-w-4xl mx-auto">
+                    <header className="py-2 border-b bg-background shadow-sm">
+                        <div className="flex items-center justify-between h-12 px-6">
+                            <div className="flex items-center gap-4">
+                                {/* Header should be minimal on protected pages — primary identity lives in the left sidebar */}
+                                <GlobalHeaderMenu />
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <AdToggle />
+                                <LanguageToggle />
+                                <ModeToggle />
+                                <Link href="/profile" className="text-sm text-muted-foreground hover:text-foreground">アカウント</Link>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="p-6">{children}</main>
+                </div>
             </div>
 
             <footer className="p-6 text-center text-sm text-zinc-400">© masakinihirota</footer>

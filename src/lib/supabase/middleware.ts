@@ -45,6 +45,11 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname !== '/' // Allow landing page
   ) {
     // no user, potentially respond by redirecting the user to the login page
+    // BYPASS: In development, allow access without login for UI testing
+    if (process.env.NODE_ENV === 'development') {
+      return supabaseResponse
+    }
+
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

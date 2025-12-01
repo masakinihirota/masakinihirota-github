@@ -12,32 +12,40 @@ type DbMocks = {
  * Call this before importing any module that itself imports '@/lib/db'.
  * Returns the mock functions so tests can assert calls/return values.
  */
+// keep a module-level store for the current mock implementations so the
+// vitest hoisted mock factory can safely reference them without causing a
+// ReferenceError when vi.mock is hoisted.
+let currentMocks: DbMocks = {}
+
+const execute = vi.fn(async (...args: any[]) => {
+  if (typeof currentMocks.execute === 'function') return await currentMocks.execute(...args)
+  return currentMocks.execute ?? []
+})
+
+// select should be synchronous so callers can do db.select().from(...)
+const select = vi.fn((...args: any[]) => {
+  if (typeof currentMocks.select === 'function') return currentMocks.select(...args)
+  return currentMocks.select ?? []
+})
+
+const insert = vi.fn((...args: any[]) => {
+  if (typeof currentMocks.insert === 'function') return currentMocks.insert(...args)
+  // default behavior: return an object that supports .values() -> .returning()
+  return currentMocks.insert ?? { values: () => ({ returning: () => [] }) }
+})
+
+// Always register the mock. Using a module-scoped currentMocks avoids
+// the hoisting problem when vitest processes vi.mock factories.
+vi.mock('@/lib/db', () => ({ db: { execute, select, insert } }))
+
 export function setupDbMock(mocks: DbMocks = {}) {
-  const execute = vi.fn(async (...args: any[]) => {
-    if (typeof mocks.execute === 'function') return await mocks.execute(...args)
-    return mocks.execute ?? []
-  })
+  currentMocks = mocks
+  // Reset spies between tests so callers can assert calls reliably.
+  execute.mockReset()
+  select.mockReset()
+  insert.mockReset()
 
-  // select should be synchronous so callers can do db.select().from(...)
-  const select = vi.fn((...args: any[]) => {
-    if (typeof mocks.select === 'function') return mocks.select(...args)
-    return mocks.select ?? []
-  })
-
-  const insert = vi.fn((...args: any[]) => {
-    if (typeof mocks.insert === 'function') return mocks.insert(...args)
-    return mocks.insert ?? { values: [] }
-  })
-
-  // Provide a default minimal shape that mirrors parts of the real db object
-  // Use doMock to avoid vi.mock hoisting issues when factories reference runtime values
-  if (typeof (vi as any).doMock === 'function') {
-    ;(vi as any).doMock('@/lib/db', () => ({ db: { execute, select, insert } }))
-  } else {
-    // fallback to vi.mock if doMock not available
-    vi.mock('@/lib/db', () => ({ db: { execute, select, insert } }))
-  }
-
+  // Return the actual spies so tests can make assertions on them
   return { execute, select, insert }
 }
 

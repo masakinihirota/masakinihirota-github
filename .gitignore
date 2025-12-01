@@ -29,6 +29,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+package-lock.json
+npm-shrinkwrap.json
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -48,3 +50,7 @@ build_log*.txt
 lint_log.txt
 lint_src*.txt
 test_output*.txt
+
+#ninjaa agents
+.agents/*
+!.agents/template/

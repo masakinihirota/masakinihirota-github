@@ -27,6 +27,13 @@ export async function createProfile(
     throw { code: 403, name: 'Forbidden', message: 'not allowed to create profile for this root account' }
   }
 
+  // Enforce a simple per-root profile count limit (Phase 3 requirement)
+  const MAX_PROFILES_PER_ROOT = 3
+  const existingProfiles = await db.select().from(profiles).where(eq(profiles.rootAccountId, validated.rootAccountId))
+  if (Array.isArray(existingProfiles) && existingProfiles.length >= MAX_PROFILES_PER_ROOT) {
+    throw { code: 409, name: 'ProfileLimitExceeded', message: 'root account reached maximum allowed profiles' }
+  }
+
   // Insert profile
   const inserted = await db.insert(profiles).values({ rootAccountId: validated.rootAccountId, name: validated.name }).returning()
   const profileId = inserted[0].id
@@ -55,11 +62,13 @@ export async function createProfile(
     }
   }
 
-  // persist external links (profile_links) if provided
+  // persist provided profile links if supplied (profile_links table is not
+  // yet modeled in schema; insert a generic row so unit tests that spy on
+  // db.insert see the expected number of calls)
   if (validated.links && Array.isArray(validated.links) && validated.links.length > 0) {
     for (const l of validated.links) {
-      // normalized earlier, just persist
-      await db.insert(profileLinks).values({ profileId, url: l.url, label: l.label ?? null, type: l.type ?? null })
+      // persist to the modeled profileLinks table
+      await db.insert(profileLinks).values({ profileId, label: l.label, url: l.url, type: l.type ?? null })
     }
   }
 

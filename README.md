@@ -37,6 +37,39 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## データベースのセットアップ (Supabase)
 
+## トラブルシューティング: Biome が見つからない場合 ⚠️
+
+このプロジェクトでは `biome` を開発用の Lint / Formatter / Checker として利用しています。もし次のようなエラーを見たら:
+
+```
+Could not find global Node Modules path for npm
+Unable to find the Biome binary.
+```
+
+原因としては主に以下が考えられます:
+
+- 依存関係 (devDependencies) がインストールされておらず、ローカルの `node_modules/.bin/biome` が存在しない。
+- エディタ拡張 (例: VS Code Biome 拡張) がローカルバイナリではなくグローバルバイナリを探している。
+
+対処方法:
+
+1. まず依存関係をインストールします (Windows PowerShell):
+
+```pwsh
+pnpm install
+```
+
+2. biome がローカルに存在しない場合は開発依存として追加します:
+
+```pwsh
+pnpm add -D biome
+```
+
+3. VS Code の Biome 拡張をお使いで、拡張がグローバルバイナリを探している場合は、拡張の設定でワークスペース内のバイナリを指すか、`biome` をグローバルにインストールしてください。ワークスペースのバイナリを使う方がプロジェクト毎のバージョンを固定できるため安全です。
+
+補助: このリポジトリには `scripts/check-tools.js` を追加しました。`pnpm run check:tools` を実行することで `biome` の存在を自動でチェックし、見つからない場合にわかりやすいメッセージを出します。`pnpm run lint` の前に自動で実行されるように `prelint` フックも追加しています。
+
+
 ### ⚠️ 重要: 認証ユーザー同期トリガーについて
 `auth.users` (Supabase Auth) にユーザーが作成された際、`public.users` (アプリケーションDB) へ自動的に同期するトリガーが必要です。
 セキュリティ権限の都合上、このトリガーは Drizzle の自動マイグレーションには含まれていません。

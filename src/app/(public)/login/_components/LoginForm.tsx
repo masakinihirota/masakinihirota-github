@@ -31,6 +31,22 @@ export function LoginForm() {
         }
     }
 
+    const handleLoginWithGithub = async () => {
+        try {
+            setIsLoading(true)
+            const supabase = createClient()
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'github',
+                options: { redirectTo: `${location.origin}/auth/callback` },
+            })
+            if (error) throw error
+        } catch (error) {
+            console.error('Login error (github):', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <Card className="w-[350px]">
             <CardHeader className="text-center">
@@ -38,9 +54,14 @@ export function LoginForm() {
                 <CardDescription>Login with your Google account</CardDescription>
             </CardHeader>
             <CardContent>
-                <Button onClick={handleLogin} className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Connecting...' : 'Sign in with Google'}
-                </Button>
+                <div className="space-y-2">
+                    <Button onClick={handleLogin} className="w-full" disabled={isLoading}>
+                        {isLoading ? 'Connecting...' : 'Sign in with Google'}
+                    </Button>
+                    <Button onClick={handleLoginWithGithub} className="w-full" disabled={isLoading} variant="secondary">
+                        {isLoading ? 'Connecting...' : 'Sign in with GitHub'}
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     )

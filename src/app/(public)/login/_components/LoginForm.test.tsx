@@ -74,7 +74,8 @@ describe('LoginForm', () => {
 
         fireEvent.click(button)
 
-        expect(screen.getByRole('button')).toHaveTextContent(/connecting/i)
+        // Ensure the original Google button shows loading state even after the text changes
+        expect(button).toHaveTextContent(/connecting/i)
         expect(button).toBeDisabled()
 
         await waitFor(() => {

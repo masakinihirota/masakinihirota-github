@@ -1,6 +1,5 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/mode-toggle";
 
 export default function RootLayout({
   children,
@@ -18,9 +17,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="absolute top-4 right-4 z-50">
-            <ModeToggle />
-          </div>
+          {/* ModeToggle is rendered inside page headers; keep root layout minimal */}
           {children}
         </ThemeProvider>
       </body>
