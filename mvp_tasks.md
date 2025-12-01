@@ -1,17 +1,83 @@
 # MVP タスク一覧（優先順位・分割）
 
-以下は `implementation_plan.md` に基づいた、最初の MVP 実装の小さいタスク群です。各タスクは TDD サイクルで進行します。
+以下は 最初の MVP 実装の小さいタスク群です。各タスクは TDD サイクルで進行します。
 
 ## フェーズ 1 — コア MVP（優先）
 
-### 1. 認証 (最優先)
-- Task 1.1: サインイン用受け入れ基準を定義 ✅
-- Task 1.2: Vitest テスト（ユニット / 認証 UI のレンダリング失敗テスト）を作成 ✅
-- Task 1.3: Supabase Auth 接続の最小実装（ローカル .env チェック） ✅
-- Task 1.4: e2e 簡易検証 (ローカルでの手動手順文書化) ✅
+これらのUIデザイン指示書に基づき、TDDサイクルでUIコンポーネントを実装してください。
 
-Note: 新規 `/home2` の左サイドメニューを shadcn スタイルで追加しました (src/app/home2)。
-Note: 新しく `/home3` を追加 — 認証後トップページ（route.json 未使用、shadcn スタイル）を `src/app/home3` に実装しました。
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\アカウントページ\ユーザープロフィール画面.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\アカウントページ\ユーザープロフィール作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\アカウントページ\ユーザープロフィール詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\アカウントページ\ユーザープロフィール編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\アカウントページ\ルートアカウント画面.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\アカウントページ\ルートアカウント設定.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\国管理.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\国作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\国詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\国設定.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\国編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\組織管理.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\組織作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\組織詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\組織設定.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コミュニティページ\組織編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\スキル作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\スキル詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\スキル編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\チェーン作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\チェーン詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\チェーン編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\マンダラチャート.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\リスト作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\リスト詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\リスト編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\価値観回答.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\価値観作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\価値観詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\価値観編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\作品作成.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\作品詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\コンテンツページ\作品編集.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\FAQ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\おすすめ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\お問い合わせ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\ヘルプ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\検索.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\設定.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\通知一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\その他ページ\通知詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\マッチングページ\13-マッチング設定画面.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\マッチングページ\マッチングトップ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\マッチングページ\マッチング結果.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\マッチングページ\マッチング結果詳細.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\_テンプレートリスト.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\カスタムリスト一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\スキル一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\チェーン一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\プロフィール一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\マッチング一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\価値観一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\国一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\作品一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\事例一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\リストページ\組織一覧.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\管理者ページ\管理者コンテンツ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\管理者ページ\管理者システム.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\管理者ページ\管理者ペナルティ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\管理者ページ\管理者ホーム.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\管理者ページ\管理者ユーザー.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\01-ランディングページ(LP).md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\HOME画面.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\human-declaration.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\oasis-declaration.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\privacy-policy.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\terms-of-service.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\メニューページ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\静的ページ\メニュー設計まとめ.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\認証ページ\02-ログイン画面.md
+U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画面単位の情報表示設計）\認証ページ\03-新規会員登録画面.md
+これらの UI デザイン指示書に基づき、TDD サイクルで UI コンポーネントを実装してください。
 
 -### 2. プロフィール (高優先)
 - Task 2.1: プロフィール表示・編集の受け入れ基準を決める ✅
