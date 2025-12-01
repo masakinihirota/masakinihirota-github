@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     // Check authentication
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { success: false, error: '認証が必要です' },
