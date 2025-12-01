@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const Card: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
+export const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, ...props }) => (
     // Provide sensible default spacing/rounded styling so content within cards
     // isn't flush to the very edge. Consumers can still override by passing className.
-    <div className={`rounded-lg overflow-hidden ${className ?? ""}`} data-testid="card">{children}</div>
+    <div className={`rounded-lg overflow-hidden ${className ?? ""}`} data-testid="card" {...props}>{children}</div>
 )
 
 export const CardHeader: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => (

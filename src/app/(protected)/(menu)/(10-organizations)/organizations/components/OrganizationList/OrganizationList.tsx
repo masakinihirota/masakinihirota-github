@@ -73,7 +73,7 @@ export function OrganizationList({ organizations }: OrganizationListProps) {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {organizations.map((org) => (
-          <Card key={org.id} role="listitem">
+          <Card key={org.id}>
             <CardHeader>
               <div className="flex items-start justify-between">
                 <CardTitle className="text-lg">{org.name}</CardTitle>

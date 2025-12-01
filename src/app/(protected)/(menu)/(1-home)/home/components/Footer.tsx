@@ -49,9 +49,9 @@ const footerLinks = [
   {
     title: "サポート",
     items: [
-      { label: "ヘルプ", href: "/help" },
+      { label: "ヘルプ", href: "/support" },
       { label: "FAQ", href: "/faq" },
-      { label: "お問い合わせ", href: "/contact" },
+      { label: "お問い合わせ", href: "/inquiry" },
     ],
   },
 ]
