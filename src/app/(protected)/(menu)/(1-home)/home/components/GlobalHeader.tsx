@@ -116,7 +116,7 @@ function HeaderSearch() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (query.trim()) {
-      router.push(`/home5/search?q=${encodeURIComponent(query)}`)
+      router.push(`/home/search?q=${encodeURIComponent(query)}`)
       setIsOpen(false)
     }
   }
@@ -146,8 +146,8 @@ function HeaderSearch() {
               key={result.id}
               href={
                 result.type === "work"
-                  ? `/home5/works/${result.id}`
-                  : `/home5/profiles/${result.id}`
+                  ? `/home/works/${result.id}`
+                  : `/home/profiles/${result.id}`
               }
               className="flex items-center gap-3 px-4 py-2 hover:bg-accent hover:text-accent-foreground"
               onClick={() => setIsOpen(false)}
@@ -160,7 +160,7 @@ function HeaderSearch() {
           ))}
           <div className="border-t mt-2 pt-2 px-4">
             <Link
-              href={`/home5/search?q=${encodeURIComponent(query)}`}
+              href={`/home/search?q=${encodeURIComponent(query)}`}
               className="text-sm text-primary hover:underline"
               onClick={() => setIsOpen(false)}
             >
@@ -261,7 +261,7 @@ function PointsDisplay() {
     <Tooltip>
       <TooltipTrigger asChild>
         <Link
-          href="/home5/pricing"
+          href="/home/pricing"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
         >
           <Coins className="h-4 w-4" />
@@ -321,7 +321,7 @@ function NotificationBell() {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link
-            href="/home5/notifications"
+            href="/home/notifications"
             className="w-full text-center text-sm text-primary"
           >
             すべての通知を見る
@@ -358,13 +358,13 @@ function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/home5/profiles">
+            <Link href="/home/profiles">
               <User className="mr-2 h-4 w-4" />
               プロフィール
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/home5/settings">
+            <Link href="/home/settings">
               <Settings className="mr-2 h-4 w-4" />
               設定
             </Link>
@@ -392,7 +392,7 @@ export function GlobalHeader() {
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Link
-            href="/home5"
+            href="/home"
             className="font-bold text-lg hover:opacity-80 transition-opacity"
           >
             masakinihirota
