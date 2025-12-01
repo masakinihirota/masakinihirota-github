@@ -85,20 +85,19 @@ U:\2025src\___masakinihirota\vns-masakinihirota-design\0016 UIデザイン（画
 - Task 2.3: 最小実装: DB スキーマ（Drizzle）と API/ルート ✅
 
 ### 3. コミュニティ作成・一覧表示 (高)
-- Task 3.1: コミュニティ作成フローの acceptance criteria 作成
- - Task 3.1: コミュニティ作成フローの acceptance criteria 作成 ✅
-- Task 3.2: コンポーネントテスト (フォーム検証 / 作成成功失敗) を作る
-- Task 3.3: 実装（小さな CRUD API + DB スキーマ）
+- Task 3.1: コミュニティ作成フローの acceptance criteria 作成 ✅
+- Task 3.2: コンポーネントテスト (フォーム検証 / 作成成功失敗) を作る ✅
+- Task 3.3: 実装（小さな CRUD API + DB スキーマ） ✅
 
 ## フェーズ 2 — ポイント経済（次フェーズ）
-- Task 4.1: ポイント履歴表示の受け入れ基準
-- Task 4.2: トランザクション表現と DB 制約（Drizzle migration）を設計
-- Task 4.3: 最小限の支払い／付与フローのユニットテスト
+- Task 4.1: ポイント履歴表示の受け入れ基準 ✅
+- Task 4.2: トランザクション表現と DB 制約（Drizzle migration）を設計 ✅
+- Task 4.3: 最小限の支払い／付与フローのユニットテスト ✅
 
 ## フェーズ 3 — 管理者機能等
 - Task 5.1: RBAC の段階的導入プラン
 	- Task 5.1.1: resource-scoped exception の扱いを修正し、グローバルな権限に誤適用されないようにする（ユニットテスト追加） ✅
-- Task 5.2: 管理 UI のスケルトン作成
+- Task 5.2: 管理 UI のスケルトン作成 ✅
 
 ## TDD 連続実行ガイド — リストが完了するまで厳密に回す (必読)
 
