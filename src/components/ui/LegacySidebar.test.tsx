@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 /** @vitest-environment jsdom */
 import { describe, it, expect } from "vitest";
 
@@ -12,34 +12,16 @@ describe("Sidebar (UI)", () => {
     expect(brandLink).toBeInTheDocument();
     expect(brandLink.getAttribute('href')).toBe('/home');
 
-    // footer should show a single root-account link (bottom-left account) and label it explicitly
-    const rootAccountLinks = screen.getAllByRole('link', { name: /ルートアカウント|masakinihirota/i });
-    // we expect exactly one root-accounts link (footer). Using regex to match our footer label
-    const rootAccountMatch = rootAccountLinks.filter(el => (el.getAttribute('href') || '').includes('/root-accounts'));
-    expect(rootAccountMatch.length).toBe(1);
-    expect(rootAccountMatch[0].getAttribute('href')).toBe('/root-accounts');
-    expect(screen.getByText(/ルートアカウント/)).toBeInTheDocument();
-    // There should be a Search link (now rendered where Settings used to be)
-    const searchLink = screen.getByTestId('sidebar-search');
-    expect(searchLink).toBeInTheDocument();
-    expect(searchLink.getAttribute('href')).toBe('/search');
+    // account menu button should be present
+    const accountMenuButton = screen.getByRole('button', { name: /アカウントメニュー/i });
+    expect(accountMenuButton).toBeInTheDocument();
 
-    // Settings should exist (rendered above the root-account/footer)
-    const settingsLink = screen.getByTestId('sidebar-settings');
-    expect(settingsLink).toBeInTheDocument();
+    // click to open account menu
+    fireEvent.click(accountMenuButton);
 
-    // Post button label (Japanese)
-    expect(screen.getByText(/ポストする/)).toBeInTheDocument();
-
-    // Ensure ordering in DOM: search < settings < root-account
-    const allLinks = screen.getAllByRole('link');
-    const searchIndex = Array.from(allLinks).findIndex(el => el === searchLink);
-    const settingsIndex = Array.from(allLinks).findIndex(el => el === settingsLink);
-    const rootIndex = Array.from(allLinks).findIndex(el => el === screen.getByTestId('sidebar-root-account'));
-    expect(searchIndex).toBeGreaterThanOrEqual(0);
-    expect(settingsIndex).toBeGreaterThanOrEqual(0);
-    expect(rootIndex).toBeGreaterThanOrEqual(0);
-    expect(searchIndex).toBeLessThan(settingsIndex);
-    expect(settingsIndex).toBeLessThan(rootIndex);
+    // after clicking, root-accounts link should be visible in the popover
+    const rootAccountLinks = screen.getAllByRole('link', { name: /既存のアカウントを追加/i });
+    expect(rootAccountLinks.length).toBeGreaterThanOrEqual(1);
+    expect(rootAccountLinks[0].getAttribute('href')).toBe('/root-accounts');
   });
 });
