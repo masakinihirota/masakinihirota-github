@@ -60,7 +60,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/Sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 /**

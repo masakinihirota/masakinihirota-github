@@ -36,7 +36,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/components/ui/Sidebar"
 
 /**
  * ヘッダーメニュー要件定義書に基づく機能:
