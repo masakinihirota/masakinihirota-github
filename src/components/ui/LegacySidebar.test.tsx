@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 /** @vitest-environment jsdom */
 import { describe, it, expect } from "vitest";
 
-import Sidebar from "./Sidebar";
+import Sidebar from "./LegacySidebar";
 
 describe("Sidebar (UI)", () => {
   it("renders core items and the post button", () => {

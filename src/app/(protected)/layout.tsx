@@ -6,7 +6,7 @@ import GlobalHeaderMenu from '@/components/layout/GlobalHeaderMenu';
 import AdToggle from '@/components/layout/AdToggle';
 import LanguageToggle from '@/components/layout/LanguageToggle';
 import { ModeToggle } from '@/components/mode-toggle';
-import Sidebar from "@/components/ui/Sidebar";
+import Sidebar from "@/components/ui/LegacySidebar";
 
 export const metadata = {
     title: "masakinihirota - Authenticated",
