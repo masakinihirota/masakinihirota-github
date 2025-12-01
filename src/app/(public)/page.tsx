@@ -28,11 +28,12 @@ export default function LandingPage() {
                     <Link href="/home">
                         <Button variant="ghost" size="lg">Home</Button>
                     </Link>
+                    <Link href="/home5">
+                        <Button variant="secondary" size="lg">Home5 (新UI)</Button>
+                    </Link>
                     <Link href="/onboarding/guest">
                         <Button variant="outline" size="lg">匿名で試す</Button>
                     </Link>
-                    {/* UI サンプル機能を削除したため、リンクは削除 */}
-
                 </div>
             </div>
         </section>
