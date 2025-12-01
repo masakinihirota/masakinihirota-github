@@ -1,0 +1,1 @@
+export { HumanDeclarationPage } from "./HumanDeclarationPage";
