@@ -1,7 +1,7 @@
 {
-  "label": "おすすめ",
-  "order": 89,
-  "visibleInMenu": true,
-  "authRequired": true,
-  "group": "main"
+    "label": "おすすめ",
+    "order": 89,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main"
 }

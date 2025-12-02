@@ -1,7 +1,7 @@
 {
-  "label": "プライシング",
-  "order": 60,
-  "visibleInMenu": true,
-  "authRequired": false,
-  "group": "footer"
+    "label": "プライシング",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer"
 }
