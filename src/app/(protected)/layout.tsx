@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { SidebarProvider, SidebarInset } from '@/components/ui/Sidebar';
-import { AppSidebar } from '@/app/home5/components/AppSidebar';
-import { GlobalHeader } from '@/app/home5/components/GlobalHeader';
-import { Footer } from '@/app/home5/components/Footer';
+import { AppSidebar } from '@/components/layout/AppSidebar';
+import { GlobalHeader } from '@/components/layout/GlobalHeader';
+import { Footer } from '@/components/layout/footer';
 
 export const metadata = {
     title: "masakinihirota - Authenticated",
