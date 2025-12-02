@@ -177,6 +177,10 @@ export const rootAccounts = pgTable("root_accounts", {
   userId: uuid("user_id").notNull().unique().references(() => users.id, { onDelete: "cascade" }),
   displayName: text("display_name").notNull(),
   location: text("location"),
+  motherTongue: text("mother_tongue"),
+  generation: text("generation"),
+  isAdsEnabled: boolean("is_ads_enabled").default(true),
+  tutorialStep: integer("tutorial_step").default(0),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
 }, (t) => ({
