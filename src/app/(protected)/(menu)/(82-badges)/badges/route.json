@@ -1,0 +1,7 @@
+{
+    "label": "アチーブメント",
+    "order": 82,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more"
+}

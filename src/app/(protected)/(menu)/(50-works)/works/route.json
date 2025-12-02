@@ -1,7 +1,7 @@
 {
     "label": "作品",
-    "order": 50,
+    "order": 8,
     "visibleInMenu": true,
     "authRequired": true,
-    "group": "main"
+    "group": "registration"
 }

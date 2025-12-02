@@ -1,0 +1,7 @@
+{
+    "label": "実績",
+    "order": 80,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more"
+}

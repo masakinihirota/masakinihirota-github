@@ -96,27 +96,57 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 // --- Manifest-driven menus ---
 // Helper: small icon map for known routes; fallback to List icon
-const ICON_MAP: Record<string, LucideIcon> = {
+export const ICON_MAP: Record<string, LucideIcon> = {
+  // core
   "/": Home,
-  "/profiles": User,
   "/matching": Heart,
-  "/recommendations": Star,
-  "/search": Search,
-  "/nations": Flag,
+  "/user-profiles": User,
+  "/profiles": User,
+
+  // community / org
   "/groups": Users,
+  "/nations": Flag,
+
+  // discovery / works
+  "/search": Search,
+  "/home": Home,
+  "/home/search": Search,
+  "/recommendations": Star,
   "/works": Briefcase,
+
+  // features
   "/values": Lightbulb,
   "/skills": Wrench,
   "/lists": List,
-  "/chain": Link2,
+  "/chains": Link2,
   "/mandala": Grid,
+
+  // progress / gamification
   "/achievements": Trophy,
   "/badges": Medal,
   "/results": Star,
+
+  // misc
+  "/notifications": Star,
   "/tutorial": GraduationCap,
+
+  // account / billing
   "/settings": Settings,
   "/pricing": CreditCard,
   "/root-accounts": UserCircle,
+
+  // public footer
+  "/help": GraduationCap,
+  "/about": Star,
+  "/contact": Star,
+  "/privacy": Star,
+  "/terms": Star,
+  "/onboarding": GraduationCap,
+  "/onboarding/guest": GraduationCap,
+  "/register": UserPlus,
+  "/oasis": Lightbulb,
+  "/messages": User,
+  "/activity": Star,
 }
 
 type RouteEntry = {
@@ -129,15 +159,15 @@ type RouteEntry = {
 }
 
 // Normalize a manifest route path into the sidebar URL used in this app
-const toSidebarUrl = (manifestPath: string) => {
-  if (!manifestPath) return "/home"
-  if (manifestPath === "/") return "/home"
-  // keep manifest like '/profiles' => '/home/profiles'
-  return manifestPath.startsWith("/home") ? manifestPath : `/home${manifestPath}`
+// Policy: routes.manifest.json is canonical. Return the manifest path as the sidebar URL
+export const toSidebarUrl = (manifestPath: string) => {
+  if (!manifestPath) return "/"
+  // Use manifest path directly — keep '/' as root
+  return manifestPath === "/" ? "/" : manifestPath
 }
 
 // Get icon for manifest route (fallback is List)
-const iconFor = (manifestPath: string): LucideIcon => {
+export const iconFor = (manifestPath: string): LucideIcon => {
   const key = manifestPath === "/" ? "/" : manifestPath
   return ICON_MAP[key] ?? List
 }
@@ -150,8 +180,15 @@ const mainMenuItems = manifestRoutes
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
 
-const featureMenuItems = manifestRoutes
-  .filter((r) => r.visibleInMenu && r.group === "feature")
+// 集団系メニュー（第2グループ）
+const groupMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "group")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
+
+// 登録系メニュー（第3グループ）
+const registrationMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "registration")
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
 
@@ -406,9 +443,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* メインメニュー */}
         <NavGroup items={mainMenuItems} currentPath={pathname} />
 
-        {/* feature / grouped menu (manifest-driven) */}
-        {featureMenuItems.length > 0 && (
-          <NavGroup label="機能" items={featureMenuItems} currentPath={pathname} />
+        {/* 集団系メニュー（第2グループ） */}
+        {groupMenuItems.length > 0 && (
+          <NavGroup label="集団" items={groupMenuItems} currentPath={pathname} />
+        )}
+
+        {/* 登録系メニュー（第3グループ） */}
+        {registrationMenuItems.length > 0 && (
+          <NavGroup label="登録" items={registrationMenuItems} currentPath={pathname} />
         )}
 
         {/* もっと見る */}

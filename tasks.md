@@ -24,6 +24,22 @@
 - Task 5.1: RBAC の段階的導入プラン
 	- Task 5.1.1: resource-scoped exception の扱いを修正し、グローバルな権限に誤適用されないようにする（ユニットテスト追加） ✅
 - Task 5.2: 管理 UI のスケルトン作成 ✅
+- Task 5.3: 管理者ロールチェックを middleware に実装
+	- Task 5.3.1: `/admin` 配下へのアクセス時に RBAC ベースの権限検証を行う
+	- Task 5.3.2: 管理者でないユーザーは `/home` へリダイレクト
+	- Task 5.3.3: root_accounts テーブルの role カラムを活用した権限判定ロジック
+	- Task 5.3.4: Server Component での二重チェック（middleware + ページ内）
+
+## フェーズ 4 — URL 設計書対応
+- Task 6.1: 未実装の主要ルートを段階的に追加
+	- Task 6.1.1: `/group/[groupCode]` 公開組織ページの実装
+	- Task 6.1.2: `/lists` 関連ページの実装
+	- Task 6.1.3: `/nations/create` 建国申請フォームの実装
+	- Task 6.1.4: `/matching/list` 手動マッチング比較ページの実装
+	- Task 6.1.5: `/report` ペナルティ報告フォームの実装
+- Task 6.2: 公開プロフィールページの実装
+	- Task 6.2.1: `/public/user-profiles/[userProfileId]` 公開プロフィール
+	- Task 6.2.2: `/root-accounts/[rootAccountId]` 公開ルートアカウント
 
 ## TDD 連続実行ガイド — リストが完了するまで厳密に回す (必読)
 

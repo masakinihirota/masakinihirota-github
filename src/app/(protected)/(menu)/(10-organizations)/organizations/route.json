@@ -1,7 +1,0 @@
-{
-    "label": "組織",
-    "order": 10,
-    "visibleInMenu": true,
-    "authRequired": true,
-    "group": "main"
-}

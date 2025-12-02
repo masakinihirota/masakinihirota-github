@@ -11,9 +11,6 @@ import {
   Globe,
   Megaphone,
   Coins,
-  User,
-  Settings,
-  LogOut,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 
@@ -21,7 +18,6 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -34,7 +30,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/Sidebar"
 
@@ -332,71 +327,14 @@ function NotificationBell() {
   )
 }
 
-// ユーザーアバターメニュー
-function UserMenu() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-9 w-9 rounded-full p-0"
-        >
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatars/masakinihirota.jpg" alt="masakinihirota" />
-            <AvatarFallback>M</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>
-          <div className="flex flex-col">
-            <span>masakinihirota</span>
-            <span className="text-xs text-muted-foreground">@masakinihirota</span>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/home/profiles">
-              <User className="mr-2 h-4 w-4" />
-              プロフィール
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/home/settings">
-              <Settings className="mr-2 h-4 w-4" />
-              設定
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/login">
-            <LogOut className="mr-2 h-4 w-4" />
-            ログアウト
-          </Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
-
 // メインヘッダーコンポーネント
 export function GlobalHeader() {
   return (
     <TooltipProvider>
       <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 px-4">
-        {/* 左側: サイドバートリガー + ロゴ */}
+        {/* 左側: サイドバートリガー */}
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Link
-            href="/home"
-            className="font-bold text-lg hover:opacity-80 transition-opacity"
-          >
-            masakinihirota
-          </Link>
         </div>
 
         {/* 中央: 検索バー */}
@@ -412,7 +350,6 @@ export function GlobalHeader() {
           <Separator orientation="vertical" className="mx-2 h-4" />
           <PointsDisplay />
           <NotificationBell />
-          <UserMenu />
         </div>
       </header>
     </TooltipProvider>

@@ -37,13 +37,55 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/onboarding/guest') && // Allow guest onboarding
-    request.nextUrl.pathname !== '/' // Allow landing page
-  ) {
+  const pathname = request.nextUrl.pathname
+
+  // 公開パス（認証不要）
+  const publicPaths = [
+    '/',
+    '/login',
+    '/register',
+    '/auth',
+    '/onboarding/guest',
+    '/terms',
+    '/privacy',
+    '/about',
+    '/contact',
+    '/help',
+    '/oasis',
+    '/oasis-declaration',
+    '/human-declaration',
+    '/search',
+    '/pricing',
+    '/recommendations',
+    '/group',       // /group/[groupCode] 公開組織
+    '/works',       // /works/[workId] 公開作品
+    '/values',      // /values/[valueId] 公開価値観
+    '/skills',      // /skills/[skillId] 公開スキル
+    '/lists',       // /lists/[listId] 公開リスト
+    '/chains',      // /chains/[chainId] 公開チェーン
+    '/nations',     // /nations 公開国ディレクトリ
+    '/alliances',   // /alliances/[allianceId] 公開アライアンス
+    '/root-accounts', // /root-accounts/[id] 公開プロフィール
+    '/public',      // /public/* 静的公開ページ
+  ]
+
+  // パスが公開パスのいずれかで始まるかチェック
+  const isPublicPath = publicPaths.some((path) => {
+    if (path === '/') return pathname === '/'
+    return pathname === path || pathname.startsWith(`${path}/`)
+  })
+
+  // 開発用ページを本番ではブロック
+  const isDevOnlyPath =
+    pathname.startsWith('/playground') ||
+    pathname.startsWith('/playground-github-copilot') ||
+    pathname.includes('(99-prototypes)')
+
+  if (process.env.NODE_ENV === 'production' && isDevOnlyPath) {
+    return NextResponse.rewrite(new URL('/404', request.url))
+  }
+
+  if (!user && !isPublicPath) {
     // no user, potentially respond by redirecting the user to the login page
     // BYPASS: In development, allow access without login for UI testing
     if (process.env.NODE_ENV === 'development') {
@@ -54,6 +96,19 @@ export async function updateSession(request: NextRequest) {
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
+
+  // 管理者エリアのロールチェック
+  // TODO: 管理者ロールチェックを実装（tasks.md に記載）
+  // if (pathname.startsWith('/admin') && user) {
+  //   const { data: profile } = await supabase
+  //     .from('root_accounts')
+  //     .select('role')
+  //     .eq('id', user.id)
+  //     .single()
+  //   if (profile?.role !== 'admin') {
+  //     return NextResponse.redirect(new URL('/home', request.url))
+  //   }
+  // }
 
   return supabaseResponse
 }

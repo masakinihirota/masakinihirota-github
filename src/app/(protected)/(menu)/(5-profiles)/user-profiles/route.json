@@ -1,0 +1,7 @@
+{
+    "label": "プロフィール",
+    "order": 2,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main"
+}

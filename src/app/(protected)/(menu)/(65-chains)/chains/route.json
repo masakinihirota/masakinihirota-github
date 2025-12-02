@@ -1,0 +1,7 @@
+{
+    "label": "チェーン",
+    "order": 65,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more"
+}

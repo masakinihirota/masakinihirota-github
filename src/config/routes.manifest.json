@@ -1,5 +1,23 @@
 [
   {
+    "path": "/home",
+    "label": "ホーム",
+    "order": 1,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\route.json"
+  },
+  {
+    "path": "/user-profiles",
+    "label": "プロフィール",
+    "order": 2,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(protected)\\(menu)\\(5-profiles)\\user-profiles\\route.json"
+  },
+  {
     "path": "/matching",
     "label": "マッチング",
     "order": 3,
@@ -9,13 +27,67 @@
     "source": "src\\app\\(protected)\\(menu)\\(3-matching)\\matching\\route.json"
   },
   {
-    "path": "/profiles",
-    "label": "千の仮面（プロフィール）",
-    "order": 5,
+    "path": "/recommendations",
+    "label": "おすすめ",
+    "order": 4,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(5-profiles)\\profiles\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(89-recommendations)\\recommendations\\route.json"
+  },
+  {
+    "path": "/home/search",
+    "label": "検索",
+    "order": 5,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "group",
+    "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\search\\route.json"
+  },
+  {
+    "path": "/search",
+    "label": "検索（公開）",
+    "order": 5,
+    "visibleInMenu": false,
+    "authRequired": false,
+    "group": "public",
+    "source": "src\\app\\search\\route.json"
+  },
+  {
+    "path": "/nations",
+    "label": "国（トップダウン）",
+    "order": 6,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "group",
+    "source": "src\\app\\(protected)\\(menu)\\(15-nations)\\nations\\route.json"
+  },
+  {
+    "path": "/groups",
+    "label": "グループ（ボトムアップ）",
+    "order": 7,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "group",
+    "source": "src\\app\\(protected)\\(menu)\\(10-organizations)\\groups\\route.json"
+  },
+  {
+    "path": "/works",
+    "label": "作品",
+    "order": 8,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "registration",
+    "source": "src\\app\\(protected)\\(menu)\\(50-works)\\works\\route.json"
+  },
+  {
+    "path": "/values",
+    "label": "価値観",
+    "order": 9,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "registration",
+    "source": "src\\app\\(protected)\\(menu)\\(60-values)\\values\\route.json"
   },
   {
     "path": "/about",
@@ -27,22 +99,13 @@
     "source": "src\\app\\(public)\\(footer-menu)\\about\\route.json"
   },
   {
-    "path": "/organizations",
-    "label": "組織",
+    "path": "/skills",
+    "label": "スキル",
     "order": 10,
     "visibleInMenu": true,
     "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(10-organizations)\\organizations\\route.json"
-  },
-  {
-    "path": "/nations",
-    "label": "国（トップダウン）",
-    "order": 15,
-    "visibleInMenu": true,
-    "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(15-nations)\\nations\\route.json"
+    "group": "registration",
+    "source": "src\\app\\(protected)\\skills\\route.json"
   },
   {
     "path": "/register",
@@ -61,15 +124,6 @@
     "authRequired": false,
     "group": "footer",
     "source": "src\\app\\(public)\\(footer-menu)\\help\\route.json"
-  },
-  {
-    "path": "/search",
-    "label": "検索",
-    "order": 22,
-    "visibleInMenu": true,
-    "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\search\\route.json"
   },
   {
     "path": "/oasis",
@@ -99,15 +153,6 @@
     "source": "src\\app\\(public)\\onboarding\\guest\\route.json"
   },
   {
-    "path": "/tutorial",
-    "label": "チュートリアル",
-    "order": 40,
-    "visibleInMenu": true,
-    "authRequired": false,
-    "group": "feature",
-    "source": "src\\app\\(public)\\(feature)\\tutorial\\route.json"
-  },
-  {
     "path": "/privacy",
     "label": "プライバシー",
     "order": 40,
@@ -115,15 +160,6 @@
     "authRequired": false,
     "group": "footer",
     "source": "src\\app\\(public)\\(footer-menu)\\privacy\\route.json"
-  },
-  {
-    "path": "/works",
-    "label": "作品",
-    "order": 50,
-    "visibleInMenu": true,
-    "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(50-works)\\works\\route.json"
   },
   {
     "path": "/terms",
@@ -144,73 +180,91 @@
     "source": "src\\app\\(public)\\(footer-menu)\\contact\\route.json"
   },
   {
-    "path": "/skills",
-    "label": "スキル",
-    "order": 60,
-    "visibleInMenu": false,
-    "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\skills\\route.json"
-  },
-  {
-    "path": "/pricing",
-    "label": "プライシング",
-    "order": 60,
+    "path": "/lists",
+    "label": "リスト",
+    "order": 62,
     "visibleInMenu": true,
-    "authRequired": false,
-    "group": "footer",
-    "source": "src\\app\\pricing\\route.json"
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(62-lists)\\lists\\route.json"
   },
   {
-    "path": "/chain",
+    "path": "/chains",
     "label": "チェーン",
     "order": 65,
-    "visibleInMenu": false,
+    "visibleInMenu": true,
     "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\chain\\route.json"
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(65-chains)\\chains\\route.json"
   },
   {
     "path": "/mandala",
     "label": "マンダラチャート",
     "order": 70,
-    "visibleInMenu": false,
-    "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\mandala\\route.json"
-  },
-  {
-    "path": "/recommendations",
-    "label": "おすすめ",
-    "order": 89,
     "visibleInMenu": true,
     "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(89-recommendations)\\recommendations\\route.json"
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(70-mandala)\\mandala\\route.json"
   },
   {
     "path": "/achievements",
-    "label": "実績 / アチーブメント",
-    "order": 100,
-    "visibleInMenu": false,
+    "label": "実績",
+    "order": 80,
+    "visibleInMenu": true,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\achievements\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(80-achievements)\\achievements\\route.json"
+  },
+  {
+    "path": "/badges",
+    "label": "アチーブメント",
+    "order": 82,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(82-badges)\\badges\\route.json"
+  },
+  {
+    "path": "/results",
+    "label": "成果",
+    "order": 84,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(84-results)\\results\\route.json"
+  },
+  {
+    "path": "/tutorial",
+    "label": "チュートリアル",
+    "order": 90,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(90-tutorial)\\tutorial\\route.json"
   },
   {
     "path": "/settings",
     "label": "設定",
     "order": 100,
-    "visibleInMenu": true,
+    "visibleInMenu": false,
     "authRequired": true,
     "group": "main",
     "source": "src\\app\\(protected)\\settings\\route.json"
   },
   {
+    "path": "/pricing",
+    "label": "プライシング",
+    "order": 105,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(protected)\\(menu)\\(105-pricing)\\pricing\\route.json"
+  },
+  {
     "path": "/root-accounts",
     "label": "ルートアカウント（一覧）",
     "order": 110,
-    "visibleInMenu": true,
+    "visibleInMenu": false,
     "authRequired": true,
     "group": "main",
     "source": "src\\app\\(protected)\\(menu)\\(110-root-accounts)\\root-accounts\\route.json"
@@ -222,7 +276,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\notifications\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(80-notifications)\\notifications\\route.json"
   },
   {
     "path": "/messages",

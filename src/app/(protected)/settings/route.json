@@ -1,7 +1,7 @@
 {
     "label": "設定",
     "order": 100,
-    "visibleInMenu": true,
+    "visibleInMenu": false,
     "authRequired": true,
     "group": "main"
 }

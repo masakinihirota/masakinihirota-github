@@ -1,0 +1,7 @@
+{
+    "label": "グループ（ボトムアップ）",
+    "order": 7,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "group"
+}
