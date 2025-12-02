@@ -443,3 +443,33 @@ export const matchHistory = pgTable("match_history", {
 }, (t) => ({
   profileIdx: index("idx_match_history_profile_id").on(t.profileId),
 }));
+
+// Lists (カスタムリスト)
+export const lists = pgTable("lists", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  ownerId: uuid("owner_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  visibility: text("visibility").default('private').notNull(), // 'public' | 'private' | 'restricted'
+  listType: text("list_type").default('custom'), // 'favorites' | 'oshi' | 'reading' | 'todo' | 'custom'
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  ownerIdx: index("idx_lists_owner_id").on(t.ownerId),
+  visibilityIdx: index("idx_lists_visibility").on(t.visibility),
+}));
+
+// List Items (リスト内アイテム)
+export const listItems = pgTable("list_items", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  listId: uuid("list_id").notNull().references(() => lists.id, { onDelete: "cascade" }),
+  itemType: text("item_type").notNull(), // 'work' | 'profile' | 'value' | 'skill' | 'custom'
+  itemId: uuid("item_id"), // 参照先ID（optional - カスタムの場合null可）
+  title: text("title"), // カスタムアイテムの場合のタイトル
+  position: integer("position").default(0),
+  metadata: jsonb("metadata"), // 追加情報
+  addedAt: timestamp("added_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  listIdx: index("idx_list_items_list_id").on(t.listId),
+  positionIdx: index("idx_list_items_position").on(t.position),
+}));

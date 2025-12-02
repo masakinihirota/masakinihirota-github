@@ -1,10 +1,8 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Save, Flag } from "lucide-react"
+import { ArrowLeft, Flag } from "lucide-react"
+import { NationCreateForm } from "./NationCreateForm"
 
 /**
  * 建国申請ページ
@@ -53,85 +51,8 @@ export default function NationCreatePage() {
             建国する国の情報を入力してください
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="name">国名</Label>
-            <Input
-              id="name"
-              placeholder="国の名前を入力"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">国の説明</Label>
-            <Textarea
-              id="description"
-              placeholder="国の理念や目的を説明してください"
-              rows={4}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="type">国のタイプ</Label>
-            <select
-              id="type"
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-            >
-              <option value="">選択してください</option>
-              <option value="creative">クリエイティブ国</option>
-              <option value="tech">テクノロジー国</option>
-              <option value="business">ビジネス国</option>
-              <option value="art">アート国</option>
-              <option value="education">教育国</option>
-              <option value="other">その他</option>
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="vision">ビジョン</Label>
-            <Textarea
-              id="vision"
-              placeholder="国として目指す将来像を記述してください"
-              rows={3}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="rules">基本ルール</Label>
-            <Textarea
-              id="rules"
-              placeholder="国民に求める基本的なルールを記述してください"
-              rows={4}
-            />
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="agreeOasis"
-              className="rounded border-gray-300"
-            />
-            <Label htmlFor="agreeOasis">オアシス宣言に同意します</Label>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="agreeTerms"
-              className="rounded border-gray-300"
-            />
-            <Label htmlFor="agreeTerms">建国規約に同意します</Label>
-          </div>
-
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" asChild>
-              <Link href="/nations">キャンセル</Link>
-            </Button>
-            <Button>
-              <Save className="mr-2 h-4 w-4" />
-              建国申請を送信
-            </Button>
-          </div>
+        <CardContent>
+          <NationCreateForm />
         </CardContent>
       </Card>
     </div>

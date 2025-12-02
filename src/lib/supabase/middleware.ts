@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { isUserAdmin } from '@/lib/rbac/adminAuth'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -98,17 +99,15 @@ export async function updateSession(request: NextRequest) {
   }
 
   // 管理者エリアのロールチェック
-  // TODO: 管理者ロールチェックを実装（tasks.md に記載）
-  // if (pathname.startsWith('/admin') && user) {
-  //   const { data: profile } = await supabase
-  //     .from('root_accounts')
-  //     .select('role')
-  //     .eq('id', user.id)
-  //     .single()
-  //   if (profile?.role !== 'admin') {
-  //     return NextResponse.redirect(new URL('/home', request.url))
-  //   }
-  // }
+  if (pathname.startsWith('/admin') && user) {
+    const isAdmin = await isUserAdmin(user.id)
+    if (!isAdmin) {
+      // 非管理者は /home にリダイレクト
+      const url = request.nextUrl.clone()
+      url.pathname = '/home'
+      return NextResponse.redirect(url)
+    }
+  }
 
   return supabaseResponse
 }
