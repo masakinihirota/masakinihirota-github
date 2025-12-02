@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { REDIRECT_AFTER_LOGIN } from "@/config/auth";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -40,7 +41,7 @@ export function AnonymousLoginForm({
       if (error) throw error;
 
       // ログイン成功後にリダイレクト（保護されたルートへ）
-      router.push("/dashboard");
+      router.push(REDIRECT_AFTER_LOGIN);
     } catch (error: unknown) {
       setError(
         error instanceof Error

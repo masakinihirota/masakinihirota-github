@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { publicNav } from "@/config/nav";
-import { ModeToggle } from "@/components/mode-toggle";
-import GlobalHeaderMenu from "@/components/layout/GlobalHeaderMenu";
+import { ModeToggle } from "@/components/ModeToggle";
+import { GlobalHeaderMenu } from "@/components/layout/GlobalHeaderMenu";
 import AdToggle from '@/components/layout/AdToggle'
 import LanguageToggle from '@/components/layout/LanguageToggle'
 import { Button } from "@/components/ui/button";

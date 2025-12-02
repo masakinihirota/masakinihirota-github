@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "./mode-toggle";
+import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+import { ModeToggle } from "./ModeToggle";
 
 describe("ModeToggle", () => {
   it("toggles dark class on documentElement when clicked", async () => {
