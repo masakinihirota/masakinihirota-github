@@ -13,7 +13,11 @@ function debounce<T extends (...args: any[]) => void>(fn: T, wait = 250) {
     }
 }
 
-export default function GlobalHeaderMenu() {
+/**
+ * グローバルヘッダーメニュー
+ * クイック検索機能を提供するヘッダーコンポーネント
+ */
+export function GlobalHeaderMenu() {
     const router = useRouter();
     const [q, setQ] = useState("");
     const [results, setResults] = useState<Array<{ id: string; title: string; type: string }>>([])
@@ -94,3 +98,6 @@ export default function GlobalHeaderMenu() {
         </form>
     );
 }
+
+// デフォルトエクスポートも残す（後方互換性のため）
+export default GlobalHeaderMenu;

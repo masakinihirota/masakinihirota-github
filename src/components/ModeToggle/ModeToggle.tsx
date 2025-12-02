@@ -6,6 +6,10 @@ import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
 
+/**
+ * テーマ切り替えトグルボタン
+ * ダークモードとライトモードを切り替えます
+ */
 export function ModeToggle() {
     // resolvedTheme gives the effective theme when `theme` may be 'system'
     const { theme, resolvedTheme, setTheme } = useTheme();
