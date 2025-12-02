@@ -473,3 +473,35 @@ export const listItems = pgTable("list_items", {
   listIdx: index("idx_list_items_list_id").on(t.listId),
   positionIdx: index("idx_list_items_position").on(t.position),
 }));
+
+// Matching Sessions (自動マッチングセッション)
+export const matchingSessions = pgTable("matching_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  profileId: uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  status: text("status").default('completed'), // 'pending' | 'processing' | 'completed' | 'failed'
+  requestPayload: jsonb("request_payload"), // マッチング条件
+  resultSnapshot: jsonb("result_snapshot"), // マッチング結果のスナップショット
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  profileIdx: index("idx_matching_sessions_profile_id").on(t.profileId),
+  statusIdx: index("idx_matching_sessions_status").on(t.status),
+}));
+
+// Matching Scores (マッチングスコア詳細)
+export const matchingScores = pgTable("matching_scores", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  sessionId: uuid("session_id").notNull().references(() => matchingSessions.id, { onDelete: "cascade" }),
+  candidateProfileId: uuid("candidate_profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  workScore: numeric("work_score").default('0'),
+  valueScore: numeric("value_score").default('0'),
+  totalScore: numeric("total_score").default('0'),
+  rank: smallint("rank"),
+  commonWorks: jsonb("common_works"), // 共通作品のリスト
+  commonValues: jsonb("common_values"), // 共通価値観のリスト
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  sessionIdx: index("idx_matching_scores_session_id").on(t.sessionId),
+  candidateIdx: index("idx_matching_scores_candidate_id").on(t.candidateProfileId),
+  totalScoreIdx: index("idx_matching_scores_total_score").on(t.totalScore),
+}));

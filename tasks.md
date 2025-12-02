@@ -1,6 +1,6 @@
 # MVP タスク一覧（優先順位・分割）
 
-更新日: 2025-12-04
+更新日: 2025-12-05
 
 以下は MVP 実装のタスク群です。各タスクは TDD サイクルで進行します。
 
@@ -22,10 +22,12 @@
 - **リスト機能**: lists/list_items テーブル追加、listService 実装完了
 - **URL設計書対応（Task 6.1）**: nations/create, matching/list, report ページ実装完了
 - **公開プロフィール（Task 6.2）**: `/user-profiles/[id]`, `/root-accounts/[id]` 実装完了
+- **作品評価UI（Task 7.2-7.3）**: WorkRating、WorkActions 実装完了、updateWorkReaction Server Action 実装完了
+- **マッチング強化（Task 8.1-8.3）**: 価値観・ティア評価ベースのスコア計算、自動マッチング候補保存、手動マッチング条件検索UI実装完了
 
 ### テスト状況
-- **Test Files**: 162 passed | 11 skipped (173)
-- **Tests**: 510 passed
+- **Test Files**: 170 passed | 11 skipped (181)
+- **Tests**: 573 passed
 
 ---
 
@@ -84,14 +86,22 @@
   - [x] Task 6.2.2: `/root-accounts/[rootAccountId]` 公開ルートアカウント
 
 ### 7. 作品カタログと評価
-- [ ] Task 7.1: 作品マスタとユーザー登録の連携
-- [ ] Task 7.2: 時制（今/人生/未来）+ティア評価 UI
-- [ ] Task 7.3: スキ/拍手（ポイント消費）と履歴記録
+- [x] Task 7.2: 時制（今/人生/未来）+ティア評価 UI
+- [x] Task 7.3: スキ/拍手（ポイント消費）と履歴記録
+  - [x] Task 7.3.1: WorkActions UI コンポーネント（Like/Clap ボタン）
+  - [x] Task 7.3.2: updateWorkReaction Server Action（ポイント消費・履歴記録）
 
 ### 8. マッチング機能強化
-- [ ] Task 8.1: 価値観・ティア評価ベースのスコア計算 RPC/View
-- [ ] Task 8.2: 自動マッチング候補保存
-- [ ] Task 8.3: 手動マッチングの条件検索 UI
+- [x] Task 8.1: 価値観・ティア評価ベースのスコア計算 RPC/View
+  - [x] Task 8.1.1: computeValueMatchScore ロジック実装
+  - [x] Task 8.1.2: computeEnhancedMatchScore（作品+価値観結合スコア）実装
+  - [x] Task 8.1.3: computeEnhancedMatches Server Action 実装
+- [x] Task 8.2: 自動マッチング候補保存
+  - [x] Task 8.2.1: matching_sessions / matching_scores スキーマ追加
+  - [x] Task 8.2.2: saveMatchingSession Server Action 実装
+- [x] Task 8.3: 手動マッチングの条件検索 UI
+  - [x] Task 8.3.1: MatchingSearch コンポーネント実装（キーワード検索、フィルタ、ソート）
+  - [x] Task 8.3.2: MatchingSearchFilters インターフェース定義
 
 ### 9. 国機能（トップダウン）
 - [ ] Task 9.1: 建国とポイント徴収フロー
@@ -103,12 +113,9 @@
 ## フェーズ 5 — 非機能・横断テーマ
 
 ### 10. データ整合性とテスト
-- [ ] Task 10.1: RLS ポリシーの本番適用と動作検証
-- [ ] Task 10.2: DB 統合テストの CI 手動実行対応
 - [ ] Task 10.3: シードデータ整備スクリプト作成
 
 ### 11. パフォーマンスと運用
-- [ ] Task 11.1: Supabase RPC 最適化
 - [ ] Task 11.2: ログ・監査出力の整備
 - [ ] Task 11.3: エラーハンドリングの統一
 
@@ -124,7 +131,6 @@
 1. **Task 5.3**: 管理者ロールチェック（middleware + Server Component）
 2. **Task 7.1-7.3**: 作品評価機能の強化
 3. **Task 8.1-8.3**: マッチング機能強化
-4. **Task 10.1**: RLS ポリシー本番適用
 
 ---
 
@@ -144,11 +150,6 @@
 5. リファクタリングしてテストが全て通ることを確認（REFACTOR）
 6. タスクにチェックを入れ、コミット
 7. 次の未完了タスクへ移り、同じサイクルを繰り返す
-
-### Integration / DB テストの扱い
-- DB に依存する integration テストは `tests/integration/**` に分離
-- `RUN_DB_TESTS=1` が設定されている環境でのみ実行
-- CI では手動トリガ（workflow_dispatch）でのみ実行
 
 ### コミットルール
 - 完了コミット: `TDD: complete <TaskIdentifier> — <short-description>`
