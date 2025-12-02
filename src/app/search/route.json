@@ -1,7 +1,7 @@
 {
-    "label": "検索",
-    "order": 22,
-    "visibleInMenu": true,
-    "authRequired": true,
-    "group": "main"
+    "label": "検索（公開）",
+    "order": 5,
+    "visibleInMenu": false,
+    "authRequired": false,
+    "group": "public"
 }

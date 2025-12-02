@@ -1,7 +1,7 @@
 {
-    "label": "組織",
-    "order": 10,
+    "label": "グループ（ボトムアップ）",
+    "order": 7,
     "visibleInMenu": true,
     "authRequired": true,
-    "group": "main"
+    "group": "group"
 }

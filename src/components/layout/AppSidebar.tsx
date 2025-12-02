@@ -122,11 +122,11 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   // progress / gamification
   "/achievements": Trophy,
   "/badges": Medal,
+  "/results": Star,
 
   // misc
   "/notifications": Star,
   "/tutorial": GraduationCap,
-  "/results": Star,
 
   // account / billing
   "/settings": Settings,
@@ -179,8 +179,15 @@ const mainMenuItems = manifestRoutes
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
 
-const featureMenuItems = manifestRoutes
-  .filter((r) => r.visibleInMenu && r.group === "feature")
+// 集団系メニュー（第2グループ）
+const groupMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "group")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
+
+// 登録系メニュー（第3グループ）
+const registrationMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "registration")
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
 
@@ -435,9 +442,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* メインメニュー */}
         <NavGroup items={mainMenuItems} currentPath={pathname} />
 
-        {/* feature / grouped menu (manifest-driven) */}
-        {featureMenuItems.length > 0 && (
-          <NavGroup label="機能" items={featureMenuItems} currentPath={pathname} />
+        {/* 集団系メニュー（第2グループ） */}
+        {groupMenuItems.length > 0 && (
+          <NavGroup label="集団" items={groupMenuItems} currentPath={pathname} />
+        )}
+
+        {/* 登録系メニュー（第3グループ） */}
+        {registrationMenuItems.length > 0 && (
+          <NavGroup label="登録" items={registrationMenuItems} currentPath={pathname} />
         )}
 
         {/* もっと見る */}

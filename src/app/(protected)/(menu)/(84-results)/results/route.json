@@ -1,6 +1,6 @@
 {
-    "label": "チェーン",
-    "order": 65,
+    "label": "成果",
+    "order": 84,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "more"

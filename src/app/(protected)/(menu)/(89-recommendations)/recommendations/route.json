@@ -1,6 +1,6 @@
 {
     "label": "おすすめ",
-    "order": 89,
+    "order": 4,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main"
