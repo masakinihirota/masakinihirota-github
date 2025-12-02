@@ -2,13 +2,16 @@ import { test, expect } from '@playwright/test';
 
 test('sidebar links load without 404', async ({ page }) => {
   await page.goto('/home');
-  await expect(page.locator('text=masakinihirota')).toBeVisible();
+  // ensure header brand is visible (avoid matching footer or other duplicates)
+  await expect(page.locator('header >> text=masakinihirota')).toBeVisible();
 
   // sanity checks for main pages
-  await page.click('nav >> text=マッチング');
+  // click the link by role to avoid selecting wrong nav element
+  // click the sidebar link by href to avoid ambiguous matches
+  await page.click('a[href="/matching"]');
   await expect(page).toHaveURL(/\/matching/);
 
   await page.goto('/home');
-  await page.click('nav >> text=検索');
+  await page.click('a[href="/search"]');
   await expect(page).toHaveURL(/\/search/);
 });
