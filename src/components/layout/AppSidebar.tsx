@@ -109,6 +109,8 @@ export const ICON_MAP: Record<string, LucideIcon> = {
 
   // discovery / works
   "/search": Search,
+  "/home": Home,
+  "/home/search": Search,
   "/recommendations": Star,
   "/works": Briefcase,
 
@@ -139,7 +141,6 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   "/contact": Star,
   "/privacy": Star,
   "/terms": Star,
-  "/home": Home,
   "/onboarding": GraduationCap,
   "/onboarding/guest": GraduationCap,
   "/register": UserPlus,

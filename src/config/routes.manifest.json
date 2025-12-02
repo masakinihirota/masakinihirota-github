@@ -36,13 +36,13 @@
     "source": "src\\app\\(protected)\\(menu)\\(89-recommendations)\\recommendations\\route.json"
   },
   {
-    "path": "/search",
+    "path": "/home/search",
     "label": "検索",
     "order": 5,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "group",
-    "source": "src\\app\\(protected)\\(menu)\\(5-search)\\search\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\search\\route.json"
   },
   {
     "path": "/search",

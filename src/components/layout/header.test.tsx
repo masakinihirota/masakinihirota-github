@@ -10,12 +10,11 @@ vi.mock('@/components/layout/GlobalHeaderMenu', () => ({
 }))
 
 describe('Header nav uses publicNav', () => {
-  it('renders public links in header', () => {
+  it('does not render publicNav items (header kept slim)', () => {
     render(<Header />)
     for (const nav of publicNav) {
-      // only check that labels are present as text nodes in header (not all links may appear on small screens)
-      if (nav.href === '/login' || nav.href === '/register') continue
-      expect(screen.getByText(nav.label)).toBeTruthy()
+      // header intentionally hides publicNav links to avoid duplicates — none should be present
+      expect(screen.queryByText(nav.label)).toBeNull()
     }
   })
 })
