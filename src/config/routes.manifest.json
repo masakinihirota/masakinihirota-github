@@ -1,5 +1,14 @@
 [
   {
+    "path": "/home",
+    "label": "ホーム",
+    "order": 1,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\route.json"
+  },
+  {
     "path": "/matching",
     "label": "マッチング",
     "order": 3,
@@ -99,15 +108,6 @@
     "source": "src\\app\\(public)\\onboarding\\guest\\route.json"
   },
   {
-    "path": "/tutorial",
-    "label": "チュートリアル",
-    "order": 40,
-    "visibleInMenu": true,
-    "authRequired": false,
-    "group": "feature",
-    "source": "src\\app\\(public)\\(feature)\\tutorial\\route.json"
-  },
-  {
     "path": "/privacy",
     "label": "プライバシー",
     "order": 40,
@@ -151,6 +151,15 @@
     "authRequired": true,
     "group": "main",
     "source": "src\\app\\(protected)\\skills\\route.json"
+  },
+  {
+    "path": "/values",
+    "label": "価値観",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "feature",
+    "source": "src\\app\\(protected)\\(menu)\\(60-values)\\values\\route.json"
   },
   {
     "path": "/lists",

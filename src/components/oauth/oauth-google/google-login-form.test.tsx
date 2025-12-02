@@ -49,7 +49,7 @@ describe('GoogleLoginForm', () => {
             expect(mockSignInWithOAuth).toHaveBeenCalledWith({
                 provider: 'google',
                 options: {
-                    redirectTo: 'http://localhost:3000/auth/callback?next=/dashboard',
+                    redirectTo: 'http://localhost:3000/auth/callback?next=/home',
                 },
             })
         })

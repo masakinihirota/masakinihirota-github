@@ -35,6 +35,7 @@
     "coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "test:integration": "pwsh ./scripts/dev-verify.ps1 -RunAll -RunTests",
+    "test:e2e": "playwright test",
     "check:new-tests": "node ./scripts/check-new-tests.js",
     "dev:verify": "pwsh ./scripts/dev-verify.ps1",
     "compute:aggregates": "node ./scripts/compute-work-aggregates.js",
@@ -99,6 +100,7 @@
     "shadcn": "^3.5.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.13",
+    "@playwright/test": "^1.42.0"
   }
 }

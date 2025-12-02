@@ -1,7 +1,0 @@
-{
-    "label": "チュートリアル",
-    "order": 40,
-    "visibleInMenu": true,
-    "authRequired": false,
-    "group": "feature"
-}

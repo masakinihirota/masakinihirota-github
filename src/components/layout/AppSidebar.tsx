@@ -96,31 +96,56 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 // --- Manifest-driven menus ---
 // Helper: small icon map for known routes; fallback to List icon
-const ICON_MAP: Record<string, LucideIcon> = {
+export const ICON_MAP: Record<string, LucideIcon> = {
+  // core
   "/": Home,
+  "/matching": Heart,
   "/user-profiles": User,
   "/profiles": User,
-  "/matching": Heart,
-  "/recommendations": Star,
-  "/search": Search,
-  "/nations": Flag,
+
+  // community / org
   "/groups": Users,
+  "/nations": Flag,
+
+  // discovery / works
+  "/search": Search,
+  "/recommendations": Star,
   "/works": Briefcase,
+
+  // features
   "/values": Lightbulb,
   "/skills": Wrench,
   "/lists": List,
   "/chains": Link2,
-  "/chain": Link2,
   "/mandala": Grid,
+
+  // progress / gamification
   "/achievements": Trophy,
   "/badges": Medal,
-  "/results": Star,
+
+  // misc
   "/notifications": Star,
   "/tutorial": GraduationCap,
+  "/results": Star,
+
+  // account / billing
   "/settings": Settings,
   "/pricing": CreditCard,
   "/root-accounts": UserCircle,
+
+  // public footer
   "/help": GraduationCap,
+  "/about": Star,
+  "/contact": Star,
+  "/privacy": Star,
+  "/terms": Star,
+  "/home": Home,
+  "/onboarding": GraduationCap,
+  "/onboarding/guest": GraduationCap,
+  "/register": UserPlus,
+  "/oasis": Lightbulb,
+  "/messages": User,
+  "/activity": Star,
 }
 
 type RouteEntry = {
@@ -133,15 +158,15 @@ type RouteEntry = {
 }
 
 // Normalize a manifest route path into the sidebar URL used in this app
-const toSidebarUrl = (manifestPath: string) => {
-  if (!manifestPath) return "/home"
-  if (manifestPath === "/") return "/home"
-  // keep manifest like '/profiles' => '/home/profiles'
-  return manifestPath.startsWith("/home") ? manifestPath : `/home${manifestPath}`
+// Policy: routes.manifest.json is canonical. Return the manifest path as the sidebar URL
+export const toSidebarUrl = (manifestPath: string) => {
+  if (!manifestPath) return "/"
+  // Use manifest path directly — keep '/' as root
+  return manifestPath === "/" ? "/" : manifestPath
 }
 
 // Get icon for manifest route (fallback is List)
-const iconFor = (manifestPath: string): LucideIcon => {
+export const iconFor = (manifestPath: string): LucideIcon => {
   const key = manifestPath === "/" ? "/" : manifestPath
   return ICON_MAP[key] ?? List
 }

@@ -1,0 +1,7 @@
+{
+    "label": "価値観",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "feature"
+}
