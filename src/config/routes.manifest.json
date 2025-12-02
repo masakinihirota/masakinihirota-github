@@ -63,6 +63,15 @@
     "source": "src\\app\\(public)\\(footer-menu)\\help\\route.json"
   },
   {
+    "path": "/search",
+    "label": "検索",
+    "order": 22,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\search\\route.json"
+  },
+  {
     "path": "/oasis",
     "label": "オアシス宣言",
     "order": 30,
@@ -144,6 +153,15 @@
     "source": "src\\app\\(protected)\\skills\\route.json"
   },
   {
+    "path": "/pricing",
+    "label": "プライシング",
+    "order": 60,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\pricing\\route.json"
+  },
+  {
     "path": "/chain",
     "label": "チェーン",
     "order": 65,
@@ -160,6 +178,15 @@
     "authRequired": true,
     "group": "main",
     "source": "src\\app\\(protected)\\mandala\\route.json"
+  },
+  {
+    "path": "/recommendations",
+    "label": "おすすめ",
+    "order": 89,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "main",
+    "source": "src\\app\\(protected)\\(menu)\\(89-recommendations)\\recommendations\\route.json"
   },
   {
     "path": "/achievements",

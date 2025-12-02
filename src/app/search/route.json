@@ -1,0 +1,7 @@
+{
+  "label": "検索",
+  "order": 22,
+  "visibleInMenu": true,
+  "authRequired": true,
+  "group": "main"
+}
