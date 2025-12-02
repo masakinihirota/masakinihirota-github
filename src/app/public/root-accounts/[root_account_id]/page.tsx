@@ -149,7 +149,7 @@ export default async function PublicRootAccountPage({ params }: PageProps) {
             {rootAccount.profiles.filter(p => p.isPublic).map((profile) => (
               <Link
                 key={profile.id}
-                href={`/user-profiles/${profile.id}`}
+                href={`/public/user-profiles/${profile.id}`}
                 className="block p-4 border rounded-lg hover:bg-muted/50 transition-colors"
               >
                 <div className="flex items-center gap-3 mb-2">

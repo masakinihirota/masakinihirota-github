@@ -69,6 +69,7 @@
   - [x] Task 5.3.2: 管理者でないユーザーは `/home` へリダイレクト
   - [x] Task 5.3.3: userSystemRoles テーブルを活用した権限判定ロジック
   - [x] Task 5.3.4: Server Component での二重チェック（middleware + ページ内）
+    - *Note: 開発効率のため `src/app/(admin)/layout.tsx` で一時的に無効化中*
 
 ---
 
@@ -128,9 +129,9 @@
 
 ## 🎯 次のアクション（推奨順）
 
-1. **Task 5.3**: 管理者ロールチェック（middleware + Server Component）
-2. **Task 7.1-7.3**: 作品評価機能の強化
-3. **Task 8.1-8.3**: マッチング機能強化
+1. **Task 9.1-9.3**: 国機能（トップダウン）の実装
+2. **Task 10.1**: RLS ポリシー本番適用
+3. **Task 12.1**: チュートリアル導線の実装
 
 ---
 

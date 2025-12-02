@@ -77,7 +77,23 @@ export async function getListById(id: string): Promise<List | null> {
     where: eq(lists.id, id),
   })
 
-  return result ?? null
+  if (!result) return null
+
+  // DB の戻り値は string 型などの可能性があるため、安全に List 型へマッピングする
+  const visibility = (result.visibility as ListVisibilityType) ?? ListVisibility.PRIVATE
+
+  const list: List = {
+    id: result.id,
+    title: result.title ?? '',
+    description: result.description ?? null,
+    ownerId: result.ownerId,
+    visibility,
+    listType: result.listType ?? 'custom',
+    createdAt: result.createdAt ?? new Date(),
+    updatedAt: result.updatedAt ?? new Date(),
+  }
+
+  return list
 }
 
 /**
@@ -89,7 +105,17 @@ export async function getListsByOwnerId(ownerId: string): Promise<List[]> {
     orderBy: [desc(lists.updatedAt)],
   })
 
-  return results
+  // マッピングして型の不整合を解消
+  return results.map((r) => ({
+    id: r.id,
+    title: r.title ?? '',
+    description: r.description ?? null,
+    ownerId: r.ownerId,
+    visibility: (r.visibility as ListVisibilityType) ?? ListVisibility.PRIVATE,
+    listType: r.listType ?? 'custom',
+    createdAt: r.createdAt ?? new Date(),
+    updatedAt: r.updatedAt ?? new Date(),
+  }))
 }
 
 /**
@@ -129,7 +155,18 @@ export async function updateList(input: UpdateListInput): Promise<List> {
     .where(eq(lists.id, input.id))
     .returning()
 
-  return result
+  if (!result) throw new Error('更新に失敗しました')
+
+  return {
+    id: result.id,
+    title: result.title ?? '',
+    description: result.description ?? null,
+    ownerId: result.ownerId,
+    visibility: (result.visibility as ListVisibilityType) ?? ListVisibility.PRIVATE,
+    listType: result.listType ?? 'custom',
+    createdAt: result.createdAt ?? new Date(),
+    updatedAt: result.updatedAt ?? new Date(),
+  }
 }
 
 /**
@@ -143,6 +180,15 @@ export async function deleteList(id: string): Promise<boolean> {
 
   const result = await db.delete(lists).where(eq(lists.id, id))
 
-  // rowCountがある場合、削除が成功したかどうかを返す
-  return (result?.rowCount ?? 0) > 0
+  // Drizzle/DBクライアントによって戻り値の形が変わるため安全に deleted count を抽出
+  const deletedCount =
+    typeof (result as any)?.rowCount === 'number'
+      ? (result as any).rowCount
+      : Array.isArray(result)
+      ? result.length
+      : typeof (result as any)?.count === 'number'
+      ? (result as any).count
+      : 0
+
+  return deletedCount > 0
 }
