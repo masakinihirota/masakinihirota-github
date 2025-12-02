@@ -61,6 +61,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/Sidebar"
+import routesManifest from "@/config/routes.manifest.json"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 /**
@@ -93,45 +94,78 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
  * - ルートアカウント
  */
 
-// メインメニュー項目
-const mainMenuItems = [
-  { title: "ホーム", url: "/home", icon: Home },
-  { title: "プロフィール", url: "/home/profiles", icon: User },
-  { title: "マッチング", url: "/home/matching", icon: Heart },
-  { title: "おすすめ", url: "/home/recommendations", icon: Star },
-]
+// --- Manifest-driven menus ---
+// Helper: small icon map for known routes; fallback to List icon
+const ICON_MAP: Record<string, LucideIcon> = {
+  "/": Home,
+  "/profiles": User,
+  "/matching": Heart,
+  "/recommendations": Star,
+  "/search": Search,
+  "/nations": Flag,
+  "/groups": Users,
+  "/works": Briefcase,
+  "/values": Lightbulb,
+  "/skills": Wrench,
+  "/lists": List,
+  "/chain": Link2,
+  "/mandala": Grid,
+  "/achievements": Trophy,
+  "/badges": Medal,
+  "/results": Star,
+  "/tutorial": GraduationCap,
+  "/settings": Settings,
+  "/pricing": CreditCard,
+  "/root-accounts": UserCircle,
+}
 
-// 集団系メニュー（第2グループ）
-const groupMenuItems = [
-  { title: "検索", url: "/home/search", icon: Search },
-  { title: "国（トップダウン）", url: "/home/nations", icon: Flag },
-  { title: "グループ（ボトムアップ）", url: "/home/groups", icon: Users },
-]
+type RouteEntry = {
+  path: string
+  label: string
+  order: number
+  visibleInMenu?: boolean
+  authRequired?: boolean
+  group?: string
+}
 
-// 登録系メニュー（第3グループ）
-const registrationMenuItems = [
-  { title: "作品", url: "/home/works", icon: Briefcase },
-  { title: "価値観", url: "/home/values", icon: Lightbulb },
-  { title: "スキル", url: "/home/skills", icon: Wrench },
-]
+// Normalize a manifest route path into the sidebar URL used in this app
+const toSidebarUrl = (manifestPath: string) => {
+  if (!manifestPath) return "/home"
+  if (manifestPath === "/") return "/home"
+  // keep manifest like '/profiles' => '/home/profiles'
+  return manifestPath.startsWith("/home") ? manifestPath : `/home${manifestPath}`
+}
 
-// もっと見るメニュー（折りたたみ）
-const moreMenuItems = [
-  { title: "リスト", url: "/home/lists", icon: List },
-  { title: "チェーン", url: "/home/chain", icon: Link2 },
-  { title: "マンダラチャート", url: "/home/mandala", icon: Grid },
-  { title: "実績", url: "/home/achievements", icon: Trophy },
-  { title: "アチーブメント", url: "/home/badges", icon: Medal },
-  { title: "成果", url: "/home/results", icon: Star },
-  { title: "チュートリアル", url: "/home/tutorial", icon: GraduationCap },
-]
+// Get icon for manifest route (fallback is List)
+const iconFor = (manifestPath: string): LucideIcon => {
+  const key = manifestPath === "/" ? "/" : manifestPath
+  return ICON_MAP[key] ?? List
+}
 
-// サイドバーフッターメニュー
-const footerMenuItems = [
-  { title: "設定", url: "/home/settings", icon: Settings },
-  { title: "プライシング", url: "/home/pricing", icon: CreditCard },
-  { title: "ルートアカウント", url: "/home/root-accounts", icon: UserCircle },
-]
+// Build groups from manifest
+const manifestRoutes: RouteEntry[] = (routesManifest as RouteEntry[])
+
+const mainMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "main")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
+
+const featureMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "feature")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
+
+const moreMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "more")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
+
+const footerMenuItems = manifestRoutes
+  .filter((r) => r.visibleInMenu && r.group === "footer")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  .map((r) => ({ title: r.label, url: toSidebarUrl(r.path), icon: iconFor(r.path) }))
+
+// (footerMenuItems is built from the manifest above)
 
 // ユーザー情報（モック）
 const mockUser = {
@@ -372,11 +406,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* メインメニュー */}
         <NavGroup items={mainMenuItems} currentPath={pathname} />
 
-        {/* 集団系メニュー */}
-        <NavGroup label="集団" items={groupMenuItems} currentPath={pathname} />
-
-        {/* 登録系メニュー */}
-        <NavGroup label="登録" items={registrationMenuItems} currentPath={pathname} />
+        {/* feature / grouped menu (manifest-driven) */}
+        {featureMenuItems.length > 0 && (
+          <NavGroup label="機能" items={featureMenuItems} currentPath={pathname} />
+        )}
 
         {/* もっと見る */}
         <NavMore items={moreMenuItems} currentPath={pathname} />
