@@ -153,13 +153,13 @@
     "source": "src\\app\\(protected)\\skills\\route.json"
   },
   {
-    "path": "/pricing",
-    "label": "プライシング",
-    "order": 60,
+    "path": "/lists",
+    "label": "リスト",
+    "order": 62,
     "visibleInMenu": true,
-    "authRequired": false,
-    "group": "footer",
-    "source": "src\\app\\pricing\\route.json"
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(62-lists)\\lists\\route.json"
   },
   {
     "path": "/chains",
@@ -180,6 +180,15 @@
     "source": "src\\app\\(protected)\\(menu)\\(70-mandala)\\mandala\\route.json"
   },
   {
+    "path": "/achievements",
+    "label": "実績",
+    "order": 80,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more",
+    "source": "src\\app\\(protected)\\(menu)\\(80-achievements)\\achievements\\route.json"
+  },
+  {
     "path": "/recommendations",
     "label": "おすすめ",
     "order": 89,
@@ -189,13 +198,13 @@
     "source": "src\\app\\(protected)\\(menu)\\(89-recommendations)\\recommendations\\route.json"
   },
   {
-    "path": "/achievements",
-    "label": "実績 / アチーブメント",
-    "order": 100,
-    "visibleInMenu": false,
+    "path": "/tutorial",
+    "label": "チュートリアル",
+    "order": 90,
+    "visibleInMenu": true,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\achievements\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(90-tutorial)\\tutorial\\route.json"
   },
   {
     "path": "/settings",
@@ -205,6 +214,15 @@
     "authRequired": true,
     "group": "main",
     "source": "src\\app\\(protected)\\settings\\route.json"
+  },
+  {
+    "path": "/pricing",
+    "label": "プライシング",
+    "order": 105,
+    "visibleInMenu": true,
+    "authRequired": false,
+    "group": "footer",
+    "source": "src\\app\\(protected)\\(menu)\\(105-pricing)\\pricing\\route.json"
   },
   {
     "path": "/root-accounts",

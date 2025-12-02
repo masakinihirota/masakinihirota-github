@@ -98,6 +98,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // Helper: small icon map for known routes; fallback to List icon
 const ICON_MAP: Record<string, LucideIcon> = {
   "/": Home,
+  "/user-profiles": User,
   "/profiles": User,
   "/matching": Heart,
   "/recommendations": Star,
@@ -108,15 +109,18 @@ const ICON_MAP: Record<string, LucideIcon> = {
   "/values": Lightbulb,
   "/skills": Wrench,
   "/lists": List,
+  "/chains": Link2,
   "/chain": Link2,
   "/mandala": Grid,
   "/achievements": Trophy,
   "/badges": Medal,
   "/results": Star,
+  "/notifications": Star,
   "/tutorial": GraduationCap,
   "/settings": Settings,
   "/pricing": CreditCard,
   "/root-accounts": UserCircle,
+  "/help": GraduationCap,
 }
 
 type RouteEntry = {

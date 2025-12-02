@@ -1,6 +1,6 @@
 {
     "label": "プライシング",
-    "order": 60,
+    "order": 105,
     "visibleInMenu": true,
     "authRequired": false,
     "group": "footer"

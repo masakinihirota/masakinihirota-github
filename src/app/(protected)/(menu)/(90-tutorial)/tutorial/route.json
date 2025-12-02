@@ -1,0 +1,7 @@
+{
+    "label": "チュートリアル",
+    "order": 90,
+    "visibleInMenu": true,
+    "authRequired": true,
+    "group": "more"
+}
