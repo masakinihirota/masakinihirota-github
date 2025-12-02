@@ -251,4 +251,6 @@ describe('Ledger double-entry transfer', () => {
     }
   });
 
+})
+
 }

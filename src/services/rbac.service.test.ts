@@ -7,6 +7,12 @@ import { ACL_ROLES, ACL_PERMISSIONS } from '@/constants/rbac';
 import { eq } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 
+const SHOULD_RUN_DB_TESTS = (process.env.RUN_DB_TESTS === '1') || Boolean(process.env.DATABASE_URL);
+
+if (!SHOULD_RUN_DB_TESTS) {
+  describe.skip('RbacService (skipped - no DB)', () => {});
+} else {
+
 describe('RbacService', () => {
   let testUserId: string;
   let testEmail: string;
@@ -143,3 +149,5 @@ describe('RbacService', () => {
 
   // resource-scoped exception test moved to dedicated unit test that uses mocks
 });
+
+}

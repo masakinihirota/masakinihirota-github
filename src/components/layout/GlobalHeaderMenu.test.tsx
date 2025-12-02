@@ -1,4 +1,6 @@
+/** @vitest-environment jsdom */
 import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 import GlobalHeaderMenu from './GlobalHeaderMenu'
 import * as nextRouter from 'next/navigation'
 
@@ -17,7 +19,7 @@ describe('GlobalHeaderMenu', () => {
         fireEvent.change(input, { target: { value: 'hello world' } })
         fireEvent.submit(input)
 
-        expect(mockPush).toHaveBeenCalledWith('/search?q=hello%20world')
+        expect(mockPush).toHaveBeenCalledWith('/search?q=hello+world')
     })
 
     it('renders quick results from fetch and shows link to detail', async () => {

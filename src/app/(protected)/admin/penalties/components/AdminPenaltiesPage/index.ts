@@ -1,0 +1,1 @@
+export { AdminPenaltiesPage } from "./AdminPenaltiesPage";

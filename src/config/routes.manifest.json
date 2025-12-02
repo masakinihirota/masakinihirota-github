@@ -1,14 +1,5 @@
 [
   {
-    "path": "/home",
-    "label": "ホーム",
-    "order": 1,
-    "visibleInMenu": true,
-    "authRequired": true,
-    "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(1-home)\\home\\route.json"
-  },
-  {
     "path": "/matching",
     "label": "マッチング",
     "order": 3,

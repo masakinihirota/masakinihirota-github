@@ -10,22 +10,6 @@
 ## 要約（目的） ✅
 
 - 早期に価値を提供できる MVP を TDD で実装する。最小限の機能を短いイテレーションでデリバリする。
-- 設計ドキュメントは日本語が一次情報。実装者はこれらを参照し、差分は実装計画に反映する。
-
----
-
-## 前提条件 / ルール ⚙️
-
-- 使用技術（確定）: Next.js (App Router) + TypeScript + Tailwind + Shadcn/UI
-- DB: PostgreSQL (Supabase Local)、ORM: Drizzle
-- 認証: Supabase Auth (Google OAuth)
-- テスト: Vitest + React Testing Library (TDD)
-- デプロイ: Vercel（将来）
-- 開発環境は Windows で pwsh を使用する想定
-
-特に重要な運用ルール:
-- DB 統合テストはローカルでのみ実行。CI による自動化は行わない（手動トリガーは可）。
-- コロケーション: コンポーネント単位で実装とテストを近接させる。
 
 ---
 

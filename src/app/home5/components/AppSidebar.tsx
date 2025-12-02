@@ -60,7 +60,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/Sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 /**
@@ -95,42 +95,42 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 // メインメニュー項目
 const mainMenuItems = [
-  { title: "ホーム", url: "/home5", icon: Home },
-  { title: "プロフィール", url: "/home5/profiles", icon: User },
-  { title: "マッチング", url: "/home5/matching", icon: Heart },
-  { title: "おすすめ", url: "/home5/recommendations", icon: Star },
+  { title: "ホーム", url: "/home", icon: Home },
+  { title: "プロフィール", url: "/home/profiles", icon: User },
+  { title: "マッチング", url: "/home/matching", icon: Heart },
+  { title: "おすすめ", url: "/home/recommendations", icon: Star },
 ]
 
 // 集団系メニュー（第2グループ）
 const groupMenuItems = [
-  { title: "検索", url: "/home5/search", icon: Search },
-  { title: "国（トップダウン）", url: "/home5/nations", icon: Flag },
-  { title: "グループ（ボトムアップ）", url: "/home5/groups", icon: Users },
+  { title: "検索", url: "/home/search", icon: Search },
+  { title: "国（トップダウン）", url: "/home/nations", icon: Flag },
+  { title: "グループ（ボトムアップ）", url: "/home/groups", icon: Users },
 ]
 
 // 登録系メニュー（第3グループ）
 const registrationMenuItems = [
-  { title: "作品", url: "/home5/works", icon: Briefcase },
-  { title: "価値観", url: "/home5/values", icon: Lightbulb },
-  { title: "スキル", url: "/home5/skills", icon: Wrench },
+  { title: "作品", url: "/home/works", icon: Briefcase },
+  { title: "価値観", url: "/home/values", icon: Lightbulb },
+  { title: "スキル", url: "/home/skills", icon: Wrench },
 ]
 
 // もっと見るメニュー（折りたたみ）
 const moreMenuItems = [
-  { title: "リスト", url: "/home5/lists", icon: List },
-  { title: "チェーン", url: "/home5/chain", icon: Link2 },
-  { title: "マンダラチャート", url: "/home5/mandala", icon: Grid },
-  { title: "実績", url: "/home5/achievements", icon: Trophy },
-  { title: "アチーブメント", url: "/home5/badges", icon: Medal },
-  { title: "成果", url: "/home5/results", icon: Star },
-  { title: "チュートリアル", url: "/home5/tutorial", icon: GraduationCap },
+  { title: "リスト", url: "/home/lists", icon: List },
+  { title: "チェーン", url: "/home/chain", icon: Link2 },
+  { title: "マンダラチャート", url: "/home/mandala", icon: Grid },
+  { title: "実績", url: "/home/achievements", icon: Trophy },
+  { title: "アチーブメント", url: "/home/badges", icon: Medal },
+  { title: "成果", url: "/home/results", icon: Star },
+  { title: "チュートリアル", url: "/home/tutorial", icon: GraduationCap },
 ]
 
 // サイドバーフッターメニュー
 const footerMenuItems = [
-  { title: "設定", url: "/home5/settings", icon: Settings },
-  { title: "プライシング", url: "/home5/pricing", icon: CreditCard },
-  { title: "ルートアカウント", url: "/home5/root-accounts", icon: UserCircle },
+  { title: "設定", url: "/home/settings", icon: Settings },
+  { title: "プライシング", url: "/home/pricing", icon: CreditCard },
+  { title: "ルートアカウント", url: "/home/root-accounts", icon: UserCircle },
 ]
 
 // ユーザー情報（モック）
@@ -311,7 +311,7 @@ function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/home5/root-accounts">
+                <Link href="/home/root-accounts">
                   <UserPlus className="mr-2 h-4 w-4" />
                   既存のアカウントを追加
                 </Link>
@@ -353,7 +353,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/home5">
+              <Link href="/home">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg font-bold">
                   M
                 </div>

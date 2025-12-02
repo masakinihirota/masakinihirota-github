@@ -1,0 +1,1 @@
+export { OasisDeclarationPage } from "./OasisDeclarationPage";

@@ -31,5 +31,7 @@
 - Task 5.1.1: RBAC resource-scoped exception
 
 ### 未完了タスク（次の作業対象）
-- Task 3.2: コミュニティのコンポーネントテスト
-- Task 3.3: コミュニティ CRUD 実装
+- Task 3.2: ✅ 完了 (2025-12-01)
+  - `src/lib/organization/createOrganization.logic.ts` - バリデーション実装
+  - `src/lib/organization/createOrganization.logic.test.ts` - 4テストケース
+- Task 3.3: コミュニティ CRUD 実装 (次の作業)

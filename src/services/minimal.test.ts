@@ -4,6 +4,12 @@ import { users } from '@/db/schema';
 import { randomUUID } from 'crypto';
 import { eq } from 'drizzle-orm';
 
+const SHOULD_RUN_DB_TESTS = (process.env.RUN_DB_TESTS === '1') || Boolean(process.env.DATABASE_URL);
+
+if (!SHOULD_RUN_DB_TESTS) {
+  describe.skip('Minimal DB Test (skipped - no DB)', () => {});
+} else {
+
 describe('Minimal DB Test', () => {
   it('should insert a user', async () => {
     const id = randomUUID();
@@ -21,3 +27,5 @@ describe('Minimal DB Test', () => {
     }
   });
 });
+
+}
