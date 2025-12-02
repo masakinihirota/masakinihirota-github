@@ -13,7 +13,7 @@ vi.mock('next/link', () => ({
 }))
 
 const mockParams = {
-  rootAccountId: 'test-root-account-123',
+  root_account_id: 'test-root-account-123',
 }
 
 describe('PublicRootAccountPage', () => {

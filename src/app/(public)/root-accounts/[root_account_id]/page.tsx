@@ -52,14 +52,14 @@ const mockRootAccount = {
 }
 
 interface PageProps {
-  params: Promise<{ rootAccountId: string }>
+  params: Promise<{ root_account_id: string }>
 }
 
 export default async function PublicRootAccountPage({ params }: PageProps) {
-  const { rootAccountId } = await params
+  const { root_account_id } = await params
 
   // TODO: DBからルートアカウントを取得
-  // const rootAccount = await getPublicRootAccount(rootAccountId)
+  // const rootAccount = await getPublicRootAccount(root_account_id)
   const rootAccount = mockRootAccount
 
   const unlockedAchievements = rootAccount.achievements.filter(a => a.unlocked)
