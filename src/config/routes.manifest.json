@@ -9,13 +9,13 @@
     "source": "src\\app\\(protected)\\(menu)\\(3-matching)\\matching\\route.json"
   },
   {
-    "path": "/profiles",
+    "path": "/user-profiles",
     "label": "千の仮面（プロフィール）",
     "order": 5,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(5-profiles)\\profiles\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(5-profiles)\\user-profiles\\route.json"
   },
   {
     "path": "/about",
@@ -27,13 +27,13 @@
     "source": "src\\app\\(public)\\(footer-menu)\\about\\route.json"
   },
   {
-    "path": "/organizations",
+    "path": "/groups",
     "label": "組織",
     "order": 10,
     "visibleInMenu": true,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\(menu)\\(10-organizations)\\organizations\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(10-organizations)\\groups\\route.json"
   },
   {
     "path": "/nations",
@@ -162,13 +162,13 @@
     "source": "src\\app\\pricing\\route.json"
   },
   {
-    "path": "/chain",
+    "path": "/chains",
     "label": "チェーン",
     "order": 65,
     "visibleInMenu": false,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\chain\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(65-chains)\\chains\\route.json"
   },
   {
     "path": "/mandala",
@@ -177,7 +177,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "main",
-    "source": "src\\app\\(protected)\\mandala\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(70-mandala)\\mandala\\route.json"
   },
   {
     "path": "/recommendations",
@@ -222,7 +222,7 @@
     "visibleInMenu": false,
     "authRequired": true,
     "group": "more",
-    "source": "src\\app\\(protected)\\notifications\\route.json"
+    "source": "src\\app\\(protected)\\(menu)\\(80-notifications)\\notifications\\route.json"
   },
   {
     "path": "/messages",
