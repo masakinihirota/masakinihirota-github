@@ -23,6 +23,10 @@ import {
   getFeatureUnlockLevel,
   shouldShowTutorialPrompt,
   getTutorialRouteDescription,
+  getMenuItemState,
+  getMenuUnlockTip,
+  MENU_UNLOCK_CONFIG,
+  isNewlyUnlocked,
 } from './tutorial'
 
 describe('Tutorial Logic', () => {
@@ -257,6 +261,83 @@ describe('Tutorial Logic', () => {
       const desc = getTutorialRouteDescription(TutorialRoute.SKIP)
       expect(desc.title).toContain('自由')
       expect(desc.icon).toBe('🕊️')
+    })
+  })
+
+  // Task 12.4: Lv制UIへの統合
+  describe('getMenuItemState (2段階解放)', () => {
+    it('should return hidden for skills at level 1', () => {
+      expect(getMenuItemState('skills', 1)).toBe('hidden')
+    })
+
+    it('should return grayed for matching at level 1', () => {
+      expect(getMenuItemState('matching', 1)).toBe('grayed')
+    })
+
+    it('should return unlocked for matching at level 3', () => {
+      expect(getMenuItemState('matching', 3)).toBe('unlocked')
+    })
+
+    it('should return always_visible for home at any level', () => {
+      expect(getMenuItemState('home', 0)).toBe('unlocked')
+      expect(getMenuItemState('home', 1)).toBe('unlocked')
+    })
+
+    it('should return grayed for nations at level 3', () => {
+      expect(getMenuItemState('nations', 3)).toBe('grayed')
+    })
+
+    it('should return unlocked for nations at level 10', () => {
+      expect(getMenuItemState('nations', 10)).toBe('unlocked')
+    })
+  })
+
+  describe('getMenuUnlockTip', () => {
+    it('should return tip for matching', () => {
+      const tip = getMenuUnlockTip('matching')
+      expect(tip).toContain('Lv3')
+    })
+
+    it('should return tip for nations', () => {
+      const tip = getMenuUnlockTip('nations')
+      expect(tip).toContain('Lv10')
+    })
+
+    it('should return empty for always unlocked features', () => {
+      expect(getMenuUnlockTip('home')).toBe('')
+    })
+  })
+
+  describe('MENU_UNLOCK_CONFIG', () => {
+    it('should define unlock levels for all menu items', () => {
+      expect(MENU_UNLOCK_CONFIG).toBeDefined()
+      expect(MENU_UNLOCK_CONFIG.matching).toBeDefined()
+      expect(MENU_UNLOCK_CONFIG.matching.grayLevel).toBe(1)
+      expect(MENU_UNLOCK_CONFIG.matching.unlockLevel).toBe(3)
+    })
+
+    it('should have correct config for nations (upper level feature)', () => {
+      expect(MENU_UNLOCK_CONFIG.nations.grayLevel).toBe(3)
+      expect(MENU_UNLOCK_CONFIG.nations.unlockLevel).toBe(10)
+    })
+
+    it('should have correct config for skills (upper feature)', () => {
+      expect(MENU_UNLOCK_CONFIG.skills.grayLevel).toBe(10)
+      expect(MENU_UNLOCK_CONFIG.skills.unlockLevel).toBe(12)
+    })
+  })
+
+  describe('isNewlyUnlocked', () => {
+    it('should return true when level just reached unlock level', () => {
+      expect(isNewlyUnlocked('matching', 3, 2)).toBe(true)
+    })
+
+    it('should return false when level was already above unlock level', () => {
+      expect(isNewlyUnlocked('matching', 4, 3)).toBe(false)
+    })
+
+    it('should return false when level not yet at unlock level', () => {
+      expect(isNewlyUnlocked('matching', 2, 1)).toBe(false)
     })
   })
 })

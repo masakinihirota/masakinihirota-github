@@ -62,6 +62,101 @@ const FEATURE_UNLOCK_LEVELS: Record<string, number> = {
 }
 
 /**
+ * メニュー項目の状態
+ */
+export type MenuItemState = 'hidden' | 'grayed' | 'unlocked'
+
+/**
+ * メニュー解放設定インターフェース
+ */
+export interface MenuUnlockConfig {
+  /** グレー表示になるレベル（-1 = 常時非表示まで） */
+  grayLevel: number
+  /** 完全解放されるレベル */
+  unlockLevel: number
+  /** 解放時のTips */
+  tip: string
+  /** 上級機能（解放まで非表示） */
+  isUpperFeature?: boolean
+}
+
+/**
+ * メニュー解放設定
+ * ゲーミフィケーション設計書 Section 3.2 2段階解放テーブルに基づく
+ */
+export const MENU_UNLOCK_CONFIG: Record<string, MenuUnlockConfig> = {
+  // 常時解放（Lv0から）
+  home: {
+    grayLevel: 0,
+    unlockLevel: 0,
+    tip: '',
+    isUpperFeature: false,
+  },
+  profiles: {
+    grayLevel: 0,
+    unlockLevel: 1,
+    tip: '',
+    isUpperFeature: false,
+  },
+  // コア機能（グレー表示→完全解放）
+  matching: {
+    grayLevel: 1,
+    unlockLevel: 3,
+    tip: 'Lv3で解放（作品1件登録後）',
+    isUpperFeature: false,
+  },
+  organizations: {
+    grayLevel: 2,
+    unlockLevel: 3,
+    tip: 'Lv3で解放（チュートリアル完了後）',
+    isUpperFeature: false,
+  },
+  works: {
+    grayLevel: 2,
+    unlockLevel: 3,
+    tip: 'Lv3で解放（作品1件登録後）',
+    isUpperFeature: false,
+  },
+  values: {
+    grayLevel: 2,
+    unlockLevel: 4,
+    tip: 'Lv4で解放（価値観3個回答後）',
+    isUpperFeature: false,
+  },
+  nations: {
+    grayLevel: 3,
+    unlockLevel: 10,
+    tip: 'Lv10で解放（組織運営経験後）',
+    isUpperFeature: false,
+  },
+  // 上級機能（解放まで非表示）
+  skills: {
+    grayLevel: 10,
+    unlockLevel: 12,
+    tip: 'Lv12で解放（スキル1件登録後）',
+    isUpperFeature: true,
+  },
+  chains: {
+    grayLevel: 12,
+    unlockLevel: 15,
+    tip: 'Lv15で解放（作品10件登録後）',
+    isUpperFeature: true,
+  },
+  mandala: {
+    grayLevel: 15,
+    unlockLevel: 18,
+    tip: 'Lv18で解放（スキル活用後）',
+    isUpperFeature: true,
+  },
+  nationFound: {
+    grayLevel: 18,
+    unlockLevel: 20,
+    tip: 'Lv20で解放（全メニュー解放）',
+    isUpperFeature: true,
+  },
+}
+
+/**
  * チュートリアルステップ定義
  * 詳細設計書 Section 2 に基づく
  */
@@ -371,4 +466,67 @@ export function getTutorialRouteDescription(route: TutorialRouteType): RouteDesc
         icon: '🕊️',
       }
   }
+}
+
+/**
+ * メニュー項目の状態を取得
+ * @param feature - 機能名
+ * @param currentLevel - 現在のユーザーレベル
+ * @returns MenuItemState - 'hidden' | 'grayed' | 'unlocked'
+ */
+export function getMenuItemState(feature: string, currentLevel: number): MenuItemState {
+  const config = MENU_UNLOCK_CONFIG[feature]
+
+  // 設定がない場合は常時解放
+  if (!config) {
+    return 'unlocked'
+  }
+
+  // 完全解放済み
+  if (currentLevel >= config.unlockLevel) {
+    return 'unlocked'
+  }
+
+  // 上級機能でグレー表示レベル未満の場合は非表示
+  if (config.isUpperFeature && currentLevel < config.grayLevel) {
+    return 'hidden'
+  }
+
+  // グレー表示レベル以上なら「グレー表示」
+  if (currentLevel >= config.grayLevel) {
+    return 'grayed'
+  }
+
+  // それ以外は非表示（コア機能でもグレーレベル未満なら非表示）
+  return 'hidden'
+}
+
+/**
+ * メニュー解放時のTipsを取得
+ * @param feature - 機能名
+ * @returns Tipテキスト（解放済み/常時解放の場合は空文字）
+ */
+export function getMenuUnlockTip(feature: string): string {
+  const config = MENU_UNLOCK_CONFIG[feature]
+  return config?.tip ?? ''
+}
+
+/**
+ * 機能が新しく解放されたかどうか判定
+ * @param feature - 機能名
+ * @param currentLevel - 現在のレベル
+ * @param previousLevel - 前回のレベル
+ * @returns true if newly unlocked
+ */
+export function isNewlyUnlocked(
+  feature: string,
+  currentLevel: number,
+  previousLevel: number
+): boolean {
+  const config = MENU_UNLOCK_CONFIG[feature]
+  if (!config) return false
+
+  const unlockLevel = config.unlockLevel
+  // 現在レベルが解放レベル以上 かつ 前回レベルが解放レベル未満
+  return currentLevel >= unlockLevel && previousLevel < unlockLevel
 }

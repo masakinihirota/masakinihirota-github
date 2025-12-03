@@ -1,6 +1,6 @@
 # MVP タスク一覧（優先順位・分割）
 
-更新日: 2025-12-03
+更新日: 2025-12-04
 
 以下は MVP 実装のタスク群です。各タスクは TDD サイクルで進行します。
 
@@ -10,24 +10,45 @@
 
 ### 完了済み（✅）
 - **認証基盤**: Supabase OAuth (Google) 実装済み、middleware.ts 設定完了
-- **プロフィール**: 表示/編集 UI、CRUD API、テスト完了
-- **コミュニティ**: 組織作成/一覧 CRUD API、テスト完了
-- **ポイント経済**: 履歴取得、トランザクション追加、残高バリデーション実装済み
+- **プロフィール**: 表示/編集 UI、CRUD API、profileLinks テーブル（外部SNS連携）完了
+- **コミュニティ**: 組織作成/一覧 CRUD API、organizationMembers ロール管理完了
+- **ポイント経済**: 履歴取得、トランザクション追加、残高バリデーション、ledgerEntries（二重記帳）実装済み
 - **RBAC基盤**: acl_* スキーマ、computeMergedPermissions ロジック、resource-scoped exception 対応
 - **管理者UI**: スケルトン作成完了（dashboard/users/contents/penalties/system）
 - **HONO API**: REST API全エンドポイント実装済み（/api/v1/*）
-- **UIコンポーネント**: 90以上のページ実装済み、テストファイルすべてパス
-- **管理者ロールチェック**: middleware + Server Component 二重チェック実装完了
+- **UIコンポーネント**: 90以上のページ実装済み、全テストファイルパス
+- **管理者ロールチェック**: middleware + Server Component 二重チェック実装完了 (*開発効率のため一時無効化中*)
 - **公開組織ページ**: `/group/[groupCode]` 実装完了
 - **リスト機能**: lists/list_items テーブル追加、listService 実装完了
-- **URL設計書対応（Task 6.1）**: nations/create, matching/list, report ページ実装完了
+- **URL設計書対応（Task 6.1）**: 全サブタスク完了
 - **公開プロフィール（Task 6.2）**: `/user-profiles/[id]`, `/root-accounts/[id]` 実装完了
-- **作品評価UI（Task 7.2-7.3）**: WorkRating、WorkActions 実装完了、updateWorkReaction Server Action 実装完了
-- **マッチング強化（Task 8.1-8.3）**: 価値観・ティア評価ベースのスコア計算、自動マッチング候補保存、手動マッチング条件検索UI実装完了
+- **作品評価UI（Task 7.2-7.3）**: WorkRating、WorkActions、updateWorkReaction Server Action 完了
+- **マッチング強化（Task 8.1-8.3）**: 価値観スコア、自動候補保存、条件検索UI完了
+- **国機能（Task 9.1-9.3）**: 建国、徴収、常駐管理、調停者委任、銀行システム完了
+- **シードデータ（Task 10.3）**: master.ts、dummy.ts、runner.ts 完了
+- **ログ・監査（Task 11.2）**: 構造化ロガー、監査ログ、パフォーマンス計測完了
+- **エラーハンドリング（Task 11.3）**: AppError階層、formatErrorResponse完了
+- **チュートリアル（Task 12.1）**: TutorialStatus、TUTORIAL_STEPS、KingDialog、機能解放判定完了
+- **Lv制UIへの統合（Task 12.4）**: MENU_UNLOCK_CONFIG、サイドバー2段階解放UI、🆕バッジ表示完了
 
 ### テスト状況
 - **Test Files**: 179 passed | 11 skipped (190)
-- **Tests**: 790 passed
+- **Tests**: 816 passed
+
+### 要件定義書との適合状況（2025-12-04 更新）
+| 機能カテゴリ | 状況 | 備考 |
+|-------------|------|------|
+| 認証（2.1.1） | ✅ 完全実装 | Google OAuth、セッション管理 |
+| ルートアカウント/プロフィール（2.1.2-2.1.3） | ✅ 完全実装 | 複数プロフィール、外部連携 |
+| 作品登録・評価（2.1.4-2.1.5） | ✅ 完全実装 | status、tier、claps、liked |
+| マッチング（2.1.6） | ✅ 完全実装 | 自動・手動マッチング |
+| 組織（ボトムアップ） | ✅ 完全実装 | CRUD、メンバー管理 |
+| 国（トップダウン） | ✅ 完全実装 | topdownNations、銀行、マーケット |
+| ポイントシステム（2.1.7） | ✅ 完全実装 | 二重記帳、自動回復 |
+| ペナルティ | ✅ 実装済み | penalties テーブル |
+| RBAC | ✅ 完全実装 | acl_* スキーマ |
+| ゲーミフィケーション（2.1.7.1-2.1.7.2） | ✅ 完全実装 | Lv制、メニュー段階的解放UI、🆕バッジ |
+| 手動マッチング詳細UI | ⚠️ 部分実装 | 案件管理UI未実装（フェーズ6で対応） |
 
 ---
 
@@ -76,7 +97,7 @@
 ## フェーズ 4 — 機能拡張（新規）
 
 ### 6. URL 設計書対応
-- [ ] Task 6.1: 未実装の主要ルートを段階的に追加
+- [x] Task 6.1: 未実装の主要ルートを段階的に追加
   - [x] Task 6.1.1: `/group/[groupCode]` 公開組織ページの実装
   - [x] Task 6.1.2: `/lists` 関連ページの実装（スキーマ追加、listService実装）
   - [x] Task 6.1.3: `/nations/create` 建国申請フォームの実装
@@ -163,14 +184,49 @@
   - [x] Task 12.1.8: `/tutorial/route-selection` ルート選択ページ
   - [x] Task 12.1.9: `src/lib/tutorial/tutorial.test.ts` ユニットテスト（38テストケース）
 - [ ] Task 12.2: レスポンシブ対応の強化
+  - [ ] Task 12.2.1: モバイルナビゲーション改善（ハンバーガーメニュー）
+  - [ ] Task 12.2.2: テーブル表示のモバイル最適化
+  - [ ] Task 12.2.3: フォーム入力のタッチ最適化
 - [ ] Task 12.3: 検索機能の改善
+  - [ ] Task 12.3.1: 全文検索インデックス追加
+  - [ ] Task 12.3.2: 検索結果のハイライト表示
+  - [ ] Task 12.3.3: 検索フィルタUI改善
+- [x] Task 12.4: Lv制UIへの統合
+  - [x] Task 12.4.1: サイドバーメニューへのLv連動解放表示
+  - [x] Task 12.4.2: グレーアウト+Tips表示実装
+  - [x] Task 12.4.3: 🆕バッジ表示（機能解放時）
+
+---
+
+## フェーズ 6 — 高度なUI機能（新規）
+
+### 13. 手動マッチング詳細UI（UI設計書 0054-02 対応）
+- [ ] Task 13.1: 案件管理UI
+  - [ ] Task 13.1.1: CaseOverviewCard コンポーネント
+  - [ ] Task 13.1.2: 案件一覧ページ（フィルタ、ソート）
+  - [ ] Task 13.1.3: 案件詳細ページ（タブ構成）
+- [ ] Task 13.2: 候補者選定UI
+  - [ ] Task 13.2.1: CandidateSelector モーダル
+  - [ ] Task 13.2.2: 適合度メータ表示
+- [ ] Task 13.3: 提案・合意管理UI
+  - [ ] Task 13.3.1: ProposalComposeSheet コンポーネント
+  - [ ] Task 13.3.2: AgreementStatusPanel コンポーネント
+- [ ] Task 13.4: 監査ログUI
+  - [ ] Task 13.4.1: AuditLogDrawer コンポーネント
+  - [ ] Task 13.4.2: ログフィルタリング機能
+
+### 14. マップシステム（将来）
+- [ ] Task 14.1: 2Dグリッドマップ表示
+- [ ] Task 14.2: 国の位置管理
 
 ---
 
 ## 🎯 次のアクション（推奨順）
 
-1. **Task 12.2**: レスポンシブ対応の強化
-2. **Task 12.3**: 検索機能の改善
+1. **Task 12.2**: レスポンシブ対応の強化（モバイルナビゲーション、テーブル最適化）
+2. **Task 12.3**: 検索機能の改善（全文検索インデックス、ハイライト）
+3. **Task 13.1-13.4**: 手動マッチング詳細UI（UI設計書 0054-02対応）
+4. **Task 14**: マップシステム（将来拡張）
 
 ---
 
