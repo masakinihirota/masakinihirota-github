@@ -23,6 +23,7 @@
     "db:apply-trigger": "node scripts/apply-auth-trigger.js",
     "generate:routes": "node ./scripts/generate-route-manifest.js",
     "db:seed": "pnpm run supabase:reset -- --no-seed --yes && node ./scripts/apply-drizzle-sql.mjs && node scripts/apply-auth-trigger.js && (cd supabase && psql -h 127.0.0.1 -U postgres -p 54322 -d postgres -f seed.sql)",
+    "seed": "tsx scripts/seed/seed-master.ts && tsx scripts/seed/seed-dummy.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -79,6 +80,7 @@
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
+    "@faker-js/faker": "^10.1.0",
     "@playwright/test": "^1.42.0",
     "@rushstack/eslint-patch": "^1.15.0",
     "@tailwindcss/postcss": "^4",
@@ -102,6 +104,7 @@
     "husky": "^8.0.0",
     "shadcn": "^3.5.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^4.0.13"
   }

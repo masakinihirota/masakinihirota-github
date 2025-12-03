@@ -307,7 +307,7 @@ export const organizationMembers = pgTable("organization_members", {
 
 
 
-// Nations
+// Nations (レガシーテーブル - 互換性維持)
 export const nations = pgTable("nations", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
@@ -321,7 +321,228 @@ export const nations = pgTable("nations", {
   levelIdIdx: index("idx_nations_level_id").on(t.levelId),
 }));
 
-// Nation Memberships (Organizations joining Nations)
+// =====================================================
+// Topdown Nations (トップダウン国 - 内政機能拡張版)
+// =====================================================
+
+// トップダウン国基本情報
+export const topdownNations = pgTable("topdown_nations", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull().unique(),
+  description: text("description"),  // 理念・目的
+  founderProfileId: uuid("founder_profile_id").notNull().references(() => profiles.id, { onDelete: "set null" }),
+  founderOrganizationId: uuid("founder_organization_id").references(() => organizations.id, { onDelete: "set null" }),
+  scaleLevel: integer("scale_level").notNull().default(1), // 規模レベル (1-8)
+  status: text("status").notNull().default('active'), // active, suspended, archived
+
+  // 簡易ルール設定
+  rulePenaltyHolder: text("rule_penalty_holder").default('forbidden'), // forbidden | allowed
+  ruleYellowCardLimit: integer("rule_yellow_card_limit").default(0),
+  ruleRedCardLimit: integer("rule_red_card_limit").default(0),
+  ruleTrustDaysRequired: integer("rule_trust_days_required").default(0),
+  ruleMinMembers: integer("rule_min_members").default(1),
+  ruleGoalMatch: boolean("rule_goal_match").default(false), // 目的一致必須
+
+  // 税率設定
+  marketTaxRate: integer("market_tax_rate").default(5), // マーケット手数料（%）
+  residencyFee: integer("residency_fee").default(0), // 常駐料金（ポイント/月）
+
+  // ポイント徴収関連 (Task 9.1: FR-130-003)
+  gracePeriodStartDate: timestamp("grace_period_start_date", { withTimezone: true, mode: "date" }), // 猶予期間開始日
+
+  // 統計情報（定期更新）
+  totalPopulation: integer("total_population").default(0),
+  residentOrgCount: integer("resident_org_count").default(0),
+  visitorOrgCount: integer("visitor_org_count").default(0),
+
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  founderIdx: index("idx_topdown_nations_founder").on(t.founderProfileId),
+  statusIdx: index("idx_topdown_nations_status").on(t.status),
+  scaleLevelIdx: index("idx_topdown_nations_scale_level").on(t.scaleLevel),
+}));
+
+// 国メンバーシップ（組織単位）
+export const topdownNationMemberships = pgTable("topdown_nation_memberships", {
+  nationId: uuid("nation_id").notNull().references(() => topdownNations.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  membershipType: text("membership_type").notNull().default('visitor'), // resident | visitor
+  joinedAt: timestamp("joined_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  approvedBy: uuid("approved_by").references(() => profiles.id),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.nationId, t.organizationId] }),
+  orgIdx: index("idx_topdown_memberships_org_id").on(t.organizationId),
+  typeIdx: index("idx_topdown_memberships_type").on(t.membershipType),
+}));
+
+// =====================================================
+// 国銀行システム
+// =====================================================
+
+// 国銀行口座
+export const nationBankAccounts = pgTable("nation_bank_accounts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  nationId: uuid("nation_id").notNull().references(() => topdownNations.id, { onDelete: "cascade" }),
+  ownerType: text("owner_type").notNull(), // 'nation' (国庫) | 'organization' (組織)
+  ownerId: uuid("owner_id").notNull(), // 国ID または 組織ID
+  balance: integer("balance").notNull().default(0), // ポイント残高（bigintの代わりにinteger使用）
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  nationIdx: index("idx_bank_accounts_nation").on(t.nationId),
+  ownerIdx: index("idx_bank_accounts_owner").on(t.ownerType, t.ownerId),
+}));
+
+// 銀行取引履歴
+export const nationBankTransactions = pgTable("nation_bank_transactions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  accountId: uuid("account_id").notNull().references(() => nationBankAccounts.id, { onDelete: "cascade" }),
+  type: text("type").notNull(), // deposit, withdrawal, transfer, fee, tax, loan, loan_repayment, maintenance_fee
+  amount: integer("amount").notNull(), // 変動額（+入金, -出金）
+  balanceBefore: integer("balance_before").notNull(),
+  balanceAfter: integer("balance_after").notNull(),
+  relatedAccountId: uuid("related_account_id").references(() => nationBankAccounts.id), // 送金先/元口座ID
+  description: text("description"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  accountIdx: index("idx_bank_transactions_account").on(t.accountId),
+  typeIdx: index("idx_bank_transactions_type").on(t.type),
+  createdAtIdx: index("idx_bank_transactions_created_at").on(t.createdAt),
+}));
+
+// ローン情報
+export const nationLoans = pgTable("nation_loans", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  accountId: uuid("account_id").notNull().references(() => nationBankAccounts.id, { onDelete: "cascade" }),
+  principalAmount: integer("principal_amount").notNull(), // 借入元本
+  remainingAmount: integer("remaining_amount").notNull(), // 残高
+  reason: text("reason"),
+  approvedBy: uuid("approved_by").references(() => profiles.id),
+  status: text("status").notNull().default('active'), // active, repaid, defaulted
+  dueDate: timestamp("due_date", { withTimezone: true, mode: "date" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  accountIdx: index("idx_loans_account").on(t.accountId),
+  statusIdx: index("idx_loans_status").on(t.status),
+}));
+
+// =====================================================
+// マーケット（掲示板）
+// =====================================================
+
+// マーケット投稿
+export const nationMarketPosts = pgTable("nation_market_posts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  nationId: uuid("nation_id").notNull().references(() => topdownNations.id, { onDelete: "cascade" }),
+  authorOrgId: uuid("author_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  authorProfileId: uuid("author_profile_id").notNull().references(() => profiles.id),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  rewardAmount: integer("reward_amount").default(0), // 報酬ポイント
+  status: text("status").notNull().default('open'), // open, closed, completed
+  category: text("category"), // 投稿カテゴリ（任意）
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  closedAt: timestamp("closed_at", { withTimezone: true, mode: "date" }),
+}, (t) => ({
+  nationIdx: index("idx_market_posts_nation").on(t.nationId),
+  authorOrgIdx: index("idx_market_posts_author_org").on(t.authorOrgId),
+  statusIdx: index("idx_market_posts_status").on(t.status),
+}));
+
+// マーケット応募
+export const nationMarketApplications = pgTable("nation_market_applications", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  postId: uuid("post_id").notNull().references(() => nationMarketPosts.id, { onDelete: "cascade" }),
+  applicantOrgId: uuid("applicant_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  applicantProfileId: uuid("applicant_profile_id").notNull().references(() => profiles.id),
+  message: text("message"),
+  status: text("status").notNull().default('pending'), // pending, accepted, rejected, completed
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  postIdx: index("idx_market_applications_post").on(t.postId),
+  applicantIdx: index("idx_market_applications_applicant").on(t.applicantOrgId),
+}));
+
+// マーケット取引評価
+export const nationMarketRatings = pgTable("nation_market_ratings", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  postId: uuid("post_id").notNull().references(() => nationMarketPosts.id, { onDelete: "cascade" }),
+  raterProfileId: uuid("rater_profile_id").notNull().references(() => profiles.id),
+  rateeProfileId: uuid("ratee_profile_id").notNull().references(() => profiles.id),
+  rating: smallint("rating").notNull(), // 1-5
+  comment: text("comment"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  postIdx: index("idx_market_ratings_post").on(t.postId),
+  raterIdx: index("idx_market_ratings_rater").on(t.raterProfileId),
+}));
+
+// =====================================================
+// 調停者管理
+// =====================================================
+
+// 調停者ローテーション
+export const nationMediators = pgTable("nation_mediators", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  nationId: uuid("nation_id").notNull().references(() => topdownNations.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  profileId: uuid("profile_id").notNull().references(() => profiles.id),
+  rotationOrder: integer("rotation_order").notNull(),
+  isActive: boolean("is_active").notNull().default(false),
+  startDate: timestamp("start_date", { withTimezone: true, mode: "date" }),
+  endDate: timestamp("end_date", { withTimezone: true, mode: "date" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  nationIdx: index("idx_mediators_nation").on(t.nationId),
+  activeIdx: index("idx_mediators_active").on(t.isActive),
+}));
+
+// =====================================================
+// マップシステム（2Dグリッド）
+// =====================================================
+
+// マップブロック（疎行列アプローチ - 占有されているブロックのみ保存）
+export const mapBlocks = pgTable("map_blocks", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  x: integer("x").notNull(),
+  y: integer("y").notNull(),
+  nationId: uuid("nation_id").references(() => topdownNations.id, { onDelete: "set null" }),
+  status: text("status").notNull().default('occupied'), // occupied, reserved, special
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  coordIdx: index("idx_map_blocks_coord").on(t.x, t.y),
+  nationIdx: index("idx_map_blocks_nation").on(t.nationId),
+}));
+
+// マップ設定（システム変数）
+export const mapSettings = pgTable("map_settings", {
+  key: text("key").primaryKey(), // e.g., 'world_width', 'fog_radius'
+  value: jsonb("value").notNull(),
+});
+
+// =====================================================
+// 監査ログ
+// =====================================================
+
+// 国関連監査ログ
+export const nationAuditLogs = pgTable("nation_audit_logs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  nationId: uuid("nation_id").references(() => topdownNations.id, { onDelete: "set null" }),
+  actorProfileId: uuid("actor_profile_id").references(() => profiles.id),
+  action: text("action").notNull(), // create, update, delete, join, leave, etc.
+  targetType: text("target_type"), // nation, membership, bank, market, etc.
+  targetId: uuid("target_id"),
+  previousValue: jsonb("previous_value"),
+  newValue: jsonb("new_value"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  nationIdx: index("idx_audit_logs_nation").on(t.nationId),
+  actionIdx: index("idx_audit_logs_action").on(t.action),
+  createdAtIdx: index("idx_audit_logs_created_at").on(t.createdAt),
+}));
+
+// Nation Memberships (Organizations joining Nations) - レガシー互換
 export const nationMemberships = pgTable("nation_memberships", {
   nationId: uuid("nation_id").notNull().references(() => nations.id, { onDelete: "cascade" }),
   organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
