@@ -1,0 +1,1 @@
+export { KingDialog } from './KingDialog'

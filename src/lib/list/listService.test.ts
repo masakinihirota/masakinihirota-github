@@ -86,11 +86,16 @@ describe('listService', () => {
 
   describe('getListById', () => {
     it('IDでリストを取得できる', async () => {
+      const now = new Date()
       const mockList = {
         id: 'list-1',
         title: 'テストリスト',
+        description: null,
         ownerId: 'owner-1',
         visibility: ListVisibility.PRIVATE,
+        listType: 'custom',
+        createdAt: now,
+        updatedAt: now,
       }
 
       const { db } = await import('@/lib/db')
@@ -138,10 +143,16 @@ describe('listService', () => {
 
   describe('updateList', () => {
     it('リストを更新できる', async () => {
+      const now = new Date()
       const mockUpdated = {
         id: 'list-1',
         title: '更新後タイトル',
+        description: null,
         ownerId: 'owner-1',
+        visibility: ListVisibility.PRIVATE,
+        listType: 'custom',
+        createdAt: now,
+        updatedAt: now,
       }
 
       const { db } = await import('@/lib/db')
