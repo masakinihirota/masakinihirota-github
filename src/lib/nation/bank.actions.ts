@@ -731,7 +731,7 @@ export async function collectMonthlyMaintenanceFee(
       // 維持費を計算
       const feeAmount = calculateMonthlyMaintenanceFee(
         nation.scaleLevel,
-        nation.residentOrgCount
+        nation.residentOrgCount ?? 0
       )
 
       // 国庫口座取得

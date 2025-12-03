@@ -84,13 +84,13 @@ export async function seedDummyData(options: SeedDummyOptions = {}): Promise<See
 
   // 4. Create Profiles
   if (verbose) console.log("   - Creating Profiles...");
-  const profileValues = insertedRootAccounts.map((ra, i) => ({
+  const profileRows = insertedRootAccounts.map((ra, i) => ({
     id: crypto.randomUUID(),
     rootAccountId: ra.id,
     name: `Profile ${i + 1}`,
     bio: `This is the bio for profile ${i + 1}`,
   }));
-  const insertedProfiles = await db.insert(profiles).values(profileValues).returning();
+  const insertedProfiles = await db.insert(profiles).values(profileRows).returning();
 
   // 5. Initialize Points for Root Accounts
   if (verbose) console.log("   - Initializing Points...");
@@ -277,7 +277,7 @@ export async function seedDummyData(options: SeedDummyOptions = {}): Promise<See
 
   return {
     usersCreated: userValues.length,
-    profilesCreated: profileValues.length,
+    profilesCreated: profileRows.length,
     organizationsCreated: organizationValues.length,
     worksCreated: workValues.length,
     nationsCreated,
