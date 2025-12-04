@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@digital-go-jp/tailwind-theme-plugin':
+        specifier: ^0.3.3
+        version: 0.3.3(tailwindcss@4.1.17)
       '@hono/zod-validator':
         specifier: ^0.7.5
         version: 0.7.5(hono@4.10.7)(zod@4.1.13)
@@ -491,6 +494,11 @@ packages:
   '@csstools/css-tokenizer@3.0.4':
     resolution: {integrity: sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==}
     engines: {node: '>=18'}
+
+  '@digital-go-jp/tailwind-theme-plugin@0.3.3':
+    resolution: {integrity: sha512-QkDBsnzsU053fLG3LjUf00csyb5Ubs8d9WzEmV4loBUv4vzGsDhZ7UPtvGOzYD2r0DJWK9ImIPKnx3t5/3OF7g==}
+    peerDependencies:
+      tailwindcss: ^3.4.17 || ^4.0.0
 
   '@dotenvx/dotenvx@1.51.1':
     resolution: {integrity: sha512-fqcQxcxC4LOaUlW8IkyWw8x0yirlLUkbxohz9OnWvVWjf73J5yyw7jxWnkOJaUKXZotcGEScDox9MU6rSkcDgg==}
@@ -6229,6 +6237,10 @@ snapshots:
 
   '@csstools/css-tokenizer@3.0.4':
     optional: true
+
+  '@digital-go-jp/tailwind-theme-plugin@0.3.3(tailwindcss@4.1.17)':
+    dependencies:
+      tailwindcss: 4.1.17
 
   '@dotenvx/dotenvx@1.51.1':
     dependencies:

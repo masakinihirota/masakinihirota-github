@@ -2,6 +2,10 @@
 
 @plugin "tailwindcss-animate";
 
+/* デジタル庁デザインシステム - Tailwindテーマプラグイン */
+/* @see https://design.digital.go.jp/ */
+@plugin "@digital-go-jp/tailwind-theme-plugin";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {

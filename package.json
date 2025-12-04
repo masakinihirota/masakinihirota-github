@@ -44,6 +44,7 @@
     "check:client-imports": "node ./scripts/check-client-imports.js"
   },
   "dependencies": {
+    "@digital-go-jp/tailwind-theme-plugin": "^0.3.3",
     "@hono/zod-validator": "^0.7.5",
     "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.15.15",
