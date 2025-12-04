@@ -99,7 +99,7 @@ export const WorkRating = ({
                 variant={selectedStatus === status ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleStatusChange(status)}
-                disabled={disabled}
+                aria-disabled={disabled}
                 data-selected={selectedStatus === status ? 'true' : 'false'}
               >
                 {STATUS_LABELS[status]}
@@ -119,7 +119,7 @@ export const WorkRating = ({
                     variant={selectedTier === tier ? "default" : "outline"}
                     size="sm"
                     onClick={() => handleTierChange(tier)}
-                    disabled={disabled}
+                    aria-disabled={disabled}
                     data-selected={selectedTier === tier ? 'true' : 'false'}
                     aria-label={`${TIER_CONFIG[tier].label}: ${TIER_CONFIG[tier].description}`}
                     className={cn(

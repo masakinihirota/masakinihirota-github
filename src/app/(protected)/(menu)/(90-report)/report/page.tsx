@@ -222,7 +222,7 @@ export default function ReportPage() {
 
             {/* 送信ボタン */}
             <div className="flex gap-3">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" aria-disabled={isSubmitting}>
                 {isSubmitting ? '送信中...' : '報告を送信'}
               </Button>
               <Button type="button" variant="outline" asChild>

@@ -114,7 +114,7 @@ export const WorkCreateForm = () => {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" aria-disabled={isSubmitting}>
                 {isSubmitting ? "登録中..." : "登録する"}
               </Button>
               <Button variant="outline" type="button" asChild>

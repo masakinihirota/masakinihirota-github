@@ -239,7 +239,7 @@ export default function ProfileCreateDemoPage() {
                                 <div className="h-8 w-8 bg-gray-800 rounded-full flex items-center justify-center text-white font-bold text-xs">GH</div>
                                 <span className="ml-3 text-sm font-medium text-gray-900">GitHub</span>
                             </div>
-                            <button type="button" className="text-sm text-gray-400 font-medium" disabled>連携済み</button>
+                            <button type="button" className="text-sm text-gray-400 font-medium aria-disabled:pointer-events-none" aria-disabled="true">連携済み</button>
                         </div>
                     </div>
                 </div>
@@ -250,7 +250,7 @@ export default function ProfileCreateDemoPage() {
                     </Link>
                     <button
                         type="submit"
-                        disabled={isSubmitting}
+                        aria-disabled={isSubmitting}
                         className={`inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                     >
                         {isSubmitting ? (

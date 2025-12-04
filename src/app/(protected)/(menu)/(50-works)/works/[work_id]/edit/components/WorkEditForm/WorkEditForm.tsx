@@ -127,7 +127,7 @@ export const WorkEditForm = ({ work }: WorkEditFormProps) => {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" aria-disabled={isSubmitting}>
                 {isSubmitting ? "保存中..." : "保存する"}
               </Button>
               <Button variant="outline" type="button" asChild>

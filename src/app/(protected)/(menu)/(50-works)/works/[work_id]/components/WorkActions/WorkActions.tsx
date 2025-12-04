@@ -94,7 +94,7 @@ export const WorkActions = ({
         variant={liked ? "default" : "outline"}
         size="sm"
         onClick={handleLike}
-        disabled={disabled || isLikeLoading}
+        aria-disabled={disabled || isLikeLoading}
         data-liked={liked ? 'true' : 'false'}
         className={cn(
           liked && "bg-pink-500 hover:bg-pink-600 text-white"
@@ -111,7 +111,7 @@ export const WorkActions = ({
           variant="outline"
           size="sm"
           onClick={handleClap}
-          disabled={disabled || isClapLoading || isPointsInsufficient}
+          aria-disabled={disabled || isClapLoading || isPointsInsufficient}
           aria-label="拍手"
         >
           <HandHeart className="h-4 w-4 mr-1" />

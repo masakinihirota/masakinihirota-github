@@ -71,7 +71,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
           data-[size=md]:size-8 data-[size=md]:before:size-4
           data-[size=lg]:size-11 data-[size=lg]:before:size-[calc(22/16*1rem)]
           data-[error]:border-error-1 data-[error]:checked:border-error-1 data-[error]:checked:before:bg-error-1
-          focus-visible:outline focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300
+          focus-visible:outline focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-accent-yellow
           aria-disabled:!border-solid-gray-300 aria-disabled:!bg-solid-gray-50 aria-disabled:checked:before:!bg-solid-gray-300
           forced-colors:!border-[ButtonText] forced-colors:checked:!border-[Highlight] forced-colors:checked:before:!bg-[Highlight] forced-colors:aria-disabled:!border-[GrayText] forced-colors:aria-disabled:checked:before:!bg-[GrayText]
         `}

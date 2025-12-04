@@ -55,10 +55,10 @@ export function LoginForm() {
             </CardHeader>
             <CardContent>
                 <div className="space-y-2">
-                    <Button onClick={handleLogin} className="w-full" disabled={isLoading}>
+                    <Button onClick={handleLogin} className="w-full" aria-disabled={isLoading}>
                         {isLoading ? 'Connecting...' : 'Sign in with Google'}
                     </Button>
-                    <Button onClick={handleLoginWithGithub} className="w-full" disabled={isLoading} variant="secondary">
+                    <Button onClick={handleLoginWithGithub} className="w-full" aria-disabled={isLoading} variant="secondary">
                         {isLoading ? 'Connecting...' : 'Sign in with GitHub'}
                     </Button>
                 </div>

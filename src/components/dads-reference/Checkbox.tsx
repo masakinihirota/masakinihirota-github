@@ -68,7 +68,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
           indeterminate:border-blue-900 indeterminate:bg-blue-900 indeterminate:before:block indeterminate:before:h-0 indeterminate:before:w-3 indeterminate:before:translate-y-0 indeterminate:before:rotate-0 indeterminate:before:border-b-[calc(3/16*1rem)] indeterminate:before:border-r-0
           data-[size=sm]:size-6 data-[size=md]:size-8 data-[size=lg]:size-11
           data-[error]:border-error-1 data-[error]:checked:border-error-1 data-[error]:checked:bg-error-1
-          focus-visible:outline focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300
+          focus-visible:outline focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-accent-yellow
           aria-disabled:!border-solid-gray-300 aria-disabled:!bg-solid-gray-50 aria-disabled:checked:!bg-solid-gray-300 aria-disabled:indeterminate:!bg-solid-gray-300 aria-disabled:before:border-solid-gray-50
           forced-colors:!border-[ButtonText] forced-colors:checked:!bg-[Highlight] forced-colors:checked:!border-[Highlight] forced-colors:indeterminate:!bg-[Highlight] forced-colors:indeterminate:!border-[Highlight] forced-colors:before:!bg-[HighlightText] forced-colors:aria-disabled:!border-[GrayText] forced-colors:aria-disabled:checked:!bg-[GrayText]
         `}

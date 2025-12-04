@@ -131,7 +131,7 @@ export const ValueCreateForm = () => {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" aria-disabled={isSubmitting}>
                 {isSubmitting ? "作成中..." : "作成する"}
               </Button>
               <Button variant="outline" type="button" asChild>

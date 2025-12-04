@@ -332,7 +332,7 @@ export default function WorkRegistrationDemoPage() {
                         </button>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            aria-disabled={isSubmitting}
                             className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                         >
                             {isSubmitting ? '登録中...' : '登録する'}
