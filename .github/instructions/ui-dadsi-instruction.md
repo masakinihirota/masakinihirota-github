@@ -57,6 +57,33 @@ DADSのタイポグラフィトークンを使用する。形式: `text-{種類}
 
 ### 3. カラーパレット
 
+#### プロジェクト固有カラー（VNS masakinihirota）
+
+| 用途 | カラーコード | Tailwindトークン | 説明 |
+|------|-------------|-----------------|------|
+| **メインカラー** | `#007EFE` | `bg-brand-primary`, `text-brand-primary` | オアシスの青（主要アクション、ヘッダー） |
+| **メインカラー（ホバー）** | `#0066CC` | `bg-brand-primary-hover` | ホバー状態 |
+| **メインカラー（アクティブ）** | `#004C99` | `bg-brand-primary-active` | アクティブ状態 |
+| **サブカラー1** | `#E6F4FB` | `bg-brand-light` | 淡い水色（セクション背景） |
+| **サブカラー2** | `#FFFFFF` | `bg-white` | 白（カード背景、メイン背景） |
+| **サブカラー3** | `#F5FAFD` | `bg-brand-subtle` | 青みがかった白（交互の背景） |
+| **アクセント（黄）** | `#FFD600` | `bg-accent-yellow`, `ring-accent-yellow` | 黄色（フォーカスリング、注目ポイント） |
+| **アクセント（緑）** | `#00C48C` | `bg-accent-green`, `text-accent-green` | グリーン（成功状態、ポジティブ） |
+
+#### プロジェクトカラー使用ガイドライン
+
+| シーン | 推奨クラス |
+|--------|----------|
+| **プライマリボタン** | `bg-brand-primary text-white hover:bg-brand-primary-hover active:bg-brand-primary-active` |
+| **フォーカスリング** | `ring-accent-yellow`（プロジェクト統一） |
+| **ページ背景** | `bg-white` または `bg-brand-subtle` |
+| **カード背景** | `bg-white` |
+| **セクション区切り** | `bg-brand-light` |
+| **成功メッセージ** | `bg-accent-green text-white` |
+| **リンク** | `text-brand-primary hover:underline` |
+
+#### DADSカラートークン（システム共通）
+
 | 用途 | トークン | 説明 |
 |------|---------|------|
 | **プライマリ** | `bg-blue-900`, `text-blue-900` | メインアクション、リンク |
@@ -71,7 +98,7 @@ DADSのタイポグラフィトークンを使用する。形式: `text-{種類}
 | **グレー（無効）** | `text-solid-gray-420` | 無効状態テキスト |
 | **グレー（背景）** | `bg-solid-gray-50` | 無効状態背景 |
 | **ボーダー** | `border-solid-gray-600` | 標準ボーダー |
-| **フォーカス** | `ring-yellow-300`, `outline-black` | フォーカスリング |
+| **フォーカス** | `ring-accent-yellow`, `outline-black` | フォーカスリング（プロジェクト統一） |
 
 ### 4. フォーカススタイル
 
@@ -80,8 +107,10 @@ DADSのタイポグラフィトークンを使用する。形式: `text-{種類}
 ```css
 focus-visible:outline focus-visible:outline-4 focus-visible:outline-black
 focus-visible:outline-offset-[calc(2/16*1rem)]
-focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300
+focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-accent-yellow
 ```
+
+> **統一ルール**: DADSの `ring-yellow-300` の代わりに、プロジェクト統一カラー `ring-accent-yellow` (#FFD600) を使用します。
 
 ### 5. 角丸（Border Radius）
 
@@ -100,16 +129,16 @@ focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300
 既存のShadcn/UIコンポーネントを使用する際、クラス名をDADSトークンで上書きする:
 
 ```tsx
-// 例: Shadcn/UIのButtonをDADSスタイルで上書き
+// 例: Shadcn/UIのButtonをプロジェクトスタイルで上書き
 import { Button } from '@/components/ui/button';
 
 <Button
-  className="bg-blue-900 text-white text-oln-16B-100 rounded-8 min-h-14 px-4 py-3
-             hover:bg-blue-1000 hover:underline
-             active:bg-blue-1200
+  className="bg-brand-primary text-white text-oln-16B-100 rounded-8 min-h-14 px-4 py-3
+             hover:bg-brand-primary-hover hover:underline
+             active:bg-brand-primary-active
              focus-visible:outline focus-visible:outline-4 focus-visible:outline-black
              focus-visible:outline-offset-[calc(2/16*1rem)]
-             focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300"
+             focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-accent-yellow"
 >
   送信する
 </Button>
