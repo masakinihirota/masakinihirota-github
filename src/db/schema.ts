@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, uuid, index, primaryKey, integer, jsonb, boolean, smallint, numeric, AnyPgColumn } from "drizzle-orm/pg-core";
-import { ValueCategory } from "./constants";
+import { ValueCategory, DisplayNameType, PoeticIdPoolType } from "./constants";
 
 
 /**
@@ -37,6 +37,67 @@ export const nationLevels = pgTable("nation_levels", {
   name: text("name").notNull(),
 });
 
+// =====================================================
+// 表示名システム (Display Name System)
+// =====================================================
+
+/**
+ * 詩的ID単語プール
+ * 形容詞 + 色/質感 + 名詞 の組み合わせを保持
+ */
+export const poeticIdPools = pgTable("poetic_id_pools", {
+  id: text("id").primaryKey(), // 'default', 'japanese', 'western' など
+  name: text("name").notNull(),
+  poolType: text("pool_type").notNull().default(PoeticIdPoolType.Default),
+  adjectives: jsonb("adjectives").notNull().$type<string[]>(), // 形容詞配列
+  qualities: jsonb("qualities").notNull().$type<string[]>(),   // 色/質感配列
+  nouns: jsonb("nouns").notNull().$type<string[]>(),           // 名詞配列
+  nationId: uuid("nation_id"), // 国カスタムの場合（後でtopdownNationsへの参照を追加）
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+});
+
+/**
+ * 生成された詩的ID
+ * 一度生成された詩的IDは一意に保持される
+ */
+export const poeticIds = pgTable("poetic_ids", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  phrase: text("phrase").notNull().unique(), // 詩的IDフレーズ（例: "黒き闇の白い燭台"）
+  poolId: text("pool_id").notNull().references(() => poeticIdPools.id),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  poolIdx: index("idx_poetic_ids_pool_id").on(t.poolId),
+  phraseIdx: index("idx_poetic_ids_phrase").on(t.phrase),
+}));
+
+/**
+ * 場所の表示名ルール設定
+ */
+export const venueDisplayRules = pgTable("venue_display_rules", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  venueType: text("venue_type").notNull(), // 'nation' | 'organization' | 'board'
+  venueId: uuid("venue_id").notNull(),
+  ruleType: text("rule_type").notNull().default("free"), // 表示名ルール
+  unifiedNetName: text("unified_net_name"), // 統一ネットネーム（該当ルールの場合）
+  anonymousDefaultName: text("anonymous_default_name").default("匿名"), // 匿名時のデフォルト名
+  showAnonymousId: text("show_anonymous_id").default("optional"), // 匿名ID表示設定
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  venueIdx: index("idx_venue_display_rules_venue").on(t.venueType, t.venueId),
+}));
+
+/**
+ * 禁止ワードリスト
+ */
+export const bannedWords = pgTable("banned_words", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  word: text("word").notNull().unique(),
+  category: text("category").notNull(), // 'hate' | 'discrimination' | 'obscene' など
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+}, (t) => ({
+  wordIdx: index("idx_banned_words_word").on(t.word),
+}));
 
 
 // --- ACL (RBAC) Tables ---
@@ -181,6 +242,10 @@ export const rootAccounts = pgTable("root_accounts", {
   generation: text("generation"),
   isAdsEnabled: boolean("is_ads_enabled").default(true),
   tutorialStep: integer("tutorial_step").default(0),
+  // 表示名システム: 実名関連
+  realName: text("real_name"), // 実名（1つのみ）
+  realNameVerified: boolean("real_name_verified").default(false), // 本人確認ステータス
+  defaultDisplayNameType: text("default_display_name_type").default(DisplayNameType.NetName), // デフォルト表示名タイプ
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
 }, (t) => ({
@@ -218,12 +283,17 @@ export const valueDefinitions = pgTable("value_definitions", {
 export const profiles = pgTable("profiles", {
   id: uuid("id").defaultRandom().primaryKey(),
   rootAccountId: uuid("root_account_id").notNull().references(() => rootAccounts.id, { onDelete: "cascade" }),
-  name: text("name").notNull(),
+  name: text("name").notNull(), // ネットネーム（表示名）
   bio: text("bio"),
+  // 表示名システム: 詩的ID関連
+  poeticIdId: uuid("poetic_id_id").references(() => poeticIds.id, { onDelete: "set null" }), // 詩的ID
+  displayNameType: text("display_name_type").default(DisplayNameType.NetName), // このプロフィールの表示名タイプ
+  isIdPublic: boolean("is_id_public").default(true), // ID公開/非公開設定
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
 }, (t) => ({
   rootAccountIdIdx: index("idx_profiles_root_account_id").on(t.rootAccountId),
+  poeticIdIdx: index("idx_profiles_poetic_id").on(t.poeticIdId),
 }));
 
   // Profile Links (external contact / social links for a profile)

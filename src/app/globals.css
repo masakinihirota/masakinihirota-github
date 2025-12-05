@@ -17,7 +17,7 @@
   --color-brand-subtle: var(--brand-subtle);
   --color-accent-yellow: var(--accent-yellow);
   --color-accent-green: var(--accent-green);
-  
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -58,14 +58,14 @@
 
 :root {
   /* VNS masakinihirota プロジェクト固有カラー */
-  --brand-primary: #007EFE;           /* オアシスの青 */
-  --brand-primary-hover: #0066CC;     /* ホバー状態 */
-  --brand-primary-active: #004C99;    /* アクティブ状態 */
-  --brand-light: #E6F4FB;             /* 淡い水色 */
-  --brand-subtle: #F5FAFD;            /* 青みがかった白 */
-  --accent-yellow: #FFD600;           /* 黄色（フォーカス、注目） */
-  --accent-green: #00C48C;            /* グリーン（成功） */
-  
+  --brand-primary: #007efe; /* オアシスの青 */
+  --brand-primary-hover: #0066cc; /* ホバー状態 */
+  --brand-primary-active: #004c99; /* アクティブ状態 */
+  --brand-light: #e6f4fb; /* 淡い水色 */
+  --brand-subtle: #f5fafd; /* 青みがかった白 */
+  --accent-yellow: #ffd600; /* 黄色（フォーカス、注目） */
+  --accent-green: #00c48c; /* グリーン（成功） */
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -145,6 +145,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* 表示名システム: オアシスの青（Blue Name用） */
+  --color-oasis: var(--brand-primary);
 }
 
 @layer base {

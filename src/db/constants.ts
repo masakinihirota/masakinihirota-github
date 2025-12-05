@@ -129,3 +129,58 @@ export enum ValueCategory {
   Hobby = "hobby",
   Uncategorized = "Uncategorized",
 }
+
+// =====================================================
+// 表示名システム (Display Name System)
+// =====================================================
+
+/**
+ * 表示名の種類
+ * - blue_name: 認証済み実名（Blueネーム）
+ * - unverified_real_name: 未認証実名（詩的ID付き）
+ * - net_name: ネットネーム（詩的ID付き）
+ * - anonymous: 匿名
+ */
+export enum DisplayNameType {
+  BlueName = "blue_name",
+  UnverifiedRealName = "unverified_real_name",
+  NetName = "net_name",
+  Anonymous = "anonymous",
+}
+
+/**
+ * 場所の表示名ルール
+ * - free: 全種類選択可
+ * - real_name_required: 実名強制（未認証も可）
+ * - verified_only: 認証済み実名限定（Blueネームのみ）
+ * - anonymous_only: 匿名限定
+ * - unified_net_name: 全員統一ネットネーム
+ */
+export enum VenueDisplayRule {
+  Free = "free",
+  RealNameRequired = "real_name_required",
+  VerifiedOnly = "verified_only",
+  AnonymousOnly = "anonymous_only",
+  UnifiedNetName = "unified_net_name",
+}
+
+/**
+ * 詩的IDプールタイプ
+ */
+export enum PoeticIdPoolType {
+  Default = "default",
+  Japanese = "japanese",
+  Western = "western",
+  SciFi = "sci_fi",
+  Fantasy = "fantasy",
+  Custom = "custom",
+}
+
+/**
+ * 匿名ID表示設定
+ */
+export enum AnonymousIdDisplay {
+  Hidden = "hidden",       // 非表示
+  Optional = "optional",   // 任意
+  Required = "required",   // 強制表示
+}
