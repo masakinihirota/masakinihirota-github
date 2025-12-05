@@ -1,6 +1,9 @@
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
+// Node Runtime を使用（Drizzle ORM のDB接続に必要）
+export const runtime = 'nodejs'
+
 export async function middleware(request: NextRequest) {
   return await updateSession(request)
 }

@@ -89,7 +89,7 @@ export const ValueAnswerForm = ({ value }: ValueAnswerFormProps) => {
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" aria-disabled={isSubmitting}>
                 {isSubmitting ? "送信中..." : value.myAnswer ? "回答を更新" : "回答する"}
               </Button>
               <Button variant="outline" type="button" asChild>

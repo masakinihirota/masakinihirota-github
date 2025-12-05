@@ -154,7 +154,7 @@ export function SkillEditForm({ skill }: SkillEditFormProps) {
 
             {/* アクションボタン */}
             <div className="flex gap-4 pt-4">
-              <Button type="submit" disabled={isSubmitting || !name || !category}>
+              <Button type="submit" aria-disabled={isSubmitting || !name || !category}>
                 {isSubmitting ? "保存中..." : "保存"}
               </Button>
               <Button type="button" variant="outline" asChild>

@@ -1,0 +1,93 @@
+@startuml
+' Pre-auth (Public) site map for masakinihirota
+' Generated: 2025-12-03
+
+skinparam dpi 150
+skinparam handwritten false
+
+' Dark mode color theme
+skinparam backgroundColor #07101A
+skinparam defaultTextColor #E6EEF6
+skinparam titleFontSize 16
+skinparam titleFontColor #F1F5F9
+skinparam shadowing false
+
+' Rectangle / package / node colors
+skinparam rectangle {
+  BackgroundColor #0F1724
+  BorderColor #334155
+  FontColor #E6EEF6
+  Shadowing false
+}
+skinparam package {
+  BackgroundColor #07101A
+  BorderColor #23303A
+  FontColor #DDEAF8
+}
+
+skinparam note {
+  BackgroundColor #07101A
+  BorderColor #334155
+  FontColor #9FB3C8
+}
+
+skinparam ArrowColor #7AA6C4
+skinparam sequenceArrowColor #7AA6C4
+
+title masakinihirota — Public / Pre-auth page flows
+
+package "Public (Unauthenticated)" {
+  [Home] as Home <<page>>
+  [Login] as Login <<page>>
+  [Register] as Register <<page>>
+  [Onboarding Guest] as OnboardGuest <<page>>
+  [Search] as Search <<page>>
+  [Public User Profile] as PublicProfile <<page>>
+  [Public Root Account] as PublicRoot <<page>>
+  [Group Page] as GroupPage <<page>>
+
+  package "Footer / Info" {
+    [Help / FAQ] as Help <<page>>
+    [Contact] as Contact <<page>>
+    [Privacy] as Privacy <<page>>
+    [Terms] as Terms <<page>>
+  }
+
+  [Oasis Declaration] as OasisDecl <<page>>
+}
+
+' --- Flow connections ---
+Home --> Login : "Sign in / Links"
+Home --> Register : "Create account"
+Home --> Search
+Home --> GroupPage
+Home --> PublicProfile
+Home --> OasisDecl
+Home --> Help
+
+Login --> OnboardGuest : "Guest / Continue without sign-in"
+Login --> Home : "Successful sign-in -> Protected Home"
+Register --> Home : "After register -> Protected Home"
+
+Search --> PublicProfile : "visit user"
+GroupPage --> PublicProfile : "view member / org"
+PublicProfile --> PublicRoot : "view root account"
+
+Help --> FAQ : "FAQ" 
+
+' entry points
+Login --> Register : "Go to register"
+Register --> Login : "Already have account?"
+
+note right of Home
+  Key public pages:
+  - / (public home)
+  - /login
+  - /(feature)/register
+  - /search
+  - /group/[groupCode]
+  - /public/user-profiles/[userProfileId]
+  - /public/root-accounts/[root_account_id]
+end note
+
+@enduml

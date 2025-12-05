@@ -63,6 +63,7 @@ import {
 } from "@/components/ui/Sidebar"
 import routesManifest from "@/config/routes.manifest.json"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getMenuItemState, getMenuUnlockTip, MenuItemState } from "@/lib/tutorial/tutorial"
 
 /**
  * 左サイドメニュー要件定義書に基づくメニュー構成
@@ -158,6 +159,62 @@ type RouteEntry = {
   group?: string
 }
 
+/**
+ * パスからフィーチャー名へのマッピング
+ */
+const PATH_TO_FEATURE_MAP: Record<string, string> = {
+  '/home': 'home',
+  '/user-profiles': 'profiles',
+  '/profiles': 'profiles',
+  '/matching': 'matching',
+  '/groups': 'organizations',
+  '/nations': 'nations',
+  '/works': 'works',
+  '/values': 'values',
+  '/skills': 'skills',
+  '/chains': 'chains',
+  '/mandala': 'mandala',
+}
+
+/**
+ * URLパスからフィーチャー名を取得
+ */
+export const mapPathToFeature = (path: string): string => {
+  return PATH_TO_FEATURE_MAP[path] ?? path.replace('/', '')
+}
+
+/**
+ * メニュー項目の型定義（状態付き）
+ */
+export type MenuItemWithState = {
+  title: string
+  url: string
+  icon: LucideIcon
+  state: MenuItemState
+  tip?: string
+}
+
+/**
+ * メニュー項目にLv制状態を付与
+ */
+export const getMenuItemsWithState = (
+  items: { title: string; url: string; icon: LucideIcon }[],
+  currentLevel: number
+): MenuItemWithState[] => {
+  return items
+    .map((item) => {
+      const feature = mapPathToFeature(item.url)
+      const state = getMenuItemState(feature, currentLevel)
+      const tip = getMenuUnlockTip(feature)
+      return {
+        ...item,
+        state,
+        tip,
+      }
+    })
+    .filter((item) => item.state !== 'hidden')
+}
+
 // Normalize a manifest route path into the sidebar URL used in this app
 // Policy: routes.manifest.json is canonical. Return the manifest path as the sidebar URL
 export const toSidebarUrl = (manifestPath: string) => {
@@ -211,14 +268,38 @@ const mockUser = {
   avatar: "/avatars/masakinihirota.jpg",
 }
 
-// ナビゲーション項目コンポーネント
+// ナビゲーション項目コンポーネント（Lv制対応）
 function NavItem({
   item,
   isActive,
+  state = 'unlocked',
+  tip,
+  isNew = false,
 }: {
   item: { title: string; url: string; icon: LucideIcon }
   isActive: boolean
+  state?: MenuItemState
+  tip?: string
+  isNew?: boolean
 }) {
+  const isGrayed = state === 'grayed'
+
+  // グレーアウト時はクリック無効化
+  if (isGrayed) {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          tooltip={tip || `${item.title}（解放条件未達成）`}
+          className="opacity-50 cursor-not-allowed"
+          disabled
+        >
+          <item.icon className="text-muted-foreground" />
+          <span className="text-muted-foreground">{item.title}</span>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    )
+  }
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -229,49 +310,84 @@ function NavItem({
         <Link href={item.url} aria-current={isActive ? "page" : undefined}>
           <item.icon />
           <span>{item.title}</span>
+          {isNew && (
+            <span className="ml-auto text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+              🆕
+            </span>
+          )}
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   )
 }
 
-// メインナビゲーショングループ
+// メインナビゲーショングループ（Lv制対応）
 function NavGroup({
   label,
   items,
   currentPath,
+  userLevel = 20, // デフォルトは全解放（開発用）
+  newlyUnlockedFeatures = [],
 }: {
   label?: string
   items: { title: string; url: string; icon: LucideIcon }[]
   currentPath: string
+  userLevel?: number
+  newlyUnlockedFeatures?: string[]
 }) {
+  // Lv制に基づいてメニュー項目をフィルタリング・状態付与
+  const itemsWithState = getMenuItemsWithState(items, userLevel)
+
+  if (itemsWithState.length === 0) {
+    return null
+  }
+
   return (
     <SidebarGroup>
       {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
       <SidebarMenu>
-        {items.map((item) => (
-          <NavItem
-            key={item.url}
-            item={item}
-            isActive={currentPath === item.url || currentPath.startsWith(item.url + "/")}
-          />
-        ))}
+        {itemsWithState.map((item) => {
+          const feature = mapPathToFeature(item.url)
+          const isNew = newlyUnlockedFeatures.includes(feature)
+          return (
+            <NavItem
+              key={item.url}
+              item={item}
+              isActive={currentPath === item.url || currentPath.startsWith(item.url + "/")}
+              state={item.state}
+              tip={item.tip}
+              isNew={isNew}
+            />
+          )
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )
 }
 
-// 「もっと見る」折りたたみセクション
+// 「もっと見る」折りたたみセクション（Lv制対応）
 function NavMore({
   items,
   currentPath,
+  userLevel = 20,
+  newlyUnlockedFeatures = [],
 }: {
   items: { title: string; url: string; icon: LucideIcon }[]
   currentPath: string
+  userLevel?: number
+  newlyUnlockedFeatures?: string[]
 }) {
-  const hasActiveItem = items.some(
-    (item) => currentPath === item.url || currentPath.startsWith(item.url + "/")
+  // Lv制に基づいてメニュー項目をフィルタリング・状態付与
+  const itemsWithState = getMenuItemsWithState(items, userLevel)
+
+  const hasActiveItem = itemsWithState.some(
+    (item) => item.state === 'unlocked' && (currentPath === item.url || currentPath.startsWith(item.url + "/"))
   )
+
+  // 表示できる項目がない場合は非表示
+  if (itemsWithState.length === 0) {
+    return null
+  }
 
   return (
     <SidebarGroup>
@@ -291,10 +407,29 @@ function NavMore({
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                {items.map((item) => {
+                {itemsWithState.map((item) => {
+                  const feature = mapPathToFeature(item.url)
+                  const isNew = newlyUnlockedFeatures.includes(feature)
                   const isActive =
                     currentPath === item.url ||
                     currentPath.startsWith(item.url + "/")
+                  const isGrayed = item.state === 'grayed'
+
+                  if (isGrayed) {
+                    return (
+                      <SidebarMenuSubItem key={item.url}>
+                        <SidebarMenuSubButton
+                          className="opacity-50 cursor-not-allowed"
+                          aria-disabled="true"
+                          title={item.tip || `${item.title}（解放条件未達成）`}
+                        >
+                          <item.icon className="size-4 text-muted-foreground" />
+                          <span className="text-muted-foreground">{item.title}</span>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    )
+                  }
+
                   return (
                     <SidebarMenuSubItem key={item.url}>
                       <SidebarMenuSubButton
@@ -307,6 +442,9 @@ function NavMore({
                         >
                           <item.icon className="size-4" />
                           <span>{item.title}</span>
+                          {isNew && (
+                            <span className="ml-auto text-xs">🆕</span>
+                          )}
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
@@ -413,8 +551,19 @@ function NavUser({
   )
 }
 
-// メインのサイドバーコンポーネント
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+// メインのサイドバーコンポーネント（Lv制UI対応）
+export interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  /** ユーザーの現在レベル（デフォルト: 20 = 全解放） */
+  userLevel?: number
+  /** 新しく解放された機能のリスト（🆕バッジ表示用） */
+  newlyUnlockedFeatures?: string[]
+}
+
+export function AppSidebar({
+  userLevel = 20,
+  newlyUnlockedFeatures = [],
+  ...props
+}: AppSidebarProps) {
   const pathname = usePathname()
 
   return (
@@ -441,20 +590,38 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {/* コンテンツ: メインナビゲーション */}
       <SidebarContent>
         {/* メインメニュー */}
-        <NavGroup items={mainMenuItems} currentPath={pathname} />
+        <NavGroup
+          items={mainMenuItems}
+          currentPath={pathname}
+          userLevel={userLevel}
+          newlyUnlockedFeatures={newlyUnlockedFeatures}
+        />
 
         {/* 集団系メニュー（第2グループ） */}
-        {groupMenuItems.length > 0 && (
-          <NavGroup label="集団" items={groupMenuItems} currentPath={pathname} />
-        )}
+        <NavGroup
+          label="集団"
+          items={groupMenuItems}
+          currentPath={pathname}
+          userLevel={userLevel}
+          newlyUnlockedFeatures={newlyUnlockedFeatures}
+        />
 
         {/* 登録系メニュー（第3グループ） */}
-        {registrationMenuItems.length > 0 && (
-          <NavGroup label="登録" items={registrationMenuItems} currentPath={pathname} />
-        )}
+        <NavGroup
+          label="登録"
+          items={registrationMenuItems}
+          currentPath={pathname}
+          userLevel={userLevel}
+          newlyUnlockedFeatures={newlyUnlockedFeatures}
+        />
 
         {/* もっと見る */}
-        <NavMore items={moreMenuItems} currentPath={pathname} />
+        <NavMore
+          items={moreMenuItems}
+          currentPath={pathname}
+          userLevel={userLevel}
+          newlyUnlockedFeatures={newlyUnlockedFeatures}
+        />
       </SidebarContent>
 
       {/* フッター: ユーザーメニュー（画面左下に固定） */}

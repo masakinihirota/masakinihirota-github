@@ -130,9 +130,9 @@ export default function ProfileEditDemoPage() {
                                     type="text"
                                     name="username"
                                     id="username"
-                                    disabled
+                                    aria-disabled="true"
                                     value={formData.username}
-                                    className="flex-1 block w-full rounded-none rounded-r-md border-gray-300 bg-gray-100 text-gray-500 sm:text-sm px-4 py-2 border cursor-not-allowed"
+                                    className="flex-1 block w-full rounded-none rounded-r-md border-solid-gray-300 bg-solid-gray-50 text-solid-gray-420 sm:text-sm px-4 py-2 border cursor-not-allowed aria-disabled:pointer-events-none"
                                 />
                             </div>
                         </div>
@@ -271,7 +271,7 @@ export default function ProfileEditDemoPage() {
                         </Link>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            aria-disabled={isSubmitting}
                             className={`inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                         >
                             {isSubmitting ? (

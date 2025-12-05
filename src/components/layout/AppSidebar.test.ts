@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import manifest from '@/config/routes.manifest.json'
-import { ICON_MAP, toSidebarUrl, iconFor } from './AppSidebar'
+import { ICON_MAP, toSidebarUrl, iconFor, mapPathToFeature, getMenuItemsWithState } from './AppSidebar'
+import { MenuItemState } from '@/lib/tutorial/tutorial'
 
 describe('AppSidebar manifest integration', () => {
   it('should have icon mapping for each visible menu route in manifest', () => {
@@ -23,5 +24,81 @@ describe('AppSidebar manifest integration', () => {
       expect(icon).toBeDefined()
       expect(['function', 'object']).toContain(typeof icon)
     }
+  })
+})
+
+describe('AppSidebar Lv制UI統合', () => {
+  describe('mapPathToFeature', () => {
+    it('should map /matching to matching', () => {
+      expect(mapPathToFeature('/matching')).toBe('matching')
+    })
+
+    it('should map /groups to organizations', () => {
+      expect(mapPathToFeature('/groups')).toBe('organizations')
+    })
+
+    it('should map /nations to nations', () => {
+      expect(mapPathToFeature('/nations')).toBe('nations')
+    })
+
+    it('should map /works to works', () => {
+      expect(mapPathToFeature('/works')).toBe('works')
+    })
+
+    it('should map /values to values', () => {
+      expect(mapPathToFeature('/values')).toBe('values')
+    })
+
+    it('should map /skills to skills', () => {
+      expect(mapPathToFeature('/skills')).toBe('skills')
+    })
+  })
+
+  describe('getMenuItemsWithState', () => {
+    it('should return items with state for level 1 user', () => {
+      const items = [
+        { title: 'ホーム', url: '/home' },
+        { title: 'マッチング', url: '/matching' },
+      ]
+      const result = getMenuItemsWithState(items as any, 1)
+      expect(result[0].state).toBe('unlocked')
+      expect(result[1].state).toBe('grayed')
+    })
+
+    it('should return items with state for level 3 user', () => {
+      const items = [
+        { title: 'マッチング', url: '/matching' },
+        { title: '国', url: '/nations' },
+      ]
+      const result = getMenuItemsWithState(items as any, 3)
+      expect(result[0].state).toBe('unlocked')
+      expect(result[1].state).toBe('grayed')
+    })
+
+    it('should filter hidden items', () => {
+      const items = [
+        { title: 'スキル', url: '/skills' },
+      ]
+      const result = getMenuItemsWithState(items as any, 1)
+      expect(result.length).toBe(0)
+    })
+
+    it('should show skills at level 10', () => {
+      const items = [
+        { title: 'スキル', url: '/skills' },
+      ]
+      const result = getMenuItemsWithState(items as any, 10)
+      expect(result.length).toBe(1)
+      expect(result[0].state).toBe('grayed')
+    })
+
+    it('should unlock skills at level 12', () => {
+      const items = [
+        { title: 'スキル', url: '/skills' },
+      ]
+      const result = getMenuItemsWithState(items as any, 12)
+      expect(result.length).toBe(1)
+      expect(result[0].state).toBe('unlocked')
+    })
   })
 })

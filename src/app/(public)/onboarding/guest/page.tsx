@@ -42,8 +42,8 @@ export default function GuestOnboarding() {
                 <div className="flex gap-3 justify-center">
                     <button
                         onClick={handleGuest}
-                        disabled={loading}
-                        className="rounded-md bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                        aria-disabled={loading}
+                        className="rounded-8 bg-brand-primary px-4 py-3 text-oln-16B-100 text-white hover:bg-brand-primary-hover aria-disabled:opacity-50 aria-disabled:pointer-events-none focus-visible:outline focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-accent-yellow"
                     >
                         {loading ? '処理中…' : '匿名でオンボーディングを開始'}
                     </button>

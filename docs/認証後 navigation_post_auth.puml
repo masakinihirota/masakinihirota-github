@@ -1,0 +1,140 @@
+@startuml
+' Post-auth (Authenticated) site map for masakinihirota
+' Generated: 2025-12-03
+
+skinparam dpi 150
+left to right direction
+
+' Dark mode color theme
+skinparam backgroundColor #07101A
+skinparam defaultTextColor #E6EEF6
+skinparam titleFontSize 16
+skinparam titleFontColor #F1F5F9
+skinparam shadowing false
+
+skinparam rectangle {
+  BackgroundColor #0F1724
+  BorderColor #334155
+  FontColor #E6EEF6
+  Shadowing false
+}
+skinparam package {
+  BackgroundColor #07101A
+  BorderColor #23303A
+  FontColor #DDEAF8
+}
+
+skinparam note {
+  BackgroundColor #07101A
+  BorderColor #334155
+  FontColor #9FB3C8
+}
+
+skinparam ArrowColor #7AA6C4
+skinparam sequenceArrowColor #7AA6C4
+
+title masakinihirota — Authenticated / Post-auth page flows
+
+package "Primary App (Authenticated)" {
+  [Home / Welcome] as ProtectedHome <<page>>
+  [Dashboard] as Dashboard <<page>>
+  [Messages] as Messages <<page>>
+  [Activity] as Activity <<page>>
+  [Notifications] as Notifications <<page>>
+
+  package "Profile & Account" {
+    [My Profile] as MyProfile <<page>>
+    [Create Profile] as CreateProfile <<page>>
+    [Edit Profile] as EditProfile <<page>>
+    [Root Accounts] as RootAccounts <<page>>
+  }
+
+  package "Organizations & Groups" {
+    [Groups List] as GroupsList <<page>>
+    [Group Detail] as GroupDetail <<page>>
+    [Group Settings] as GroupSettings <<page>>
+    [Create Group] as CreateGroup <<page>>
+  }
+
+  package "Works & Content" {
+    [Works List / My Works] as Works <<page>>
+    [Work Detail] as WorkDetail <<page>>
+    [New Work] as NewWork <<page>>
+  }
+
+  package "Matching & Results" {
+    [Matching - List] as MatchingList <<page>>
+    [Matching - Results] as MatchingResults <<page>>
+    [Matching - Settings] as MatchingSettings <<page>>
+  }
+
+  package "Nations (Topdown)" {
+    [Nations - List] as NationsList <<page>>
+    [Nation - Detail] as NationDetail <<page>>
+    [Nation - Create] as NationCreate <<page>>
+    [Nation - Manage] as NationManage <<page>>
+    [Nation - Members] as NationMembers <<page>>
+    [Nation - Finance] as NationFinance <<page>>
+    [Nation - Laws] as NationLaws <<page>>
+    [Nation - Audits] as NationAudits <<page>>
+  }
+
+  package "Settings & Admin" {
+    [Settings] as Settings <<page>>
+    [Security / Account Settings] as Security <<page>>
+    [Payment] as Payment <<page>>
+    [Connected Apps] as ConnectedApps <<page>>
+
+    [Admin Dashboard] as AdminDashboard <<admin>>
+    [Admin Users] as AdminUsers <<admin>>
+    [Admin Contents] as AdminContents <<admin>>
+    [Admin Penalties] as AdminPenalties <<admin>>
+  }
+}
+
+' --- core navigation flows ---
+ProtectedHome --> Dashboard
+ProtectedHome --> MyProfile
+ProtectedHome --> GroupsList
+ProtectedHome --> MatchingList
+ProtectedHome --> NationsList
+ProtectedHome --> Messages
+
+Dashboard --> Notifications
+Dashboard --> Activity
+
+MyProfile --> EditProfile
+GroupsList --> GroupDetail
+GroupDetail --> GroupSettings
+GroupsList --> CreateGroup
+
+MatchingList --> MatchingResults
+MatchingList --> MatchingSettings
+
+NationsList --> NationDetail
+NationDetail --> NationManage
+NationManage --> NationMembers
+NationManage --> NationFinance
+NationManage --> NationLaws
+NationManage --> NationAudits
+NationCreate --> NationManage
+
+' Admin flows and role-based access
+AdminDashboard --> AdminUsers
+AdminDashboard --> AdminContents
+AdminDashboard --> AdminPenalties
+
+' Cross-cutting navigation
+Settings --> Security
+Settings --> Payment
+Settings --> ConnectedApps
+
+' Notes
+note bottom of ProtectedHome
+  Typical entry point after auth:
+  - /protected/(menu)/home or /protected/home
+  - Main menu contains: Home, Matching, Works, Groups, Nations, Settings
+  - Admin pages under /admin/* and require admin role
+end note
+
+@enduml
