@@ -35,6 +35,11 @@ export interface DisplayNameProps {
 }
 
 /**
+ * 列挙的なサイズ型（外部向けに明示的にエクスポート）
+ */
+export type DisplayNameSize = DisplayNameProps["size"];
+
+/**
  * 表示名コンポーネント
  *
  * @example
